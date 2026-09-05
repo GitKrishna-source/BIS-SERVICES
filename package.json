@@ -8,9 +8,6 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "allowScripts": {
-    "esbuild": true
-  },
   "dependencies": {
     "clsx": "^2.1.1",
     "lucide-react": "^0.475.0",
