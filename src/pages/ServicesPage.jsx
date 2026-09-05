@@ -91,10 +91,10 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
       </div>
 
       {/* 4 Refined Service Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
         
         {/* Module 01: Certification */}
-        <div className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-sky-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
+        <div className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 hover:border-sky-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
           <div className="space-y-4">
             {/* Top Bar */}
             <div className="flex items-center justify-between">
@@ -159,7 +159,7 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
         </div>
 
         {/* Module 02: Testing Laboratories */}
-        <div className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
+        <div className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
           <div className="space-y-4">
             {/* Top Bar */}
             <div className="flex items-center justify-between">
@@ -224,7 +224,7 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
         </div>
 
         {/* Module 03: Hallmarking */}
-        <div className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-amber-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
+        <div className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 hover:border-amber-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
           <div className="space-y-4">
             {/* Top Bar */}
             <div className="flex items-center justify-between">
@@ -310,7 +310,7 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
         </div>
 
         {/* Module 04: Consumer Help */}
-        <div className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
+        <div className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
           <div className="space-y-4">
             {/* Top Bar */}
             <div className="flex items-center justify-between">

@@ -88,12 +88,11 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
       const progress = totalScrollable > 0 ? (scrollLeft / totalScrollable) * 100 : 0;
       setScrollProgress(progress);
 
-      // Find closest active index
-      const cardWidth = 360;
-      const newIndex = Math.round(scrollLeft / cardWidth);
-      if (newIndex >= 0 && newIndex < items.length) {
-        setCurrentIndex(newIndex);
-      }
+      // Dynamically calculate active card index based on actual element layout
+      const firstCard = containerRef.current.children[0];
+      const cardStep = firstCard ? firstCard.offsetWidth + 24 : 360;
+      const newIndex = Math.min(items.length - 1, Math.max(0, Math.round(scrollLeft / cardStep)));
+      setCurrentIndex(newIndex);
     }
   };
 
@@ -101,7 +100,6 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
   const handleWheel = (e) => {
     if (containerRef.current) {
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        // Translate vertical scroll to horizontal sliding smoothly
         containerRef.current.scrollLeft += e.deltaY * 0.85;
       }
     }
@@ -122,16 +120,19 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - containerRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; // Slide speed multiplier
+    const walk = (x - startX) * 1.5;
     containerRef.current.scrollLeft = scrollLeft - walk;
   };
 
   const slideTo = (index) => {
-    setCurrentIndex(index);
+    const validIdx = Math.max(0, Math.min(items.length - 1, index));
+    setCurrentIndex(validIdx);
     if (containerRef.current) {
-      const card = containerRef.current.children[index];
+      const card = containerRef.current.children[validIdx];
       if (card) {
-        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        // Container-relative scrolling avoids page jumping
+        const targetLeft = card.offsetLeft - containerRef.current.offsetLeft;
+        containerRef.current.scrollTo({ left: targetLeft, behavior: 'smooth' });
       }
     }
   };
@@ -294,7 +295,24 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
               </div>
             );
           })}
+          {/* Trailing spacer ensures final card (Hallmarking) has full clearance and shadow room */}
+          <div className="shrink-0 w-6 sm:w-10 pointer-events-none" aria-hidden="true" />
         </div>
+
+        {/* Right Fade Peek Indicator when more cards are scrollable */}
+        {scrollProgress < 85 && (
+          <button
+            type="button"
+            onClick={nextSlide}
+            className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-slate-50/90 via-slate-50/40 to-transparent pointer-events-auto hidden md:flex items-center justify-end pr-2 opacity-80 hover:opacity-100 transition-opacity z-20"
+            title="Scroll to view all operational domains (Hallmarking)"
+            aria-label="Next cards"
+          >
+            <div className="w-8 h-8 rounded-full bg-white/95 shadow-md border border-slate-200 text-slate-600 hover:text-sky-600 flex items-center justify-center transition-all hover:scale-110">
+              <ChevronRight className="w-4 h-4" />
+            </div>
+          </button>
+        )}
       </div>
 
       {/* Dynamic Smooth Slide Progress Bar */}

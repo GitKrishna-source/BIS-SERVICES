@@ -231,9 +231,9 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
               <button
                 type="button"
                 onClick={handleQuickDemo}
-                className="w-full py-2.5 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs flex items-center justify-center space-x-2 transition-all"
+                className="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-slate-200 hover:border-slate-300 font-semibold text-xs flex items-center justify-center space-x-2 transition-all shadow-2xs"
               >
-                <Zap className="w-3.5 h-3.5 text-amber-600" />
+                <Zap className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600" />
                 <span>Instant Demo Access (Limited Guest Mode)</span>
               </button>
             </div>

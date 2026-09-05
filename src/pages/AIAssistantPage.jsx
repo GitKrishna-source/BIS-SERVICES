@@ -271,14 +271,16 @@ export const AIAssistantPage = ({ currentUser, onOpenLogin, initialQuery = '', o
                     key={idx}
                     className="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-white hover:border-sky-300 transition-all shadow-xs"
                   >
-                    <div className="flex items-center justify-between mb-1">
-                      <div className="flex items-center space-x-2">
-                        <span className="font-mono text-xs font-bold text-sky-700 bg-sky-100/80 px-2 py-0.5 rounded border border-sky-200">
+                    <div className="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between gap-2 mb-2">
+                      <div className="flex items-center space-x-2 min-w-0 flex-1">
+                        <span className="font-mono text-xs font-bold text-sky-700 bg-sky-100/80 px-2 py-0.5 rounded border border-sky-200 shrink-0">
                           {clause.number}
                         </span>
-                        <span className="text-xs font-bold text-slate-900">{clause.title}</span>
+                        <span className="text-xs font-bold text-slate-900 leading-snug break-words">
+                          {clause.title}
+                        </span>
                       </div>
-                      <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200">
+                      <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200 shrink-0 whitespace-nowrap self-start sm:self-center">
                         {clause.badge}
                       </span>
                     </div>

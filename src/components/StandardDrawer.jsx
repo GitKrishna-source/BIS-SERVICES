@@ -115,14 +115,16 @@ export const StandardDrawer = ({ standard, isOpen, onClose, onOpenPdf, onAskAbou
               <div className="space-y-3">
                 {standard.clauses && standard.clauses.map((clause, idx) => (
                   <div key={idx} className="p-4 rounded-xl border border-slate-200 bg-white hover:border-sky-300 transition-colors shadow-sm">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <div className="flex items-center space-x-2">
-                        <span className="font-mono text-xs font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
+                    <div className="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between gap-2 mb-2">
+                      <div className="flex items-center space-x-2 min-w-0 flex-1">
+                        <span className="font-mono text-xs font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded border border-sky-200 shrink-0">
                           {clause.number}
                         </span>
-                        <span className="text-xs font-bold text-slate-900">{clause.title}</span>
+                        <span className="text-xs font-bold text-slate-900 leading-snug break-words">
+                          {clause.title}
+                        </span>
                       </div>
-                      <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                      <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0 whitespace-nowrap self-start sm:self-center">
                         {clause.tag}
                       </span>
                     </div>

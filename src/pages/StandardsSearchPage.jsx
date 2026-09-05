@@ -174,7 +174,7 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               
               <div className="space-y-1.5 flex-1">
-                {/* IS Code & Badges */}
+                {/* IS Code & Primary Badges (Max 2 primary badges to prevent clutter) */}
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="font-mono text-sm font-black text-sky-700">
                     {std.code}
@@ -200,10 +200,6 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
                       • ISI Mark Valid
                     </span>
                   )}
-
-                  <span className="font-mono text-[11px] text-slate-400">
-                    {std.ics}
-                  </span>
                 </div>
 
                 {/* Title */}
@@ -217,7 +213,7 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
                 </p>
               </div>
 
-              {/* View Standard Action Button */}
+              {/* View Standard Action Button & Compact Hover Details */}
               <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 shrink-0">
                 <button
                   onClick={() => onSelectStandard(std)}
@@ -226,9 +222,25 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
                   <span>View Standard</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </button>
-                <span className="text-[10px] font-mono text-slate-400">
-                  PDF • {std.pages} Pages • Gazette Verified
-                </span>
+
+                {/* Streamlined secondary metadata with hover/detail tooltip */}
+                <div className="group/details relative">
+                  <span className="text-[10px] font-mono text-slate-500 bg-slate-100/70 hover:bg-slate-200/80 px-2 py-0.5 rounded border border-slate-200/60 cursor-pointer flex items-center space-x-1 transition-colors">
+                    <FileText className="w-3 h-3 text-slate-400" />
+                    <span>PDF • {std.pages}p</span>
+                    <span className="text-sky-600 font-bold ml-0.5">+info</span>
+                  </span>
+                  
+                  {/* Floating Detail Tooltip on Hover */}
+                  <div className="absolute right-0 bottom-full mb-1.5 hidden group-hover/details:flex flex-col z-30 w-56 p-2.5 rounded-xl bg-slate-900 text-white text-[10px] font-mono shadow-xl border border-slate-700 pointer-events-none space-y-1">
+                    <div className="text-emerald-400 font-bold flex items-center space-x-1">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                      <span>Gazette Verified Official Standard</span>
+                    </div>
+                    <div className="text-slate-300">Classification: {std.ics}</div>
+                    <div className="text-slate-400">Document Volume: {std.pages} Certified Pages</div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -245,11 +257,12 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
                 </span>
               </div>
 
+              {/* Distinct Emerald Accent for Ask AI (differentiated from primary blue links) */}
               <button
                 onClick={() => onConsultAssistant(std.title)}
-                className="text-xs font-semibold text-sky-600 hover:text-sky-700 flex items-center space-x-1"
+                className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 bg-emerald-50/80 hover:bg-emerald-100/90 border border-emerald-200/90 px-3 py-1.5 rounded-xl flex items-center space-x-1.5 transition-all shadow-2xs group/ai"
               >
-                <Sparkles className="w-3 h-3 text-sky-500" />
+                <Sparkles className="w-3.5 h-3.5 text-emerald-600 group-hover/ai:rotate-12 transition-transform" />
                 <span>Ask AI regarding this standard</span>
               </button>
             </div>
