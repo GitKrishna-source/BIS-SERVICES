@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { mockServices, mockStandards } from '../services/mockData';
+import { mockStandards } from '../services/mockData';
 import { 
   Award, 
   FlaskConical, 
@@ -8,34 +8,20 @@ import {
   ShieldAlert, 
   ArrowRight, 
   Sparkles, 
-  CheckCircle2, 
-  Layers, 
-  Bot,
-  ExternalLink,
-  ChevronRight,
+  Building, 
+  ShieldCheck, 
   Database,
-  Search,
-  Building,
-  ShieldCheck
+  Bot
 } from 'lucide-react';
-
-const iconMap = {
-  Award,
-  FlaskConical,
-  Gem,
-  ShieldCheck
-};
 
 export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) => {
   const { t } = useLanguage();
-  const [selectedModule, setSelectedModule] = useState(null);
   const [huidCode, setHuidCode] = useState('');
   const [huidResult, setHuidResult] = useState(null);
 
   const handleVerifyHuid = (e) => {
     e.preventDefault();
     if (!huidCode.trim()) return;
-    // Simulate HUID verification
     setHuidResult({
       valid: true,
       jeweler: "Tanishq Jewellers (Branch #1042)",
@@ -47,44 +33,44 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 animate-fade-in">
       
       {/* Header & Stats Widget Banner */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-4 border-b border-slate-200">
-        <div className="space-y-2 max-w-2xl">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-50 text-sky-800 text-xs font-mono font-medium border border-sky-200 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-sky-600"></span>
-            <span>• CONFORMITY & ASSURANCE FRAMEWORK</span>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-black/[0.06]">
+        <div className="space-y-3 max-w-2xl">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-black/[0.04] text-zinc-700 text-xs font-mono font-medium border border-black/[0.06]">
+            <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500 animate-pulse" />
+            <span>CONFORMITY & ASSURANCE FRAMEWORK</span>
           </div>
           
-          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            BIS Services
+          <h1 className="text-4xl sm:text-5xl font-serif font-medium text-zinc-950 tracking-tight">
+            BIS Services & Certification
           </h1>
           
-          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-600 font-normal leading-relaxed">
             Clear, authoritative guidance on conformity assessment, testing, and consumer standards.
           </p>
         </div>
 
         {/* Stats Widget */}
-        <div className="flex items-center space-x-4 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm shrink-0">
-          <div className="flex items-center space-x-2.5 pr-4 border-r border-slate-200">
-            <div className="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
+        <div className="flex items-center space-x-4 sketch-card p-3.5 rounded-2xl shrink-0">
+          <div className="flex items-center space-x-3 pr-4 border-r border-black/[0.06]">
+            <div className="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-900 flex items-center justify-center">
               <Database className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-base font-black text-slate-900 leading-tight">21,400+</div>
-              <div className="text-[10px] text-slate-500 font-medium">Active Standard Schemas</div>
+              <div className="text-base font-bold text-zinc-950 leading-tight">21,400+</div>
+              <div className="text-[10px] text-zinc-500 font-medium">Standard Schemas</div>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="flex items-center space-x-3">
+            <div className="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-900 flex items-center justify-center">
               <FlaskConical className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-base font-black text-slate-900 leading-tight">1,840</div>
-              <div className="text-[10px] text-slate-500 font-medium">NABL & Assaying Labs</div>
+              <div className="text-base font-bold text-zinc-950 leading-tight">1,840</div>
+              <div className="text-[10px] text-zinc-500 font-medium">Assaying Labs</div>
             </div>
           </div>
         </div>
@@ -94,177 +80,169 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
         
         {/* Module 01: Certification */}
-        <div className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 hover:border-sky-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
+        <div className="p-7 rounded-3xl sketch-card transition-all flex flex-col justify-between space-y-6 group hover:-translate-y-1 hover:shadow-sketch-card">
           <div className="space-y-4">
-            {/* Top Bar */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2.5">
-                <div className="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 border border-sky-200 flex items-center justify-center">
+              <div className="flex items-center space-x-3">
+                <div className="w-11 h-11 rounded-2xl bg-zinc-900 text-white flex items-center justify-center">
                   <Award className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] font-mono font-bold text-slate-400">
+                  <div className="text-[10px] font-mono font-semibold text-zinc-400">
                     MODULE 01 // MANDATORY
                   </div>
-                  <h2 className="text-lg font-bold text-slate-900 group-hover:text-sky-600 transition-colors">
-                    Certification
+                  <h2 className="text-xl font-serif font-medium text-zinc-950 group-hover:text-fuchsia-600 transition-colors">
+                    Product Certification
                   </h2>
                 </div>
               </div>
 
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-sky-200">
+              <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
                 Scheme I & CRS
               </span>
             </div>
 
             <div className="space-y-1">
-              <div className="text-xs font-bold text-sky-800">
+              <div className="text-xs font-semibold text-zinc-900">
                 Understand BIS certification requirements.
               </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-zinc-600 leading-relaxed font-normal">
                 Explore Scheme-I (ISI Mark) and CRS schemes, step-by-step application walkthroughs, required factory audit documents, and fee structures.
               </p>
             </div>
 
-            {/* Micro Stats Grid */}
-            <div className="grid grid-cols-3 gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200 text-center font-mono">
+            <div className="grid grid-cols-3 gap-2 p-3 bg-zinc-50/80 rounded-2xl border border-black/[0.04] text-center font-mono">
               <div>
-                <div className="text-[9px] text-slate-400 font-bold uppercase">AVG. TIMELINE</div>
-                <div className="text-xs font-bold text-slate-800 mt-0.5">30 Days</div>
+                <div className="text-[9px] text-zinc-400 font-medium uppercase">AVG. TIMELINE</div>
+                <div className="text-xs font-bold text-zinc-900 mt-0.5">30 Days</div>
               </div>
-              <div className="border-x border-slate-200">
-                <div className="text-[9px] text-slate-400 font-bold uppercase">VALIDITY</div>
-                <div className="text-xs font-bold text-slate-800 mt-0.5">1-2 Years</div>
+              <div className="border-x border-zinc-200/80">
+                <div className="text-[9px] text-zinc-400 font-medium uppercase">VALIDITY</div>
+                <div className="text-xs font-bold text-zinc-900 mt-0.5">1-2 Years</div>
               </div>
               <div>
-                <div className="text-[9px] text-slate-400 font-bold uppercase">SURVEILLANCE</div>
+                <div className="text-[9px] text-zinc-400 font-medium uppercase">SURVEILLANCE</div>
                 <div className="text-xs font-bold text-emerald-700 mt-0.5">Periodic</div>
               </div>
             </div>
           </div>
 
-          {/* Action Link Footer */}
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+          <div className="pt-3 border-t border-black/[0.05] flex items-center justify-between text-xs">
             <button 
               onClick={() => onOpenDrawer(mockStandards[0])}
-              className="font-bold text-sky-600 hover:text-sky-700 flex items-center space-x-1 group-hover:translate-x-0.5 transition-all"
+              className="font-semibold text-zinc-900 hover:text-fuchsia-600 flex items-center space-x-1.5 transition-all"
             >
               <span>Explore Certification Guidance</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
-            <span className="font-mono text-[9px] text-slate-400">
+            <span className="font-mono text-[9px] text-zinc-400">
               REF: BIS-ACT-SCH1
             </span>
           </div>
         </div>
 
         {/* Module 02: Testing Laboratories */}
-        <div className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
+        <div className="p-7 rounded-3xl sketch-card transition-all flex flex-col justify-between space-y-6 group hover:-translate-y-1 hover:shadow-sketch-card">
           <div className="space-y-4">
-            {/* Top Bar */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2.5">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center">
+              <div className="flex items-center space-x-3">
+                <div className="w-11 h-11 rounded-2xl bg-zinc-900 text-white flex items-center justify-center">
                   <FlaskConical className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] font-mono font-bold text-slate-400">
+                  <div className="text-[10px] font-mono font-semibold text-zinc-400">
                     MODULE 02 // LAB NETWORK
                   </div>
-                  <h2 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                  <h2 className="text-xl font-serif font-medium text-zinc-950 group-hover:text-fuchsia-600 transition-colors">
                     Testing Laboratories
                   </h2>
                 </div>
               </div>
 
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
+              <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
                 NABL Network
               </span>
             </div>
 
             <div className="space-y-1">
-              <div className="text-xs font-bold text-emerald-800">
+              <div className="text-xs font-semibold text-zinc-900">
                 Find relevant testing facilities.
               </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-zinc-600 leading-relaxed font-normal">
                 Search certified NABL and BIS laboratories across India by product standard, test scope, proximity, and estimated turnaround times.
               </p>
             </div>
 
-            {/* Interactive Registry Highlight Card */}
-            <div className="p-3 bg-emerald-50/50 rounded-xl border border-emerald-200/80 flex items-center justify-between">
+            <div className="p-3 bg-zinc-50/80 rounded-2xl border border-black/[0.04] flex items-center justify-between">
               <div className="space-y-0.5">
-                <div className="text-xs font-bold text-slate-900 flex items-center space-x-1.5">
-                  <Building className="w-3.5 h-3.5 text-emerald-600" />
+                <div className="text-xs font-bold text-zinc-900 flex items-center space-x-1.5">
+                  <Building className="w-3.5 h-3.5 text-zinc-700" />
                   <span>Interactive Registry</span>
                 </div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-[11px] text-zinc-500 font-normal">
                   Geographic Lab Index with Pin code lookup
                 </div>
               </div>
-              <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+              <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                 • LIVE
               </span>
             </div>
           </div>
 
-          {/* Action Link Footer */}
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+          <div className="pt-3 border-t border-black/[0.05] flex items-center justify-between text-xs">
             <button 
               onClick={() => onNavigate('labs')}
-              className="font-bold text-emerald-700 hover:text-emerald-800 flex items-center space-x-1 group-hover:translate-x-0.5 transition-all"
+              className="font-semibold text-zinc-900 hover:text-fuchsia-600 flex items-center space-x-1.5 transition-all"
             >
               <span>Locate Testing Laboratories</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
-            <span className="font-mono text-[9px] text-slate-400">
+            <span className="font-mono text-[9px] text-zinc-400">
               REF: NABL-ISO17025
             </span>
           </div>
         </div>
 
         {/* Module 03: Hallmarking */}
-        <div className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 hover:border-amber-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
+        <div className="p-7 rounded-3xl sketch-card transition-all flex flex-col justify-between space-y-6 group hover:-translate-y-1 hover:shadow-sketch-card">
           <div className="space-y-4">
-            {/* Top Bar */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2.5">
-                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center">
+              <div className="flex items-center space-x-3">
+                <div className="w-11 h-11 rounded-2xl bg-zinc-900 text-white flex items-center justify-center">
                   <Gem className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] font-mono font-bold text-slate-400">
+                  <div className="text-[10px] font-mono font-semibold text-zinc-400">
                     MODULE 03 // ASSAYING
                   </div>
-                  <h2 className="text-lg font-bold text-slate-900 group-hover:text-amber-600 transition-colors">
-                    Hallmarking
+                  <h2 className="text-xl font-serif font-medium text-zinc-950 group-hover:text-fuchsia-600 transition-colors">
+                    Hallmarking & Purity
                   </h2>
                 </div>
               </div>
 
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">
+              <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
                 HUID System
               </span>
             </div>
 
             <div className="space-y-1">
-              <div className="text-xs font-bold text-amber-800">
+              <div className="text-xs font-semibold text-zinc-900">
                 Understand hallmarking requirements.
               </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-zinc-600 leading-relaxed font-normal">
                 Learn mandatory gold and silver hallmarking standards, 6-digit HUID authenticity checks, and how to register an assaying center.
               </p>
             </div>
 
-            {/* HUID Verification Simulator Box */}
-            <form onSubmit={handleVerifyHuid} className="p-3 bg-amber-50/40 rounded-xl border border-amber-200 space-y-2">
+            <form onSubmit={handleVerifyHuid} className="p-3.5 bg-zinc-50/90 rounded-2xl border border-black/[0.05] space-y-2.5">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-slate-900 text-[11px] flex items-center space-x-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
-                  <span>6-Digit Alphanumeric Code Verification</span>
+                <span className="font-semibold text-zinc-900 text-[11px] flex items-center space-x-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-fuchsia-600" />
+                  <span>6-Digit HUID Code Verification</span>
                 </span>
-                <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded font-semibold">
-                  Verified
+                <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  Active Validator
                 </span>
               </div>
               
@@ -275,18 +253,18 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
                   value={huidCode}
                   onChange={(e) => setHuidCode(e.target.value.toUpperCase())}
                   placeholder="e.g. 7A9K2M"
-                  className="w-full px-2.5 py-1 text-xs font-mono font-bold text-slate-800 uppercase bg-white border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500"
+                  className="w-full px-3 py-1.5 text-xs font-mono font-bold text-zinc-900 uppercase bg-white border border-zinc-300 rounded-xl focus:outline-none focus:border-fuchsia-500"
                 />
                 <button
                   type="submit"
-                  className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-lg transition-colors shrink-0"
+                  className="px-4 py-1.5 bg-zinc-900 hover:bg-black text-white font-medium text-xs rounded-xl transition-all shrink-0 shadow-2xs"
                 >
                   Verify
                 </button>
               </div>
 
               {huidResult && (
-                <div className="text-[10px] text-slate-700 bg-white p-2 rounded border border-amber-200 space-y-0.5">
+                <div className="text-[11px] text-zinc-700 bg-white p-2.5 rounded-xl border border-zinc-200 space-y-0.5">
                   <div className="font-bold text-emerald-700">✓ Valid HUID: {huidResult.purity}</div>
                   <div>Jeweler: {huidResult.jeweler}</div>
                 </div>
@@ -294,83 +272,73 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
             </form>
           </div>
 
-          {/* Action Link Footer */}
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+          <div className="pt-3 border-t border-black/[0.05] flex items-center justify-between text-xs">
             <button 
               onClick={() => alert("Redirecting to Official HUID Assaying Portal...")}
-              className="font-bold text-amber-700 hover:text-amber-800 flex items-center space-x-1 group-hover:translate-x-0.5 transition-all"
+              className="font-semibold text-zinc-900 hover:text-fuchsia-600 flex items-center space-x-1.5 transition-all"
             >
               <span>View Hallmarking Rules</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
-            <span className="font-mono text-[9px] text-slate-400">
+            <span className="font-mono text-[9px] text-zinc-400">
               REF: IS-1417-AU
             </span>
           </div>
         </div>
 
         {/* Module 04: Consumer Help */}
-        <div className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-lg transition-all flex flex-col justify-between space-y-6 group relative overflow-hidden">
+        <div className="p-7 rounded-3xl sketch-card transition-all flex flex-col justify-between space-y-6 group hover:-translate-y-1 hover:shadow-sketch-card">
           <div className="space-y-4">
-            {/* Top Bar */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2.5">
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200 flex items-center justify-center">
+              <div className="flex items-center space-x-3">
+                <div className="w-11 h-11 rounded-2xl bg-zinc-900 text-white flex items-center justify-center">
                   <ShieldAlert className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] font-mono font-bold text-slate-400">
+                  <div className="text-[10px] font-mono font-semibold text-zinc-400">
                     MODULE 04 // PUBLIC AUDIT
                   </div>
-                  <h2 className="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
-                    Consumer Help
+                  <h2 className="text-xl font-serif font-medium text-zinc-950 group-hover:text-fuchsia-600 transition-colors">
+                    Consumer Help & Redressal
                   </h2>
                 </div>
               </div>
 
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-800 border border-indigo-200">
+              <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
                 Public Grievance
               </span>
             </div>
 
             <div className="space-y-1">
-              <div className="text-xs font-bold text-indigo-800">
+              <div className="text-xs font-semibold text-zinc-900">
                 Get answers to common consumer questions.
               </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-zinc-600 leading-relaxed font-normal">
                 Verify certified ISI licenses on consumer goods, report substandard or fake certification marks, and file grievances with the BIS Consumer Affairs Department.
               </p>
             </div>
 
-            {/* Consumer Features List */}
-            <div className="p-3 bg-indigo-50/40 rounded-xl border border-indigo-200 space-y-1.5 text-xs">
+            <div className="p-3.5 bg-zinc-50/90 rounded-2xl border border-black/[0.04] space-y-2 text-xs">
               <div className="flex items-center justify-between">
-                <span className="flex items-center space-x-1.5 text-slate-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
-                  <span>License Validity Status</span>
-                </span>
-                <span className="font-bold text-sky-700 font-mono text-[11px]">Instant Verification</span>
+                <span className="text-zinc-700">License Validity Status</span>
+                <span className="font-semibold text-zinc-900 font-mono text-[11px]">Instant Verification</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="flex items-center space-x-1.5 text-slate-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-                  <span>Spurious Mark Escalation</span>
-                </span>
-                <span className="font-bold text-rose-700 font-mono text-[11px]">Priority Dispatch</span>
+                <span className="text-zinc-700">Spurious Mark Escalation</span>
+                <span className="font-semibold text-rose-600 font-mono text-[11px]">Priority Dispatch</span>
               </div>
             </div>
           </div>
 
-          {/* Action Link Footer */}
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+          <div className="pt-3 border-t border-black/[0.05] flex items-center justify-between text-xs">
             <button 
               onClick={() => alert("Accessing BIS-CARE Public Grievance portal...")}
-              className="font-bold text-indigo-700 hover:text-indigo-800 flex items-center space-x-1 group-hover:translate-x-0.5 transition-all"
+              className="font-semibold text-zinc-900 hover:text-fuchsia-600 flex items-center space-x-1.5 transition-all"
             >
               <span>Access Consumer Portal</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
-            <span className="font-mono text-[9px] text-slate-400">
+            <span className="font-mono text-[9px] text-zinc-400">
               PORTAL: BIS-CARE
             </span>
           </div>
@@ -379,21 +347,21 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
       </div>
 
       {/* Automated Standards Routing AI Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-sky-50 via-blue-50 to-indigo-50 border border-sky-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+      <div className="p-8 sm:p-10 rounded-3xl sketch-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-sketch-float">
         <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-2xl bg-sky-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-sky-600/20">
-            <Bot className="w-6 h-6" />
+          <div className="w-12 h-12 rounded-2xl bg-zinc-900 text-white flex items-center justify-center shrink-0">
+            <Bot className="w-5 h-5 text-fuchsia-400" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h3 className="text-base font-bold text-slate-900">
+              <h3 className="text-lg font-serif font-medium text-zinc-950">
                 Automated Standards Routing
               </h3>
-              <span className="px-2 py-0.2 rounded font-mono text-[10px] font-bold bg-sky-200/80 text-sky-900">
+              <span className="px-2 py-0.5 rounded-full font-mono text-[10px] font-semibold bg-zinc-100 text-zinc-700">
                 v2.4 AI
               </span>
             </div>
-            <p className="text-xs text-slate-600 mt-0.5">
+            <p className="text-xs text-zinc-600 mt-0.5 font-normal">
               Need personalized help choosing a service? Ask the BIS Assistant anytime for real-time standards routing and scheme matching.
             </p>
           </div>
@@ -401,13 +369,15 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
 
         <button
           onClick={onLaunchAssistant}
-          className="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center space-x-1.5 shadow-md shadow-sky-600/20 transition-all shrink-0"
+          className="sketch-glow-btn px-6 py-3 text-xs font-semibold flex items-center space-x-2 shrink-0"
         >
           <span>Launch AI Assistant</span>
-          <Sparkles className="w-3.5 h-3.5" />
+          <Sparkles className="w-3.5 h-3.5 text-fuchsia-300" />
         </button>
       </div>
 
     </div>
   );
 };
+
+export default ServicesPage;
