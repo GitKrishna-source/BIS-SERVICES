@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { 
-  Shield, 
-  Sparkles, 
-  ArrowRight, 
-  User, 
-  Lock, 
-  CheckCircle, 
-  Building2, 
-  FlaskConical, 
-  Award, 
-  X, 
-  KeyRound, 
+import {
+  Shield,
+  Sparkles,
+  ArrowRight,
+  User,
+  Lock,
+  CheckCircle,
+  Building2,
+  FlaskConical,
+  Award,
+  X,
+  KeyRound,
   CheckCircle2,
   Globe,
   Zap
@@ -88,14 +88,14 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
-      <div 
+      <div
         onClick={onClose}
         className="fixed inset-0 bg-slate-950/80 backdrop-blur-md animate-fade-in transition-opacity"
       />
 
       {/* Main Glass Card Modal */}
       <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-200/90 overflow-hidden z-10 animate-slide-up my-auto">
-        
+
         {/* Top Glowing Header Strip */}
         <div className="relative bg-slate-950 text-white p-6 sm:p-8 overflow-hidden">
           {/* Ambient background blur circles */}
@@ -103,7 +103,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-indigo-500/20 rounded-full blur-2xl pointer-events-none -ml-12 -mb-12" />
 
           {/* Close Button */}
-          <button 
+          <button
             onClick={onClose}
             className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors border border-slate-800"
           >
@@ -128,7 +128,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
 
         {/* Modal Form Body */}
         <div className="p-6 sm:p-8 space-y-6 bg-[#fcfdfe]">
-          
+
           {/* Persona Selector Strip */}
           <div className="space-y-2">
             <label className="text-xs font-bold text-slate-800 flex items-center justify-between">
@@ -145,21 +145,18 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
                     key={p.id}
                     type="button"
                     onClick={() => handlePersonaSelect(p)}
-                    className={`p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between ${
-                      isSelected
+                    className={`p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between ${isSelected
                         ? 'bg-sky-50/80 border-sky-500 ring-2 ring-sky-500/20 shadow-sm'
                         : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/60'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center shadow-xs ${
-                        isSelected ? 'bg-sky-600 text-white' : 'bg-slate-100 text-slate-600'
-                      }`}>
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center shadow-xs ${isSelected ? 'bg-sky-600 text-white' : 'bg-slate-100 text-slate-600'
+                        }`}>
                         <Icon className="w-4 h-4" />
                       </div>
-                      <span className={`text-[8px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                        isSelected ? 'bg-sky-200/80 text-sky-900' : 'bg-slate-100 text-slate-500'
-                      }`}>
+                      <span className={`text-[8px] font-mono font-bold px-1.5 py-0.5 rounded ${isSelected ? 'bg-sky-200/80 text-sky-900' : 'bg-slate-100 text-slate-500'
+                        }`}>
                         {p.badge}
                       </span>
                     </div>
@@ -180,7 +177,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
 
           {/* Form Fields */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            
+
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-700">Official Gov.in / Business Email</label>
               <div className="relative flex items-center bg-white rounded-xl border border-slate-300 focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500/10">
