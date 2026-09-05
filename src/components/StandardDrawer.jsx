@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { 
   X, 
   FileText, 
@@ -11,6 +12,7 @@ import {
 } from 'lucide-react';
 
 export const StandardDrawer = ({ standard, isOpen, onClose, onOpenPdf, onAskAboutStandard }) => {
+  const { t } = useLanguage();
   if (!isOpen || !standard) return null;
 
   return (
@@ -34,7 +36,7 @@ export const StandardDrawer = ({ standard, isOpen, onClose, onOpenPdf, onAskAbou
                 <div className="flex items-center space-x-2">
                   <span className="font-mono text-sm font-bold text-zinc-950">{standard.code}</span>
                   <span className="text-[10px] font-mono uppercase bg-zinc-100 text-zinc-700 border border-zinc-200 px-2 py-0.5 rounded-full">
-                    {standard.status || 'Active Standard'}
+                    {standard.status || t('activeSchemas', 'Active Standard')}
                   </span>
                 </div>
                 <div className="text-[11px] text-zinc-400 font-mono mt-0.5">{standard.ics || 'ICS Technical Schema'}</div>
@@ -67,7 +69,7 @@ export const StandardDrawer = ({ standard, isOpen, onClose, onOpenPdf, onAskAbou
               <div className="p-3.5 bg-white rounded-2xl border border-black/[0.06] shadow-2xs">
                 <div className="text-[10px] text-zinc-400 uppercase font-semibold flex items-center space-x-1">
                   <Calendar className="w-3 h-3 text-zinc-500" />
-                  <span>Enforcement Date</span>
+                  <span>{t('enforcedDate', 'Enforcement Date')}</span>
                 </div>
                 <div className="text-xs font-bold text-zinc-900 mt-1">{standard.enforcedDate || 'Statutory Immediate'}</div>
               </div>
@@ -75,17 +77,17 @@ export const StandardDrawer = ({ standard, isOpen, onClose, onOpenPdf, onAskAbou
               <div className="p-3.5 bg-white rounded-2xl border border-black/[0.06] shadow-2xs">
                 <div className="text-[10px] text-zinc-400 uppercase font-semibold flex items-center space-x-1">
                   <Building2 className="w-3 h-3 text-zinc-500" />
-                  <span>Regulatory Body</span>
+                  <span>{t('subTag', 'Regulatory Body')}</span>
                 </div>
                 <div className="text-xs font-bold text-zinc-900 mt-1 truncate" title={standard.ministry}>
-                  {standard.ministry || 'Bureau of Indian Standards'}
+                  {standard.ministry || t('subTag', 'Bureau of Indian Standards')}
                 </div>
               </div>
 
               <div className="p-3.5 bg-white rounded-2xl border border-black/[0.06] shadow-2xs col-span-2 sm:col-span-1">
                 <div className="text-[10px] text-zinc-400 uppercase font-semibold flex items-center space-x-1">
                   <FlaskConical className="w-3 h-3 text-zinc-500" />
-                  <span>Testing Facilities</span>
+                  <span>{t('labs', 'Testing Facilities')}</span>
                 </div>
                 <div className="text-xs font-bold text-zinc-900 mt-1">
                   {standard.labsCount || 18} NABL Labs
@@ -117,7 +119,7 @@ export const StandardDrawer = ({ standard, isOpen, onClose, onOpenPdf, onAskAbou
                           {clause.title}
                         </span>
                       </div>
-                      <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200 shrink-0 whitespace-nowrap self-start sm:self-center">
+                      <span className="text-[9px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200 shrink-0 whitespace-nowrap self-start sm:self-center">
                         {clause.tag}
                       </span>
                     </div>
@@ -156,7 +158,7 @@ export const StandardDrawer = ({ standard, isOpen, onClose, onOpenPdf, onAskAbou
               className="px-4 py-2 rounded-full bg-white border border-zinc-200 hover:bg-zinc-50 text-zinc-800 text-xs font-medium flex items-center space-x-1.5 shadow-2xs transition-all"
             >
               <FileText className="w-3.5 h-3.5 text-zinc-500" />
-              <span>View Gazette Notice</span>
+              <span>{t('viewStandard', 'View Gazette Notice')}</span>
             </button>
 
             <button
@@ -166,7 +168,7 @@ export const StandardDrawer = ({ standard, isOpen, onClose, onOpenPdf, onAskAbou
               }}
               className="sketch-glow-btn px-5 py-2 text-xs font-semibold flex items-center space-x-1.5 shadow-sm"
             >
-              <span>Consult AI Assistant</span>
+              <span>{t('askBisAssistant', 'Consult AI Assistant')}</span>
               <ExternalLink className="w-3.5 h-3.5 text-fuchsia-300" />
             </button>
           </div>

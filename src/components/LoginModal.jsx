@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import {
   Shield,
   ArrowRight,
@@ -13,6 +14,7 @@ import {
 } from 'lucide-react';
 
 export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
+  const { t } = useLanguage();
   const [activePersona, setActivePersona] = useState('auditor');
   const [email, setEmail] = useState('v.sharma@bis.gov.in');
   const [password, setPassword] = useState('••••••••••••');
@@ -23,7 +25,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
   const personas = [
     {
       id: 'auditor',
-      title: 'Lead Auditor',
+      title: t('leadAuditor', 'Lead Auditor'),
       name: 'Dr. V. Sharma',
       role: 'Regulatory Affairs • Lead Auditor',
       icon: Award,
@@ -32,7 +34,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
     },
     {
       id: 'manufacturer',
-      title: 'Manufacturer',
+      title: t('manufacturer', 'Manufacturer'),
       name: 'Rajesh Mittal',
       role: 'MD, Apex Techware India',
       icon: Building2,
@@ -41,7 +43,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
     },
     {
       id: 'lab',
-      title: 'Testing Lab',
+      title: t('testingLab', 'Testing Lab'),
       name: 'Central Coordinator',
       role: 'NABL ISO/IEC 17025 Assayer',
       icon: FlaskConical,
@@ -105,11 +107,11 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
             </div>
 
             <h2 className="text-3xl font-serif font-medium text-zinc-950 tracking-tight">
-              Sign in to BISync
+              {t('loginTitle', 'Sign in to BISync')}
             </h2>
 
             <p className="text-xs text-zinc-600 max-w-md leading-relaxed font-normal">
-              Log in to unlock full statutory access, unbounded AI queries, certified dossier exports, and laboratory bookings.
+              {t('loginSubtitle', 'Log in to unlock full statutory access, unbounded AI queries, certified dossier exports, and laboratory bookings.')}
             </p>
           </div>
         </div>
@@ -120,7 +122,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
           {/* Persona Selector Strip */}
           <div className="space-y-2">
             <label className="text-xs font-semibold text-zinc-800 flex items-center justify-between">
-              <span>SELECT PROFILE:</span>
+              <span>{t('selectPersona', 'SELECT PROFILE:')}</span>
               <span className="text-[10px] font-mono text-zinc-500 font-medium">Pre-configured Demo Keys</span>
             </label>
 
@@ -172,7 +174,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
           <form onSubmit={handleSubmit} className="space-y-4">
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-zinc-700">Official Gov.in / Business Email</label>
+              <label className="text-xs font-semibold text-zinc-700">{t('emailAddress', 'Official Gov.in / Business Email')}</label>
               <div className="relative flex items-center bg-white rounded-xl border border-zinc-300 focus-within:border-fuchsia-500 focus-within:ring-2 focus-within:ring-fuchsia-500/10 transition-all">
                 <div className="pl-3.5 text-zinc-400">
                   <User className="w-4 h-4 text-zinc-500" />
@@ -190,7 +192,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
 
             <div className="space-y-1.5">
               <div className="flex justify-between items-center text-xs">
-                <label className="font-semibold text-zinc-700">Password</label>
+                <label className="font-semibold text-zinc-700">{t('securityToken', 'Password')}</label>
                 <a href="#" className="text-[11px] text-zinc-500 hover:text-zinc-950 font-medium">Use OTP instead</a>
               </div>
               <div className="relative flex items-center bg-white rounded-xl border border-zinc-300 focus-within:border-fuchsia-500 focus-within:ring-2 focus-within:ring-fuchsia-500/10 transition-all">
@@ -214,7 +216,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
                 disabled={isLoading}
                 className="sketch-glow-btn w-full py-3.5 px-4 text-xs font-semibold flex items-center justify-center space-x-2"
               >
-                <span>{isLoading ? 'Verifying Credentials...' : 'Sign In & Unlock Full Access'}</span>
+                <span>{isLoading ? 'Verifying Credentials...' : t('signInSecurely', 'Sign In & Unlock Full Access')}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
@@ -224,7 +226,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
                 className="w-full py-2.5 px-4 rounded-full bg-white hover:bg-zinc-50 text-zinc-700 hover:text-zinc-950 border border-zinc-200 font-medium text-xs flex items-center justify-center space-x-2 transition-all shadow-2xs"
               >
                 <Zap className="w-3.5 h-3.5 text-zinc-400" />
-                <span>Instant Demo Access (Guest Mode)</span>
+                <span>{t('tryQuickDemo', 'Instant Demo Access (Guest Mode)')}</span>
               </button>
             </div>
           </form>
@@ -233,7 +235,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
           <div className="pt-4 border-t border-black/[0.05] flex items-center justify-between text-[10px] text-zinc-400 font-mono">
             <span className="flex items-center space-x-1">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              <span>BIS Act 2016 Compliant</span>
+              <span>{t('bisActCompliant', 'BIS Act 2016 Compliant')}</span>
             </span>
             <span>256-Bit SSL Encrypted Session</span>
           </div>

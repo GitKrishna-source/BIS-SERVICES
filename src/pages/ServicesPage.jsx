@@ -40,15 +40,15 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
         <div className="space-y-3 max-w-2xl">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-black/[0.04] text-zinc-700 text-xs font-mono font-medium border border-black/[0.06]">
             <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500 animate-pulse" />
-            <span>CONFORMITY & ASSURANCE FRAMEWORK</span>
+            <span>{t('servicesTag', 'CONFORMITY & ASSURANCE FRAMEWORK')}</span>
           </div>
           
           <h1 className="text-4xl sm:text-5xl font-serif font-medium text-zinc-950 tracking-tight">
-            BIS Services & Certification
+            {t('servicesTitle', 'BIS Services & Certification')}
           </h1>
           
           <p className="text-xs sm:text-sm text-zinc-600 font-normal leading-relaxed">
-            Clear, authoritative guidance on conformity assessment, testing, and consumer standards.
+            {t('servicesDesc', 'Clear, authoritative guidance on conformity assessment, testing, and consumer standards.')}
           </p>
         </div>
 
@@ -60,7 +60,7 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
             </div>
             <div>
               <div className="text-base font-bold text-zinc-950 leading-tight">21,400+</div>
-              <div className="text-[10px] text-zinc-500 font-medium">Standard Schemas</div>
+              <div className="text-[10px] text-zinc-500 font-medium">{t('standardSchemas', 'Standard Schemas')}</div>
             </div>
           </div>
 
@@ -70,7 +70,7 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
             </div>
             <div>
               <div className="text-base font-bold text-zinc-950 leading-tight">1,840</div>
-              <div className="text-[10px] text-zinc-500 font-medium">Assaying Labs</div>
+              <div className="text-[10px] text-zinc-500 font-medium">{t('assayingLabs', 'Assaying Labs')}</div>
             </div>
           </div>
         </div>
@@ -89,40 +89,40 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
                 </div>
                 <div>
                   <div className="text-[10px] font-mono font-semibold text-zinc-400">
-                    MODULE 01 // MANDATORY
+                    {t('module01Badge', 'MODULE 01 // MANDATORY')}
                   </div>
                   <h2 className="text-xl font-serif font-medium text-zinc-950 group-hover:text-fuchsia-600 transition-colors">
-                    Product Certification
+                    {t('module01Title', 'Product Certification')}
                   </h2>
                 </div>
               </div>
 
               <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
-                Scheme I & CRS
+                {t('module01Scheme', 'Scheme I & CRS')}
               </span>
             </div>
 
             <div className="space-y-1">
               <div className="text-xs font-semibold text-zinc-900">
-                Understand BIS certification requirements.
+                {t('module01Subtitle', 'Understand BIS certification requirements.')}
               </div>
               <p className="text-xs text-zinc-600 leading-relaxed font-normal">
-                Explore Scheme-I (ISI Mark) and CRS schemes, step-by-step application walkthroughs, required factory audit documents, and fee structures.
+                {t('module01Desc', 'Explore Scheme-I (ISI Mark) and CRS schemes, step-by-step application walkthroughs, required factory audit documents, and fee structures.')}
               </p>
             </div>
 
             <div className="grid grid-cols-3 gap-2 p-3 bg-zinc-50/80 rounded-2xl border border-black/[0.04] text-center font-mono">
               <div>
-                <div className="text-[9px] text-zinc-400 font-medium uppercase">AVG. TIMELINE</div>
-                <div className="text-xs font-bold text-zinc-900 mt-0.5">30 Days</div>
+                <div className="text-[9px] text-zinc-400 font-medium uppercase">{t('avgTimeline', 'AVG. TIMELINE')}</div>
+                <div className="text-xs font-bold text-zinc-900 mt-0.5">{t('days30', '30 Days')}</div>
               </div>
               <div className="border-x border-zinc-200/80">
-                <div className="text-[9px] text-zinc-400 font-medium uppercase">VALIDITY</div>
-                <div className="text-xs font-bold text-zinc-900 mt-0.5">1-2 Years</div>
+                <div className="text-[9px] text-zinc-400 font-medium uppercase">{t('validity', 'VALIDITY')}</div>
+                <div className="text-xs font-bold text-zinc-900 mt-0.5">{t('years12', '1-2 Years')}</div>
               </div>
               <div>
-                <div className="text-[9px] text-zinc-400 font-medium uppercase">SURVEILLANCE</div>
-                <div className="text-xs font-bold text-emerald-700 mt-0.5">Periodic</div>
+                <div className="text-[9px] text-zinc-400 font-medium uppercase">{t('surveillance', 'SURVEILLANCE')}</div>
+                <div className="text-xs font-bold text-emerald-700 mt-0.5">{t('periodic', 'Periodic')}</div>
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
               onClick={() => onOpenDrawer(mockStandards[0])}
               className="font-semibold text-zinc-900 hover:text-fuchsia-600 flex items-center space-x-1.5 transition-all"
             >
-              <span>Explore Certification Guidance</span>
+              <span>{t('exploreCertGuidance', 'Explore Certification Guidance')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <span className="font-mono text-[9px] text-zinc-400">
@@ -151,25 +151,25 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
                 </div>
                 <div>
                   <div className="text-[10px] font-mono font-semibold text-zinc-400">
-                    MODULE 02 // LAB NETWORK
+                    {t('module02Badge', 'MODULE 02 // LAB NETWORK')}
                   </div>
                   <h2 className="text-xl font-serif font-medium text-zinc-950 group-hover:text-fuchsia-600 transition-colors">
-                    Testing Laboratories
+                    {t('module02Title', 'Testing Laboratories')}
                   </h2>
                 </div>
               </div>
 
               <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
-                NABL Network
+                {t('module02Scheme', 'NABL Network')}
               </span>
             </div>
 
             <div className="space-y-1">
               <div className="text-xs font-semibold text-zinc-900">
-                Find relevant testing facilities.
+                {t('module02Subtitle', 'Find relevant testing facilities.')}
               </div>
               <p className="text-xs text-zinc-600 leading-relaxed font-normal">
-                Search certified NABL and BIS laboratories across India by product standard, test scope, proximity, and estimated turnaround times.
+                {t('module02Desc', 'Search certified NABL and BIS laboratories across India by product standard, test scope, proximity, and estimated turnaround times.')}
               </p>
             </div>
 
@@ -177,14 +177,14 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
               <div className="space-y-0.5">
                 <div className="text-xs font-bold text-zinc-900 flex items-center space-x-1.5">
                   <Building className="w-3.5 h-3.5 text-zinc-700" />
-                  <span>Interactive Registry</span>
+                  <span>{t('interactiveRegistry', 'Interactive Registry')}</span>
                 </div>
                 <div className="text-[11px] text-zinc-500 font-normal">
-                  Geographic Lab Index with Pin code lookup
+                  {t('geoLabIndexDesc', 'Geographic Lab Index with Pin code lookup')}
                 </div>
               </div>
               <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                • LIVE
+                • {t('liveBadge', 'LIVE')}
               </span>
             </div>
           </div>
@@ -194,7 +194,7 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
               onClick={() => onNavigate('labs')}
               className="font-semibold text-zinc-900 hover:text-fuchsia-600 flex items-center space-x-1.5 transition-all"
             >
-              <span>Locate Testing Laboratories</span>
+              <span>{t('locateLabs', 'Locate Testing Laboratories')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <span className="font-mono text-[9px] text-zinc-400">
@@ -213,25 +213,25 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
                 </div>
                 <div>
                   <div className="text-[10px] font-mono font-semibold text-zinc-400">
-                    MODULE 03 // ASSAYING
+                    {t('module03Badge', 'MODULE 03 // ASSAYING')}
                   </div>
                   <h2 className="text-xl font-serif font-medium text-zinc-950 group-hover:text-fuchsia-600 transition-colors">
-                    Hallmarking & Purity
+                    {t('module03Title', 'Hallmarking & Purity')}
                   </h2>
                 </div>
               </div>
 
               <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
-                HUID System
+                {t('module03Scheme', 'HUID System')}
               </span>
             </div>
 
             <div className="space-y-1">
               <div className="text-xs font-semibold text-zinc-900">
-                Understand hallmarking requirements.
+                {t('module03Subtitle', 'Understand hallmarking requirements.')}
               </div>
               <p className="text-xs text-zinc-600 leading-relaxed font-normal">
-                Learn mandatory gold and silver hallmarking standards, 6-digit HUID authenticity checks, and how to register an assaying center.
+                {t('module03Desc', 'Learn mandatory gold and silver hallmarking standards, 6-digit HUID authenticity checks, and how to register an assaying center.')}
               </p>
             </div>
 
@@ -239,10 +239,10 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
               <div className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-zinc-900 text-[11px] flex items-center space-x-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-fuchsia-600" />
-                  <span>6-Digit HUID Code Verification</span>
+                  <span>{t('huidVerificationTitle', '6-Digit HUID Code Verification')}</span>
                 </span>
                 <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                  Active Validator
+                  {t('activeValidator', 'Active Validator')}
                 </span>
               </div>
               
@@ -252,14 +252,14 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
                   maxLength={6}
                   value={huidCode}
                   onChange={(e) => setHuidCode(e.target.value.toUpperCase())}
-                  placeholder="e.g. 7A9K2M"
+                  placeholder={t('huidPlaceholder', "e.g. 7A9K2M")}
                   className="w-full px-3 py-1.5 text-xs font-mono font-bold text-zinc-900 uppercase bg-white border border-zinc-300 rounded-xl focus:outline-none focus:border-fuchsia-500"
                 />
                 <button
                   type="submit"
                   className="px-4 py-1.5 bg-zinc-900 hover:bg-black text-white font-medium text-xs rounded-xl transition-all shrink-0 shadow-2xs"
                 >
-                  Verify
+                  {t('verify', 'Verify')}
                 </button>
               </div>
 
@@ -277,7 +277,7 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
               onClick={() => alert("Redirecting to Official HUID Assaying Portal...")}
               className="font-semibold text-zinc-900 hover:text-fuchsia-600 flex items-center space-x-1.5 transition-all"
             >
-              <span>View Hallmarking Rules</span>
+              <span>{t('viewHallmarkingRules', 'View Hallmarking Rules')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <span className="font-mono text-[9px] text-zinc-400">
@@ -296,36 +296,36 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
                 </div>
                 <div>
                   <div className="text-[10px] font-mono font-semibold text-zinc-400">
-                    MODULE 04 // PUBLIC AUDIT
+                    {t('module04Badge', 'MODULE 04 // PUBLIC AUDIT')}
                   </div>
                   <h2 className="text-xl font-serif font-medium text-zinc-950 group-hover:text-fuchsia-600 transition-colors">
-                    Consumer Help & Redressal
+                    {t('module04Title', 'Consumer Help & Redressal')}
                   </h2>
                 </div>
               </div>
 
               <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
-                Public Grievance
+                {t('module04Scheme', 'Public Grievance')}
               </span>
             </div>
 
             <div className="space-y-1">
               <div className="text-xs font-semibold text-zinc-900">
-                Get answers to common consumer questions.
+                {t('module04Subtitle', 'Get answers to common consumer questions.')}
               </div>
               <p className="text-xs text-zinc-600 leading-relaxed font-normal">
-                Verify certified ISI licenses on consumer goods, report substandard or fake certification marks, and file grievances with the BIS Consumer Affairs Department.
+                {t('module04Desc', 'Verify certified ISI licenses on consumer goods, report substandard or fake certification marks, and file grievances with the BIS Consumer Affairs Department.')}
               </p>
             </div>
 
             <div className="p-3.5 bg-zinc-50/90 rounded-2xl border border-black/[0.04] space-y-2 text-xs">
               <div className="flex items-center justify-between">
-                <span className="text-zinc-700">License Validity Status</span>
-                <span className="font-semibold text-zinc-900 font-mono text-[11px]">Instant Verification</span>
+                <span className="text-zinc-700">{t('licenseValidityStatus', 'License Validity Status')}</span>
+                <span className="font-semibold text-zinc-900 font-mono text-[11px]">{t('instantVerification', 'Instant Verification')}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-zinc-700">Spurious Mark Escalation</span>
-                <span className="font-semibold text-rose-600 font-mono text-[11px]">Priority Dispatch</span>
+                <span className="text-zinc-700">{t('spuriousMarkEscalation', 'Spurious Mark Escalation')}</span>
+                <span className="font-semibold text-rose-600 font-mono text-[11px]">{t('priorityDispatch', 'Priority Dispatch')}</span>
               </div>
             </div>
           </div>
@@ -335,7 +335,7 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
               onClick={() => alert("Accessing BIS-CARE Public Grievance portal...")}
               className="font-semibold text-zinc-900 hover:text-fuchsia-600 flex items-center space-x-1.5 transition-all"
             >
-              <span>Access Consumer Portal</span>
+              <span>{t('accessConsumerPortal', 'Access Consumer Portal')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <span className="font-mono text-[9px] text-zinc-400">
@@ -355,14 +355,14 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
           <div>
             <div className="flex items-center space-x-2">
               <h3 className="text-lg font-serif font-medium text-zinc-950">
-                Automated Standards Routing
+                {t('automatedRoutingTitle', 'Automated Standards Routing')}
               </h3>
               <span className="px-2 py-0.5 rounded-full font-mono text-[10px] font-semibold bg-zinc-100 text-zinc-700">
                 v2.4 AI
               </span>
             </div>
             <p className="text-xs text-zinc-600 mt-0.5 font-normal">
-              Need personalized help choosing a service? Ask the BIS Assistant anytime for real-time standards routing and scheme matching.
+              {t('automatedRoutingDesc', 'Need personalized help choosing a service? Ask the BIS Assistant anytime for real-time standards routing and scheme matching.')}
             </p>
           </div>
         </div>
@@ -371,7 +371,7 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
           onClick={onLaunchAssistant}
           className="sketch-glow-btn px-6 py-3 text-xs font-semibold flex items-center space-x-2 shrink-0"
         >
-          <span>Launch AI Assistant</span>
+          <span>{t('launchAiAssistant', 'Launch AI Assistant')}</span>
           <Sparkles className="w-3.5 h-3.5 text-fuchsia-300" />
         </button>
       </div>

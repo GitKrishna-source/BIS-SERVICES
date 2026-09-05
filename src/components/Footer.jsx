@@ -1,7 +1,10 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { Shield, CheckCircle2, Lock } from 'lucide-react';
 
 export const Footer = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="mt-20 border-t border-black/[0.06] bg-white/60 backdrop-blur-xl text-zinc-500 text-xs">
       {/* Compliance Ribbon */}
@@ -9,15 +12,15 @@ export const Footer = () => {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center space-x-2 text-zinc-700 font-medium">
             <Shield className="w-4 h-4 text-emerald-600" />
-            <span>BIS Act 2016 Compliant</span>
+            <span>{t('bisActCompliant', 'BIS Act 2016 Compliant')}</span>
           </div>
           <div className="flex items-center space-x-2 text-zinc-700 font-medium">
             <CheckCircle2 className="w-4 h-4 text-fuchsia-600" />
-            <span>Open Technical Schemas</span>
+            <span>{t('openSchemas', 'Open Technical Schemas')}</span>
           </div>
           <div className="flex items-center space-x-2 text-zinc-700 font-medium">
             <Lock className="w-4 h-4 text-purple-600" />
-            <span>Integrated e-Governance</span>
+            <span>{t('integratedGov', 'Integrated e-Governance')}</span>
           </div>
           <div className="font-mono text-[11px] text-zinc-600 bg-black/[0.04] px-2.5 py-1 rounded-full border border-black/[0.05]">
             STAMP // CERT-SEC-2026
@@ -37,19 +40,19 @@ export const Footer = () => {
               </svg>
               <span className="font-bold text-zinc-900 tracking-tight">BISync</span>
               <span className="text-zinc-300">|</span>
-              <span className="text-zinc-600">Regulatory Intelligence & Compliance Assistant</span>
+              <span className="text-zinc-600">{t('regulatoryIntelligence', 'Regulatory Intelligence & Compliance Assistant')}</span>
             </div>
             <p className="text-[11px] text-zinc-500 max-w-xl font-normal">
-              Official statutory digital instrument compliant with Indian Standard regulations. Manak Bhavan, 9 Bahadur Shah Zafar Marg, New Delhi 110002.
+              {t('footerDesc', 'Official statutory digital instrument compliant with Indian Standard regulations. Manak Bhavan, 9 Bahadur Shah Zafar Marg, New Delhi 110002.')}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 text-[11px]">
-            <a href="#" className="hover:text-zinc-950 transition-colors">Statutory Disclaimer</a>
+            <a href="#" className="hover:text-zinc-950 transition-colors">{t('statutoryDisclaimer', 'Statutory Disclaimer')}</a>
             <span>•</span>
-            <a href="#" className="hover:text-zinc-950 transition-colors">Compliance Policy</a>
+            <a href="#" className="hover:text-zinc-950 transition-colors">{t('compliancePolicy', 'Compliance Policy')}</a>
             <span>•</span>
-            <a href="#" className="hover:text-zinc-950 transition-colors">Audit Records</a>
+            <a href="#" className="hover:text-zinc-950 transition-colors">{t('auditRecords', 'Audit Records')}</a>
             <span className="bg-zinc-100 text-zinc-700 border border-zinc-200 px-2.5 py-0.5 rounded-full font-mono text-[10px]">
               v2.4.8-PROD
             </span>

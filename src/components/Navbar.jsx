@@ -44,6 +44,15 @@ export function Navbar({
   const [internalLang, setInternalLang] = useState('EN');
   const lang = langCtx?.lang ?? internalLang;
   const setLang = langCtx?.setLang ?? setInternalLang;
+  const t = langCtx?.t || ((k) => k);
+  const languageLabels = langCtx?.languageLabels || {
+    EN: 'English',
+    HI: 'हिंदी',
+    TA: 'தமிழ்',
+    TE: 'తెలుగు',
+    MR: 'मराठी',
+    BN: 'বাংলা',
+  };
 
   const [langOpen, setLangOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -66,15 +75,6 @@ export function Navbar({
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
-
-  const languageLabels = {
-    EN: 'English',
-    HI: 'हिंदी',
-    TA: 'தமிழ்',
-    TE: 'తెలుగు',
-    MR: 'मराठी',
-    BN: 'বাংলা',
-  };
 
   const isDemo = !currentUser || Boolean(currentUser.isDemo);
 
@@ -133,7 +133,7 @@ export function Navbar({
                   }}
                   className={linkClass(activeTab === 'standards')}
                 >
-                  <span>Standards</span>
+                  <span>{t('standards')}</span>
                   <ChevronDown
                     className={`w-3.5 h-3.5 text-zinc-500 transition-transform ${standardsDropdown ? 'rotate-180' : ''}`}
                   />
@@ -145,16 +145,16 @@ export function Navbar({
                       onClick={() => selectTab('standards')}
                       className="w-full text-left px-3 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100/80 hover:text-zinc-950 rounded-xl transition-colors"
                     >
-                      <div className="font-semibold text-zinc-900">Indian Standards Search</div>
-                      <div className="text-xs text-zinc-500 mt-0.5">Search 22,000+ specifications</div>
+                      <div className="font-semibold text-zinc-900">{t('indianStandardsSearch')}</div>
+                      <div className="text-xs text-zinc-500 mt-0.5">{t('searchSpecifications')}</div>
                     </button>
                     <button
                       type="button"
                       onClick={() => selectTab('standards')}
                       className="w-full text-left px-3 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100/80 hover:text-zinc-950 rounded-xl transition-colors"
                     >
-                      <div className="font-semibold text-zinc-900">Mandatory QCO Orders</div>
-                      <div className="text-xs text-zinc-500 mt-0.5">Compulsory certification lists</div>
+                      <div className="font-semibold text-zinc-900">{t('mandatoryQcoOrders')}</div>
+                      <div className="text-xs text-zinc-500 mt-0.5">{t('compulsoryCertificationLists')}</div>
                     </button>
                   </div>
                 )}
@@ -169,7 +169,7 @@ export function Navbar({
                   }}
                   className={linkClass(activeTab === 'services')}
                 >
-                  <span>Services</span>
+                  <span>{t('services')}</span>
                   <ChevronDown
                     className={`w-3.5 h-3.5 text-zinc-500 transition-transform ${servicesDropdown ? 'rotate-180' : ''}`}
                   />
@@ -181,16 +181,16 @@ export function Navbar({
                       onClick={() => selectTab('services')}
                       className="w-full text-left px-3 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100/80 hover:text-zinc-950 rounded-xl transition-colors"
                     >
-                      <div className="font-semibold text-zinc-900">ISI Mark & CRS</div>
-                      <div className="text-xs text-zinc-500 mt-0.5">Product certification schemes</div>
+                      <div className="font-semibold text-zinc-900">{t('isiMarkCrs')}</div>
+                      <div className="text-xs text-zinc-500 mt-0.5">{t('productCertificationSchemes')}</div>
                     </button>
                     <button
                       type="button"
                       onClick={() => selectTab('services')}
                       className="w-full text-left px-3 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100/80 hover:text-zinc-950 rounded-xl transition-colors"
                     >
-                      <div className="font-semibold text-zinc-900">Gold Hallmarking (HUID)</div>
-                      <div className="text-xs text-zinc-500 mt-0.5">6-character purity verification</div>
+                      <div className="font-semibold text-zinc-900">{t('goldHallmarkingHuid')}</div>
+                      <div className="text-xs text-zinc-500 mt-0.5">{t('purityVerification')}</div>
                     </button>
                   </div>
                 )}
@@ -201,7 +201,7 @@ export function Navbar({
                 onClick={() => selectTab('assistant')}
                 className={linkClass(activeTab === 'assistant')}
               >
-                AI Assistant
+                {t('aiAssistant')}
               </button>
 
               <button
@@ -209,7 +209,7 @@ export function Navbar({
                 onClick={() => selectTab('labs')}
                 className={linkClass(activeTab === 'labs')}
               >
-                Lab Network
+                {t('labs')}
               </button>
             </nav>
           </div>
@@ -223,12 +223,12 @@ export function Navbar({
                 aria-label="Select language"
               >
                 <Globe className="w-4 h-4 text-zinc-500" />
-                <span>{lang}</span>
+                <span>{languageLabels[lang] || lang}</span>
               </button>
               {langOpen && (
                 <div className="absolute right-0 mt-3 w-40 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-black/[0.08] py-1.5 z-50 animate-fade-in">
                   <div className="px-3 py-1 text-[10px] font-semibold text-zinc-400 border-b border-zinc-100 mb-1">
-                    Select Language
+                    {t('selectLanguage')}
                   </div>
                   {Object.keys(languageLabels).map((code) => (
                     <button
@@ -257,14 +257,14 @@ export function Navbar({
                   onClick={onOpenLogin}
                   className="hidden sm:inline-flex text-[15px] font-medium text-zinc-800 hover:text-zinc-950 px-3 py-2 transition-colors"
                 >
-                  Sign In
+                  {t('signIn')}
                 </button>
                 <button
                   type="button"
                   onClick={() => selectTab('assistant')}
                   className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-zinc-900 hover:bg-black text-white text-[13px] sm:text-sm font-semibold flex items-center gap-2 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
                 >
-                  <span>Get started</span>
+                  <span>{t('getStarted')}</span>
                   <Download className="w-3.5 h-3.5" strokeWidth={2.4} />
                 </button>
               </div>
@@ -296,7 +296,7 @@ export function Navbar({
                         {currentUser.email || currentUser.role}
                       </div>
                       <span className="inline-block mt-1 text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        Full statutory access
+                        {t('fullStatutoryAccess')}
                       </span>
                     </div>
                     <button
@@ -308,7 +308,7 @@ export function Navbar({
                       className="w-full text-left px-3 py-2 text-xs text-zinc-700 hover:bg-zinc-100 rounded-xl transition-colors flex items-center gap-2 mt-1"
                     >
                       <User className="w-3.5 h-3.5" />
-                      Switch profile
+                      {t('switchProfile')}
                     </button>
                     <button
                       type="button"
@@ -319,7 +319,7 @@ export function Navbar({
                       className="w-full text-left px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 rounded-xl transition-colors flex items-center gap-2 font-medium"
                     >
                       <LogOut className="w-3.5 h-3.5" />
-                      Log out
+                      {t('logOut')}
                     </button>
                   </div>
                 )}
@@ -346,7 +346,7 @@ export function Navbar({
                 activeTab === 'home' ? 'bg-zinc-900 text-white' : 'text-zinc-800 hover:bg-zinc-100'
               }`}
             >
-              Home
+              {t('home')}
             </button>
             <button
               type="button"
@@ -355,7 +355,7 @@ export function Navbar({
                 activeTab === 'standards' ? 'bg-zinc-900 text-white' : 'text-zinc-800 hover:bg-zinc-100'
               }`}
             >
-              Standards
+              {t('standards')}
             </button>
             <button
               type="button"
@@ -364,7 +364,7 @@ export function Navbar({
                 activeTab === 'services' ? 'bg-zinc-900 text-white' : 'text-zinc-800 hover:bg-zinc-100'
               }`}
             >
-              Services
+              {t('services')}
             </button>
             <button
               type="button"
@@ -373,7 +373,7 @@ export function Navbar({
                 activeTab === 'assistant' ? 'bg-zinc-900 text-white' : 'text-zinc-800 hover:bg-zinc-100'
               }`}
             >
-              AI Assistant
+              {t('aiAssistant')}
             </button>
             <button
               type="button"
@@ -382,7 +382,7 @@ export function Navbar({
                 activeTab === 'labs' ? 'bg-zinc-900 text-white' : 'text-zinc-800 hover:bg-zinc-100'
               }`}
             >
-              Lab Network
+              {t('labs')}
             </button>
 
             <div className="pt-3 mt-2 border-t border-zinc-200/70 flex items-center justify-between px-1">
@@ -410,7 +410,7 @@ export function Navbar({
                   }}
                   className="text-sm font-medium text-zinc-800"
                 >
-                  Sign In
+                  {t('signIn')}
                 </button>
               ) : (
                 <button
@@ -421,7 +421,7 @@ export function Navbar({
                   }}
                   className="text-sm font-medium text-rose-600"
                 >
-                  Log Out
+                  {t('logOut')}
                 </button>
               )}
             </div>

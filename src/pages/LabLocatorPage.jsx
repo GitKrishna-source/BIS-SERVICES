@@ -48,15 +48,15 @@ export const LabLocatorPage = ({ onAskAssistantAboutLab }) => {
       <div className="text-center max-w-3xl mx-auto space-y-3">
         <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-black/[0.04] text-zinc-700 text-xs font-mono font-medium border border-black/[0.06]">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span>GEO-INTELLIGENCE // 1,840 ACCREDITED TESTING FACILITIES</span>
+          <span>{t('labLocatorTag', 'GEO-INTELLIGENCE // 1,840 ACCREDITED TESTING FACILITIES')}</span>
         </div>
         
         <h1 className="text-4xl sm:text-5xl font-serif font-medium text-zinc-950 tracking-tight">
-          Accredited Testing Laboratories
+          {t('labLocatorTitle', 'Accredited Testing Laboratories')}
         </h1>
         
         <p className="text-xs sm:text-sm text-zinc-600 font-normal leading-relaxed">
-          Find NABL-accredited & BIS-recognized testing laboratories for sample evaluation, batch testing, and conformity assessment.
+          {t('labLocatorDesc', 'Find NABL-accredited & BIS-recognized testing laboratories for sample evaluation, batch testing, and conformity assessment.')}
         </p>
       </div>
 
@@ -71,7 +71,7 @@ export const LabLocatorPage = ({ onAskAssistantAboutLab }) => {
               type="text"
               value={pincode}
               onChange={(e) => setPincode(e.target.value)}
-              placeholder="Enter 6-digit PIN code..."
+              placeholder={t('enterPinCode', "Enter 6-digit PIN code...")}
               className="w-full bg-transparent text-xs text-zinc-800 placeholder-zinc-400 focus:outline-none font-medium"
             />
           </div>
@@ -84,7 +84,7 @@ export const LabLocatorPage = ({ onAskAssistantAboutLab }) => {
               onChange={(e) => setSelectedStandard(e.target.value)}
               className="w-full bg-transparent text-xs text-zinc-800 focus:outline-none font-medium"
             >
-              <option value="all">All Standards Scope</option>
+              <option value="all">{t('allStandardsScope', 'All Standards Scope')}</option>
               <option value="IS 17803:2022">IS 17803:2022 (Vacuum Flasks)</option>
               <option value="IS 13252">IS 13252 (IT Safety)</option>
               <option value="IS 6911:2017">IS 6911:2017 (Stainless Steel)</option>
@@ -100,7 +100,7 @@ export const LabLocatorPage = ({ onAskAssistantAboutLab }) => {
               onChange={(e) => setSelectedState(e.target.value)}
               className="w-full bg-transparent text-xs text-zinc-800 focus:outline-none font-medium"
             >
-              <option value="">All States & Regions</option>
+              <option value="">{t('allStatesRegions', 'All States & Regions')}</option>
               <option value="Uttar Pradesh">Uttar Pradesh</option>
               <option value="Maharashtra">Maharashtra</option>
               <option value="Karnataka">Karnataka</option>
@@ -126,7 +126,7 @@ export const LabLocatorPage = ({ onAskAssistantAboutLab }) => {
                   </div>
                   <div>
                     <div className="text-[10px] font-mono font-semibold text-zinc-400">
-                      NABL ACCREDITED // ISO 17025
+                      {t('nablAccreditedBadge', 'NABL ACCREDITED // ISO 17025')}
                     </div>
                     <h2 className="text-xl font-serif font-medium text-zinc-950 group-hover:text-fuchsia-600 transition-colors leading-snug">
                       {lab.name}
@@ -147,7 +147,7 @@ export const LabLocatorPage = ({ onAskAssistantAboutLab }) => {
               {/* Accredited Standards Chips */}
               <div className="space-y-1.5">
                 <div className="text-[10px] uppercase font-mono font-semibold text-zinc-400">
-                  Accredited Testing Scopes
+                  {t('accreditedScopes', 'Accredited Testing Scopes')}
                 </div>
                 <div className="flex flex-wrap items-center gap-1.5">
                   {lab.standards.slice(0, 2).map((stdCode, idx) => (
@@ -160,7 +160,7 @@ export const LabLocatorPage = ({ onAskAssistantAboutLab }) => {
                   ))}
                   {lab.standards.length > 2 && (
                     <span className="font-mono text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-600 border border-zinc-200">
-                      +{lab.standards.length - 2} more scopes
+                      +{lab.standards.length - 2} {t('moreScopes', 'more scopes')}
                     </span>
                   )}
                 </div>
@@ -173,7 +173,7 @@ export const LabLocatorPage = ({ onAskAssistantAboutLab }) => {
                     <Clock className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <div className="text-[10px] text-zinc-400 font-mono uppercase font-semibold">Turnaround</div>
+                    <div className="text-[10px] text-zinc-400 font-mono uppercase font-semibold">{t('turnaround', 'Turnaround')}</div>
                     <div className="font-bold text-zinc-900">{lab.turnaroundDays}</div>
                   </div>
                 </div>
@@ -183,7 +183,7 @@ export const LabLocatorPage = ({ onAskAssistantAboutLab }) => {
                     <Phone className="w-3.5 h-3.5" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] text-zinc-400 font-mono uppercase font-semibold">Direct Desk</div>
+                    <div className="text-[10px] text-zinc-400 font-mono uppercase font-semibold">{t('directDesk', 'Direct Desk')}</div>
                     <div className="font-medium text-zinc-800 truncate">{lab.contact}</div>
                   </div>
                 </div>
@@ -200,7 +200,7 @@ export const LabLocatorPage = ({ onAskAssistantAboutLab }) => {
                 onClick={() => onAskAssistantAboutLab(lab)}
                 className="px-4 py-2 rounded-full bg-zinc-900 hover:bg-black text-white font-medium text-xs flex items-center space-x-1.5 transition-all shadow-2xs"
               >
-                <span>Book Slot via AI</span>
+                <span>{t('bookSlotViaAi', 'Book Slot via AI')}</span>
                 <Navigation className="w-3.5 h-3.5 text-zinc-400" />
               </button>
             </div>

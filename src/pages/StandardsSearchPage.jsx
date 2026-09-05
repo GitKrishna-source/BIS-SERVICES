@@ -24,11 +24,11 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
   const [sortBy, setSortBy] = useState('relevance');
 
   const categories = [
-    { id: 'all', label: t.allCategories || 'All Standards' },
-    { id: 'qco', label: t.mandatoryQco || 'Mandatory QCO', isQcoFlag: true },
-    { id: 'electronics', label: t.electronics || 'Electronics & IT' },
-    { id: 'consumer', label: t.consumerGoods || 'Consumer Products' },
-    { id: 'food', label: t.foodAgri || 'Food & Agri' }
+    { id: 'all', label: t('allCategories', 'All Standards') },
+    { id: 'qco', label: t('mandatoryQco', 'Mandatory QCO'), isQcoFlag: true },
+    { id: 'electronics', label: t('electronics', 'Electronics & IT') },
+    { id: 'consumer', label: t('consumerGoods', 'Consumer Products') },
+    { id: 'food', label: t('foodAgri', 'Food & Agri') }
   ];
 
   const fetchStandards = async () => {
@@ -74,15 +74,15 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
       <div className="text-center max-w-3xl mx-auto space-y-3">
         <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-black/[0.04] text-zinc-700 text-xs font-mono font-medium border border-black/[0.06]">
           <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500 animate-pulse" />
-          <span>NATIONAL STANDARDS REPOSITORY • 22,482 ACTIVE IS</span>
+          <span>{t('standardsRepoTag', 'NATIONAL STANDARDS REPOSITORY • 22,482 ACTIVE IS')}</span>
         </div>
         
         <h1 className="text-4xl sm:text-5xl font-serif font-medium text-zinc-950 tracking-tight">
-          Indian Standards Search
+          {t('standardsSearchTitle', 'Indian Standards Search')}
         </h1>
         
         <p className="text-xs sm:text-sm text-zinc-600 font-normal leading-relaxed">
-          Verified regulatory guidelines, quality control orders (QCO), and technical specifications issued by the Bureau of Indian Standards.
+          {t('standardsSearchDesc', 'Verified regulatory guidelines, quality control orders (QCO), and technical specifications issued by the Bureau of Indian Standards.')}
         </p>
       </div>
 
@@ -97,7 +97,7 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by IS number, product title, material or ICS code..."
+            placeholder={t('searchStandardPlaceholder', "Search by IS number, product title, material or ICS code...")}
             className="w-full py-3 px-2 text-xs sm:text-sm text-zinc-800 placeholder-zinc-400 bg-transparent focus:outline-none font-medium"
           />
           <div className="pr-1.5">
@@ -105,7 +105,7 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
               onClick={fetchStandards}
               className="px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-black text-white font-medium text-xs flex items-center space-x-1.5 shadow-sm transition-all"
             >
-              <span>Search</span>
+              <span>{t('searchButton', 'Search')}</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -136,9 +136,9 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
       {/* Catalog Results Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-b border-black/[0.06] pb-3">
         <div className="flex items-center space-x-2">
-          <span className="text-sm font-bold text-zinc-950">Catalog Results</span>
+          <span className="text-sm font-bold text-zinc-950">{t('catalogResults', 'Catalog Results')}</span>
           <span className="px-2.5 py-0.5 rounded-full font-mono text-[11px] font-semibold bg-zinc-100 text-zinc-700 border border-zinc-200">
-            {standards.length} Records
+            {standards.length} {t('records', 'Records')}
           </span>
         </div>
 
@@ -146,16 +146,16 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
         <div className="flex items-center space-x-2 text-xs">
           <span className="text-zinc-500 flex items-center space-x-1">
             <ArrowUpDown className="w-3.5 h-3.5" />
-            <span>Sorted by:</span>
+            <span>{t('sortedBy', 'Sorted by:')}</span>
           </span>
           <select 
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
             className="bg-white/90 border border-zinc-200 rounded-full px-3 py-1 text-xs font-medium text-zinc-800 focus:outline-none"
           >
-            <option value="relevance">Relevance</option>
-            <option value="latest">Latest Revision</option>
-            <option value="mandatory">Mandatory First</option>
+            <option value="relevance">{t('relevance', 'Relevance')}</option>
+            <option value="latest">{t('latestRevision', 'Latest Revision')}</option>
+            <option value="mandatory">{t('mandatoryFirst', 'Mandatory First')}</option>
           </select>
         </div>
       </div>
@@ -178,7 +178,7 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
                   
                   {std.statusType === 'mandatory' && (
                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-rose-50 text-rose-700 border border-rose-200/80">
-                      • Mandatory QCO
+                      • {t('mandatoryQco', 'Mandatory QCO')}
                     </span>
                   )}
                   {std.statusType === 'crs' && (
@@ -188,7 +188,7 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
                   )}
                   {std.statusType === 'revised' && (
                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200/80">
-                      • Latest Revision
+                      • {t('latestRevision', 'Latest Revision')}
                     </span>
                   )}
                   {std.statusType === 'isi' && (
@@ -215,13 +215,13 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
                   onClick={() => onSelectStandard(std)}
                   className="px-4 py-2 rounded-full bg-zinc-900 hover:bg-black text-white font-medium text-xs flex items-center space-x-1.5 shadow-2xs transition-all"
                 >
-                  <span>View Standard</span>
+                  <span>{t('viewStandard', 'View Standard')}</span>
                   <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
                 </button>
 
                 <span className="text-[10px] font-mono text-zinc-500 bg-white/80 px-2.5 py-0.5 rounded-full border border-zinc-200/70 flex items-center space-x-1">
                   <FileText className="w-3 h-3 text-zinc-400" />
-                  <span>PDF • {std.pages}p</span>
+                  <span>{t('pdfPages', 'PDF')} • {std.pages}p</span>
                 </span>
               </div>
             </div>
@@ -231,7 +231,7 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
               <div className="flex flex-wrap items-center gap-4">
                 <span className="flex items-center space-x-1">
                   <Calendar className="w-3.5 h-3.5 text-zinc-400" />
-                  <span>Enforced: {std.enforcedDate}</span>
+                  <span>{t('enforcedDate', 'Enforced:')} {std.enforcedDate}</span>
                 </span>
                 <span className="flex items-center space-x-1">
                   <Building2 className="w-3.5 h-3.5 text-zinc-400" />
@@ -244,7 +244,7 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
                 className="text-xs font-semibold text-zinc-800 hover:text-zinc-950 bg-white hover:bg-zinc-50 border border-zinc-200/80 px-3.5 py-1.5 rounded-full flex items-center space-x-1.5 transition-all shadow-2xs"
               >
                 <Sparkles className="w-3.5 h-3.5 text-fuchsia-500" />
-                <span>Ask AI regarding this standard</span>
+                <span>{t('askAiRegardingStandard', 'Ask AI regarding this standard')}</span>
               </button>
             </div>
           </div>
@@ -254,7 +254,7 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
       {/* Pagination Strip */}
       <div className="flex items-center justify-between pt-6 border-t border-black/[0.06] text-xs text-zinc-500">
         <div>
-          Showing <span className="font-semibold text-zinc-900">1-{standards.length}</span> of <span className="font-semibold text-zinc-900">22,482</span> standards
+          {t('showingResults', 'Showing')} <span className="font-semibold text-zinc-900">1-{standards.length}</span> {t('ofText', 'of')} <span className="font-semibold text-zinc-900">22,482</span> {t('standardsWord', 'standards')}
         </div>
 
         <div className="flex items-center space-x-1 font-mono">
