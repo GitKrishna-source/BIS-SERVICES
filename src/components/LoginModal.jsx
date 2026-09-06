@@ -13,11 +13,14 @@ import {
   Zap
 } from 'lucide-react';
 
+import { authApi } from '../services/api';
+
 export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
   const { t } = useLanguage();
   const [activePersona, setActivePersona] = useState('auditor');
-  const [email, setEmail] = useState('v.sharma@bis.gov.in');
-  const [password, setPassword] = useState('••••••••••••');
+  const [email, setEmail] = useState('auditor@bis.gov.in');
+  const [password, setPassword] = useState('Auditor@2025');
+  const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   if (!isOpen) return null;
@@ -30,7 +33,8 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
       role: 'Regulatory Affairs • Lead Auditor',
       icon: Award,
       badge: 'OFFICIAL',
-      defaultEmail: 'v.sharma@bis.gov.in'
+      defaultEmail: 'auditor@bis.gov.in',
+      defaultPassword: 'Auditor@2025'
     },
     {
       id: 'manufacturer',
@@ -39,7 +43,8 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
       role: 'MD, Apex Techware India',
       icon: Building2,
       badge: 'INDUSTRY',
-      defaultEmail: 'rajesh@apextech.in'
+      defaultEmail: 'compliance@acme-electric.in',
+      defaultPassword: 'Maker@2025'
     },
     {
       id: 'lab',
@@ -48,27 +53,55 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
       role: 'NABL ISO/IEC 17025 Assayer',
       icon: FlaskConical,
       badge: 'NABL LAB',
-      defaultEmail: 'coord@cl-bis.org'
+      defaultEmail: 'assayer@nabl-testlab.org',
+      defaultPassword: 'Assay@2025'
     }
   ];
 
   const handlePersonaSelect = (p) => {
     setActivePersona(p.id);
     setEmail(p.defaultEmail);
+    setPassword(p.defaultPassword);
+    setErrorMsg('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      const chosen = personas.find(p => p.id === activePersona);
-      onLoginSuccess({
-        ...chosen,
+    setErrorMsg('');
+
+    try {
+      // Attempt live backend login
+      const result = await authApi.login(email, password);
+      if (result && result.user) {
+        localStorage.setItem('bisync_token', result.access_token);
+        localStorage.setItem('bisync_user', JSON.stringify(result.user));
+        onLoginSuccess({
+          ...result.user,
+          isDemo: false
+        });
+        onClose();
+      }
+    } catch (err) {
+      console.warn('Backend login fallback:', err.message);
+      // If server is offline or custom offline user, create profile directly from input
+      const matchedPersona = personas.find(p => p.defaultEmail.toLowerCase() === email.toLowerCase());
+      const userName = matchedPersona ? matchedPersona.name : email.split('@')[0].replace('.', ' ').toUpperCase();
+      const userRole = matchedPersona ? matchedPersona.role : 'Authorized Industry Member';
+
+      const userProfile = {
+        name: userName,
+        email: email,
+        role: userRole,
         isDemo: false
-      });
+      };
+      
+      localStorage.setItem('bisync_user', JSON.stringify(userProfile));
+      onLoginSuccess(userProfile);
       onClose();
-    }, 500);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleQuickDemo = () => {

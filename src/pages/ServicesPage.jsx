@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { mockStandards } from '../services/mockData';
+import { servicesApi } from '../services/api';
 import { 
   Award, 
   FlaskConical, 
@@ -18,18 +19,27 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
   const { t } = useLanguage();
   const [huidCode, setHuidCode] = useState('');
   const [huidResult, setHuidResult] = useState(null);
+  const [isVerifying, setIsVerifying] = useState(false);
 
-  const handleVerifyHuid = (e) => {
+  const handleVerifyHuid = async (e) => {
     e.preventDefault();
     if (!huidCode.trim()) return;
-    setHuidResult({
-      valid: true,
-      jeweler: "Tanishq Jewellers (Branch #1042)",
-      purity: "22K916 (91.6% Pure Gold)",
-      articleType: "Gold Bangle / Ornament",
-      hallmarkingCenter: "Manak Assaying Centre, New Delhi",
-      date: "14-Feb-2025"
-    });
+    setIsVerifying(true);
+    setHuidResult(null);
+
+    try {
+      const response = await servicesApi.verifyHuid(huidCode.trim());
+      if (response && response.data) {
+        setHuidResult(response.data);
+      }
+    } catch (err) {
+      setHuidResult({
+        valid: false,
+        message: 'Invalid HUID format or unregistered hallmarking code'
+      });
+    } finally {
+      setIsVerifying(false);
+    }
   };
 
   return (
@@ -297,9 +307,22 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
               </div>
 
               {huidResult && (
-                <div className="text-[11px] text-zinc-700 bg-white p-2.5 rounded-xl border border-zinc-200 space-y-0.5">
-                  <div className="font-bold text-emerald-700">✓ Valid HUID: {huidResult.purity}</div>
-                  <div>Jeweler: {huidResult.jeweler}</div>
+                <div className={`text-[11px] p-2.5 rounded-xl border space-y-0.5 ${
+                  huidResult.valid 
+                    ? 'bg-emerald-50/80 border-emerald-200 text-zinc-800' 
+                    : 'bg-rose-50 border-rose-200 text-rose-800'
+                }`}>
+                  {huidResult.valid ? (
+                    <>
+                      <div className="font-bold text-emerald-700">✓ Valid HUID ({huidResult.huidCode || huidCode}): {huidResult.purity}</div>
+                      <div>Jeweler: {huidResult.jeweler}</div>
+                      <div className="text-[10px] text-zinc-500">Center: {huidResult.hallmarkingCenter}</div>
+                    </>
+                  ) : (
+                    <div className="font-bold text-rose-700">
+                      ✕ Invalid HUID: {huidResult.message || 'No record found in statutory BIS Hallmarking register.'}
+                    </div>
+                  )}
                 </div>
               )}
             </form>

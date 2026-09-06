@@ -21,12 +21,23 @@ export function AppContent() {
   const [activeAssistantQuery, setActiveAssistantQuery] = useState('');
   const [globalScrollProgress, setGlobalScrollProgress] = useState(0);
 
-  // Authentication state: Defaults to Limited Demo Access (No Dr. V. Sharma by default)
+  // Authentication state: Load saved user or fallback to guest
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState({
-    isDemo: true,
-    name: 'Guest User',
-    role: 'Demo Access (Limited)'
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('bisync_user');
+      return saved ? JSON.parse(saved) : {
+        isDemo: true,
+        name: 'Guest User',
+        role: 'Demo Access (Limited)'
+      };
+    } catch {
+      return {
+        isDemo: true,
+        name: 'Guest User',
+        role: 'Demo Access (Limited)'
+      };
+    }
   });
 
   // Open the cool login modal on first session visit
@@ -93,6 +104,8 @@ export function AppContent() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('bisync_token');
+    localStorage.removeItem('bisync_user');
     setCurrentUser({
       isDemo: true,
       name: 'Guest User',
