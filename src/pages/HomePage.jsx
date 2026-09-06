@@ -40,7 +40,8 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
       cta: t('domain1Cta', "Explore catalog"),
       iconName: "BookOpen",
       color: "blue",
-      targetTab: "standards"
+      targetTab: "standards",
+      image: "/images/standards_library.jpg"
     },
     {
       id: "domain-2",
@@ -50,7 +51,8 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
       cta: t('domain2Cta', "View licensing paths"),
       iconName: "Award",
       color: "emerald",
-      targetTab: "services"
+      targetTab: "services",
+      image: "/images/certification_isi.jpg"
     },
     {
       id: "domain-3",
@@ -60,7 +62,8 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
       cta: t('domain3Cta', "Search laboratories"),
       iconName: "FlaskConical",
       color: "amber",
-      targetTab: "labs"
+      targetTab: "labs",
+      image: "/images/testing_laboratory.jpg"
     },
     {
       id: "domain-4",
@@ -70,7 +73,8 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
       cta: t('domain4Cta', "Verify purity codes"),
       iconName: "Gem",
       color: "indigo",
-      targetTab: "services"
+      targetTab: "services",
+      image: "/images/hallmarking_gold.jpg"
     }
   ];
 

@@ -102,6 +102,17 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
               </span>
             </div>
 
+            {/* Module Photo */}
+            <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-black/[0.06] shadow-2xs group-hover:shadow-xs transition-all">
+              <img 
+                src="/images/certification_isi.jpg" 
+                alt="Product Certification" 
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+            </div>
+
             <div className="space-y-1">
               <div className="text-xs font-semibold text-zinc-900">
                 {t('module01Subtitle', 'Understand BIS certification requirements.')}
@@ -164,6 +175,17 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
               </span>
             </div>
 
+            {/* Module Photo */}
+            <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-black/[0.06] shadow-2xs group-hover:shadow-xs transition-all">
+              <img 
+                src="/images/testing_laboratory.jpg" 
+                alt="Testing Laboratories" 
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+            </div>
+
             <div className="space-y-1">
               <div className="text-xs font-semibold text-zinc-900">
                 {t('module02Subtitle', 'Find relevant testing facilities.')}
@@ -224,6 +246,17 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
               <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
                 {t('module03Scheme', 'HUID System')}
               </span>
+            </div>
+
+            {/* Module Photo */}
+            <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-black/[0.06] shadow-2xs group-hover:shadow-xs transition-all">
+              <img 
+                src="/images/hallmarking_gold.jpg" 
+                alt="Hallmarking & Purity" 
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
             </div>
 
             <div className="space-y-1">
@@ -307,6 +340,17 @@ export const ServicesPage = ({ onNavigate, onOpenDrawer, onLaunchAssistant }) =>
               <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
                 {t('module04Scheme', 'Public Grievance')}
               </span>
+            </div>
+
+            {/* Module Photo */}
+            <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-black/[0.06] shadow-2xs group-hover:shadow-xs transition-all">
+              <img 
+                src="/images/consumer_helpdesk.jpg" 
+                alt="Consumer Help & Redressal" 
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
             </div>
 
             <div className="space-y-1">

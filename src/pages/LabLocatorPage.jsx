@@ -144,6 +144,25 @@ export const LabLocatorPage = ({ onAskAssistantAboutLab }) => {
                 </div>
               </div>
 
+              {/* Lab Facility Photo */}
+              <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-black/[0.06] shadow-2xs group-hover:shadow-xs transition-all">
+                <img 
+                  src={lab.image || '/images/central_lab_campus.jpg'} 
+                  alt={lab.name} 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-2.5 left-3 flex items-center space-x-2">
+                  <span className="px-2.5 py-1 rounded-full text-[9px] font-mono font-semibold bg-black/60 text-white backdrop-blur-md border border-white/20">
+                    {lab.accreditation}
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-semibold bg-emerald-500/90 text-white backdrop-blur-md">
+                    {lab.status || 'Operational'}
+                  </span>
+                </div>
+              </div>
+
               {/* Accredited Standards Chips */}
               <div className="space-y-1.5">
                 <div className="text-[10px] uppercase font-mono font-semibold text-zinc-400">
