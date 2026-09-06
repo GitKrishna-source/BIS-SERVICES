@@ -2,12 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   CSS Variables & Design Tokens (Theme System)
+   ========================================================================== */
+:root,
+html.light {
+  color-scheme: light;
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-secondary: #f1f5f9;
+  --surface-elevated: #ffffff;
+  --surface-input: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --border-secondary: #cbd5e1;
+  --border-subtle: #f1f5f9;
+  --accent: #0284c7;
+  --accent-hover: #0369a1;
+  --accent-light: #e0f2fe;
+  --accent-text: #0369a1;
+  --success: #059669;
+  --success-light: #ecfdf5;
+  --warning: #d97706;
+  --warning-light: #fffbeb;
+  --danger: #e11d48;
+  --danger-light: #fff1f2;
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08);
+  --shadow-elevated: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --nav-bg: rgba(255, 255, 255, 0.95);
+  --nav-border: #e2e8f0;
+  --scrollbar-bg: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+}
+
+html.dark {
+  color-scheme: dark;
+  --background: #0b0f19;
+  --surface: #111827;
+  --surface-secondary: #162032;
+  --surface-elevated: #1a253a;
+  --surface-input: #0e1626;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #8493a8;
+  --border: #1f2c42;
+  --border-secondary: #2a3b57;
+  --border-subtle: #162235;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --accent-light: rgba(14, 165, 233, 0.15);
+  --accent-text: #38bdf8;
+  --success: #10b981;
+  --success-light: rgba(16, 185, 129, 0.15);
+  --warning: #f59e0b;
+  --warning-light: rgba(245, 158, 11, 0.15);
+  --danger: #f43f5e;
+  --danger-light: rgba(244, 63, 94, 0.15);
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
+  --shadow-elevated: 0 20px 35px -5px rgba(0, 0, 0, 0.6), 0 10px 15px -5px rgba(0, 0, 0, 0.5);
+  --nav-bg: rgba(11, 15, 25, 0.95);
+  --nav-border: #1f2c42;
+  --scrollbar-bg: #0b0f19;
+  --scrollbar-thumb: #1f2c42;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
+    background-color: var(--background);
   }
   body {
-    @apply bg-[#f8fafc] text-slate-900 font-sans;
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.25s ease, color 0.25s ease;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
@@ -19,27 +89,27 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: var(--scrollbar-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--scrollbar-thumb);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: var(--border-secondary);
 }
 
 /* Card Glow & Glassmorphism */
 .glass-card {
-  background: rgba(255, 255, 255, 0.88);
+  background: var(--surface);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
 .dark-glass {
-  background: rgba(15, 23, 42, 0.92);
+  background: rgba(11, 15, 25, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -72,4 +142,175 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* ==========================================================================
+   Design Token Integrations & Systematic UI Overrides
+   ========================================================================== */
+.bg-white {
+  background-color: var(--surface) !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow-card);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.bg-slate-50 {
+  background-color: var(--surface-secondary) !important;
+  transition: background-color 0.25s ease;
+}
+
+.bg-slate-100 {
+  background-color: var(--surface-secondary) !important;
+  transition: background-color 0.25s ease;
+}
+
+.border-slate-200,
+.border-slate-300 {
+  border-color: var(--border) !important;
+  transition: border-color 0.25s ease;
+}
+
+.border-slate-100 {
+  border-color: var(--border-subtle) !important;
+  transition: border-color 0.25s ease;
+}
+
+.text-slate-900 {
+  color: var(--text-primary) !important;
+  transition: color 0.25s ease;
+}
+
+.text-slate-800 {
+  color: var(--text-primary) !important;
+  transition: color 0.25s ease;
+}
+
+.text-slate-700 {
+  color: var(--text-secondary) !important;
+  transition: color 0.25s ease;
+}
+
+.text-slate-600 {
+  color: var(--text-secondary) !important;
+  transition: color 0.25s ease;
+}
+
+.text-slate-500 {
+  color: var(--text-muted) !important;
+  transition: color 0.25s ease;
+}
+
+.text-slate-400 {
+  color: var(--text-muted) !important;
+  transition: color 0.25s ease;
+}
+
+.hover\:bg-slate-50:hover {
+  background-color: var(--surface-elevated) !important;
+}
+
+.hover\:bg-slate-100:hover {
+  background-color: var(--surface-elevated) !important;
+}
+
+input, 
+select, 
+textarea {
+  background-color: var(--surface-input) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+input::placeholder, 
+textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Header & Nav */
+header {
+  background-color: var(--nav-bg) !important;
+  border-color: var(--nav-border) !important;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+/* ==========================================================================
+   Dark Mode Specific Component & Pill Adaptations
+   ========================================================================== */
+html.dark .bg-sky-50,
+html.dark .bg-blue-50,
+html.dark .bg-indigo-50 {
+  background-color: rgba(14, 165, 233, 0.12) !important;
+  color: #7dd3fc !important;
+  border-color: rgba(14, 165, 233, 0.3) !important;
+}
+
+html.dark .from-sky-50 {
+  --tw-gradient-from: rgba(14, 165, 233, 0.15) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgba(14, 165, 233, 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+html.dark .via-blue-50 {
+  --tw-gradient-to: rgba(59, 130, 246, 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), rgba(59, 130, 246, 0.12) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+}
+html.dark .to-indigo-50 {
+  --tw-gradient-to: rgba(99, 102, 241, 0.15) var(--tw-gradient-to-position) !important;
+}
+
+html.dark .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+  color: #6ee7b7 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+html.dark .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.12) !important;
+  color: #fcd34d !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+html.dark .bg-rose-50 {
+  background-color: rgba(244, 63, 94, 0.12) !important;
+  color: #fda4af !important;
+  border-color: rgba(244, 63, 94, 0.3) !important;
+}
+
+html.dark .bg-slate-50\/70,
+html.dark .bg-slate-50\/60,
+html.dark .bg-slate-50\/40 {
+  background-color: #162032 !important;
+}
+
+html.dark .text-emerald-900,
+html.dark .text-emerald-800,
+html.dark .text-emerald-700 {
+  color: #a7f3d0 !important;
+}
+
+html.dark .text-sky-900,
+html.dark .text-sky-800,
+html.dark .text-sky-700 {
+  color: #7dd3fc !important;
+}
+
+/* ==========================================================================
+   Light Mode Specific Component & Pill Adaptations
+   ========================================================================== */
+html.light .bg-sky-50 {
+  background-color: #f0f9ff !important;
+  color: #0369a1 !important;
+  border-color: #bae6fd !important;
+}
+
+html.light .bg-emerald-50 {
+  background-color: #ecfdf5 !important;
+  color: #047857 !important;
+  border-color: #a7f3d0 !important;
+}
+
+html.light .bg-amber-50 {
+  background-color: #fffbeb !important;
+  color: #b45309 !important;
+  border-color: #fde68a !important;
 }

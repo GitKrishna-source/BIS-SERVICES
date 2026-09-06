@@ -44,7 +44,8 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
       cta: "Explore catalog",
       iconName: "BookOpen",
       color: "blue",
-      targetTab: "standards"
+      targetTab: "standards",
+      image: "/images/standards-catalog.jpg"
     },
     {
       id: "domain-2",
@@ -54,7 +55,8 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
       cta: "View licensing paths",
       iconName: "Award",
       color: "emerald",
-      targetTab: "services"
+      targetTab: "services",
+      image: "/images/isi-emblem.jpg"
     },
     {
       id: "domain-3",
@@ -64,7 +66,8 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
       cta: "Search laboratories",
       iconName: "FlaskConical",
       color: "amber",
-      targetTab: "labs"
+      targetTab: "labs",
+      image: "/images/lab-testing-facility.jpg"
     },
     {
       id: "domain-4",
@@ -74,7 +77,8 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
       cta: "Verify purity codes",
       iconName: "Gem",
       color: "indigo",
-      targetTab: "services"
+      targetTab: "services",
+      image: "/images/gold-hallmark.jpg"
     }
   ];
 
@@ -101,17 +105,17 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-tr from-sky-400/10 via-blue-500/10 to-indigo-500/10 blur-3xl rounded-full pointer-events-none -z-10" />
 
         <ScrollReveal animation="slide-up" delay={50} duration={600}>
-          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 text-sky-800 text-xs font-mono font-bold mb-6 shadow-sm">
-            <span className="w-2.5 h-2.5 rounded-full bg-sky-600 animate-pulse"></span>
+          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-sky-50 dark:bg-sky-950/80 border border-sky-200 dark:border-sky-500/30 text-sky-700 dark:text-sky-300 text-xs font-mono font-bold mb-6 shadow-sm">
+            <span className="w-2.5 h-2.5 rounded-full bg-sky-500 dark:bg-sky-400 animate-pulse"></span>
             <span>• NATIONAL STANDARDS AI DIRECTIVE ENGINE // 24.8 REPOSITORIES ACTIVE</span>
           </div>
         </ScrollReveal>
 
         {/* Hero Title */}
         <ScrollReveal animation="slide-up" delay={150} duration={700}>
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight sm:leading-none mb-4">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight sm:leading-none mb-4">
             {t.heroTitlePrefix}{' '}
-            <span className="bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 dark:from-sky-400 dark:via-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
               {t.heroTitleHighlight}
             </span>
           </h1>
@@ -119,7 +123,7 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
 
         {/* Hero Subtitle */}
         <ScrollReveal animation="slide-up" delay={250} duration={700}>
-          <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto mb-8 font-normal leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-8 font-normal leading-relaxed">
             {t.heroSubtitle}
           </p>
         </ScrollReveal>
@@ -127,24 +131,24 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
         {/* Central Search Input Box */}
         <ScrollReveal animation="zoom-in" delay={350} duration={700}>
           <div className="max-w-2xl mx-auto relative group">
-            <form onSubmit={handleSearchSubmit} className="relative flex items-center shadow-xl rounded-2xl bg-white border-2 border-slate-200 focus-within:border-sky-500 focus-within:ring-4 focus-within:ring-sky-500/15 transition-all">
+            <form onSubmit={handleSearchSubmit} className="relative flex items-center shadow-xl rounded-2xl bg-white dark:bg-[#111827] border-2 border-slate-200 dark:border-[#1f2c42] focus-within:border-sky-500 focus-within:ring-4 focus-within:ring-sky-500/20 transition-all">
               <div className="pl-4 pr-2 text-slate-400">
-                <Search className="w-5 h-5 text-sky-600" />
+                <Search className="w-5 h-5 text-sky-500 dark:text-sky-400" />
               </div>
               <input
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder={t.searchPlaceholder}
-                className="w-full py-4 px-2 text-sm text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none font-medium"
+                className="w-full py-4 px-2 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 bg-transparent focus:outline-none font-medium"
               />
               <div className="pr-2 flex items-center space-x-2">
-                <span className="hidden sm:inline-block px-2 py-1 text-[10px] font-mono text-slate-400 bg-slate-100 rounded border border-slate-200">
+                <span className="hidden sm:inline-block px-2 py-1 text-[10px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-[#162032] rounded border border-slate-200 dark:border-[#1f2c42]">
                   Ctrl K
                 </span>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs flex items-center space-x-1.5 shadow-md shadow-sky-600/25 transition-all hover:scale-105 active:scale-95"
+                  className="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs flex items-center space-x-1.5 shadow-md shadow-sky-600/30 transition-all hover:scale-105 active:scale-95 cursor-pointer"
                 >
                   <span>{t.searchButton}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -158,9 +162,9 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
                 <button
                   key={index}
                   onClick={() => onStartQuery(query)}
-                  className="text-[11px] px-3.5 py-1.5 rounded-full bg-white hover:bg-sky-50 text-slate-600 hover:text-sky-700 border border-slate-200 hover:border-sky-300 transition-all shadow-xs flex items-center space-x-1 font-medium hover:-translate-y-0.5"
+                  className="text-[11px] px-3.5 py-1.5 rounded-full bg-white dark:bg-[#111827] hover:bg-slate-100 dark:hover:bg-[#162032] text-slate-700 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-300 border border-slate-200 dark:border-[#1f2c42] hover:border-sky-300 dark:hover:border-sky-500/40 transition-all shadow-xs flex items-center space-x-1.5 font-medium hover:-translate-y-0.5 cursor-pointer"
                 >
-                  <span className="text-sky-500">•</span>
+                  <span className="text-sky-500 dark:text-sky-400">•</span>
                   <span>{query}</span>
                 </button>
               ))}
@@ -170,17 +174,17 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
 
         {/* Stat badges beneath hero */}
         <ScrollReveal animation="slide-up" delay={450} duration={700}>
-          <div className="flex flex-wrap justify-center items-center gap-6 mt-8 text-xs font-mono text-slate-500">
+          <div className="flex flex-wrap justify-center items-center gap-6 mt-8 text-xs font-mono text-slate-600 dark:text-slate-400">
             <div className="flex items-center space-x-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
               <span>22,418 BIS Standards Indexed</span>
             </div>
             <div className="flex items-center space-x-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-sky-500" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400" />
               <span>QCO Compliance Matrix v4.2</span>
             </div>
             <div className="flex items-center space-x-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-indigo-500" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
               <span>Sub-Second Citation Engine</span>
             </div>
           </div>
@@ -191,10 +195,10 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal animation="slide-left" delay={100} duration={600}>
           <div className="mb-4">
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
               {t.domainsTitle}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 font-medium">
               {t.domainsSubtitle}
             </p>
           </div>
@@ -217,26 +221,26 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
           
           {/* Left Column slides in from Left */}
           <ScrollReveal animation="slide-left" delay={150} duration={700} className="lg:col-span-5 space-y-4">
-            <div className="inline-flex items-center space-x-2 text-[10px] font-mono uppercase tracking-widest text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 font-bold">
-              <ShieldCheck className="w-3.5 h-3.5 text-sky-600" />
-              <span>Real-Time Citation Stream</span>
+            <div className="inline-flex items-center space-x-2 text-[10px] font-mono uppercase tracking-widest text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/80 px-3 py-1 rounded-full border border-sky-200 dark:border-sky-500/30 font-bold">
+              <ShieldCheck className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+              <span>{t.citationTag || 'Real-Time Citation Stream'}</span>
             </div>
             
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">
-              Verified Direct Regulatory Passages
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
+              {t.citationHeading || 'Verified Direct Regulatory Passages'}
             </h2>
             
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-              Every AI response maps deterministically to exact clause numbers, mandatory gazette notifications, and laboratory sampling guidelines. Zero hallucination guaranteed through grounded RAG embeddings.
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              {t.citationDesc || 'Every AI response maps deterministically to exact clause numbers, mandatory gazette notifications, and laboratory sampling guidelines. Zero hallucination guaranteed through grounded RAG embeddings.'}
             </p>
 
             <div className="space-y-2.5 pt-2">
-              <div className="flex items-center space-x-2.5 text-xs text-slate-700 font-semibold bg-white p-3 rounded-2xl border border-slate-200 shadow-sm hover:border-sky-300 transition-colors">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <div className="flex items-center space-x-2.5 text-xs text-slate-800 dark:text-slate-200 font-semibold bg-slate-50 dark:bg-[#111827] p-3 rounded-2xl border border-slate-200 dark:border-[#1f2c42] shadow-sm hover:border-sky-400/50 transition-colors">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-emerald-400"></span>
                 <span>IS 17803:2022 • Stainless Steel Insulated Containers</span>
               </div>
-              <div className="flex items-center space-x-2.5 text-xs text-slate-700 font-semibold bg-white p-3 rounded-2xl border border-slate-200 shadow-sm hover:border-sky-300 transition-colors">
-                <span className="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
+              <div className="flex items-center space-x-2.5 text-xs text-slate-800 dark:text-slate-200 font-semibold bg-slate-50 dark:bg-[#111827] p-3 rounded-2xl border border-slate-200 dark:border-[#1f2c42] shadow-sm hover:border-sky-400/50 transition-colors">
+                <span className="w-2.5 h-2.5 rounded-full bg-sky-500 dark:bg-sky-400"></span>
                 <span>QCO S.O. 3192(E) • Ministry of Commerce & Industry</span>
               </div>
             </div>
@@ -244,10 +248,10 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
             <div className="pt-2">
               <button
                 onClick={() => onNavigate('assistant')}
-                className="px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center space-x-2 shadow-lg shadow-slate-900/20 transition-all hover:translate-x-1"
+                className="px-5 py-3 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold flex items-center space-x-2 shadow-lg shadow-sky-600/25 transition-all hover:translate-x-1 cursor-pointer"
               >
-                <span>Launch RAG Assistant Session</span>
-                <ArrowRight className="w-3.5 h-3.5 text-sky-400" />
+                <span>{t.launchRagBtn || 'Launch RAG Assistant Session'}</span>
+                <ArrowRight className="w-3.5 h-3.5 text-sky-200" />
               </button>
             </div>
           </ScrollReveal>
@@ -260,18 +264,189 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
         </div>
       </section>
 
+      {/* National Quality & Assurance Infrastructure Visual Showcase */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ScrollReveal animation="slide-up" delay={100} duration={600}>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-widest text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/80 px-3 py-1 rounded-full border border-sky-200 dark:border-sky-500/30 font-bold inline-flex items-center space-x-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                <span>• {t.infraTag || 'NATIONAL QUALITY INFRASTRUCTURE'}</span>
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-2 tracking-tight">
+                {t.infraHeading || 'Authoritative Certification & Laboratory Ecosystem'}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 font-medium max-w-2xl">
+                {t.infraDesc || 'Statutory quality assurance under the Bureau of Indian Standards Act, covering product safety, precision assaying, and accredited testing networks.'}
+              </p>
+            </div>
+
+            <div className="flex items-center space-x-2 shrink-0">
+              <button
+                onClick={() => onNavigate('services')}
+                className="text-xs font-bold text-sky-700 dark:text-sky-300 hover:text-sky-800 dark:hover:text-sky-200 flex items-center space-x-1 px-4 py-2 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1f2c42] hover:bg-slate-100 dark:hover:bg-[#162032] transition-colors cursor-pointer"
+              >
+                <span>{t.viewAllServicesBtn || 'View All Conformity Services'}</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        </ScrollReveal>
+
+        {/* 4 Photo Showcase Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          {/* Showcase 01: ISI Mark Seal */}
+          <ScrollReveal animation="slide-up" delay={150} duration={600}>
+            <div 
+              onClick={() => onNavigate('standards')}
+              className="group cursor-pointer rounded-3xl bg-white dark:bg-[#111827] border border-slate-200/90 dark:border-[#1f2c42] hover:border-sky-400 dark:hover:border-sky-500 overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between"
+            >
+              <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-900">
+                <img 
+                  src="/images/isi-emblem.jpg" 
+                  alt="Official ISI Mark Certification Seal" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-950/60 backdrop-blur-md text-white text-[10px] font-mono font-bold border border-white/20">
+                  SCHEME-I
+                </div>
+                <div className="absolute bottom-3 left-3 right-3 text-white">
+                  <div className="text-[11px] font-mono text-sky-300 font-bold">STATUTORY STANDARD</div>
+                  <div className="text-sm font-bold leading-snug">ISI Mark Certification</div>
+                </div>
+              </div>
+              <div className="p-5 space-y-3">
+                <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                  Third-party conformity mark mandatory for cement, electricals, steel, and food packaging under QCO.
+                </p>
+                <div className="flex items-center justify-between text-[11px] font-bold text-sky-600 dark:text-sky-400 pt-2 border-t border-slate-100 dark:border-[#1f2c42]">
+                  <span>Explore Schemes</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* Showcase 02: NABL Lab */}
+          <ScrollReveal animation="slide-up" delay={250} duration={600}>
+            <div 
+              onClick={() => onNavigate('labs')}
+              className="group cursor-pointer rounded-3xl bg-white dark:bg-[#111827] border border-slate-200/90 dark:border-[#1f2c42] hover:border-emerald-400 dark:hover:border-emerald-500 overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between"
+            >
+              <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-900">
+                <img 
+                  src="/images/nabl-lab.jpg" 
+                  alt="NABL Accredited Testing Facility" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-emerald-950/70 backdrop-blur-md text-emerald-200 text-[10px] font-mono font-bold border border-emerald-400/30">
+                  ISO/IEC 17025
+                </div>
+                <div className="absolute bottom-3 left-3 right-3 text-white">
+                  <div className="text-[11px] font-mono text-emerald-300 font-bold">1,840+ LABS</div>
+                  <div className="text-sm font-bold leading-snug">Accredited Testing Labs</div>
+                </div>
+              </div>
+              <div className="p-5 space-y-3">
+                <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                  Geo-indexed NABL laboratories for sample evaluation, batch testing, and third-party conformity validation.
+                </p>
+                <div className="flex items-center justify-between text-[11px] font-bold text-emerald-600 dark:text-emerald-400 pt-2 border-t border-slate-100 dark:border-[#1f2c42]">
+                  <span>Locate Testing Labs</span>
+                  <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* Showcase 03: Hallmarking & HUID */}
+          <ScrollReveal animation="slide-up" delay={350} duration={600}>
+            <div 
+              onClick={() => onNavigate('services')}
+              className="group cursor-pointer rounded-3xl bg-white dark:bg-[#111827] border border-slate-200/90 dark:border-[#1f2c42] hover:border-amber-400 dark:hover:border-amber-500 overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between"
+            >
+              <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-900">
+                <img 
+                  src="/images/gold-hallmark.jpg" 
+                  alt="Gold Hallmarking and 6-digit HUID Verification" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-amber-950/70 backdrop-blur-md text-amber-200 text-[10px] font-mono font-bold border border-amber-400/30">
+                  IS 1417 (AU/AG)
+                </div>
+                <div className="absolute bottom-3 left-3 right-3 text-white">
+                  <div className="text-[11px] font-mono text-amber-300 font-bold">HUID VERIFICATION</div>
+                  <div className="text-sm font-bold leading-snug">Hallmarking & Assaying</div>
+                </div>
+              </div>
+              <div className="p-5 space-y-3">
+                <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                  6-digit alphanumeric unique identification checking for 22K/18K/14K gold jewellery and silver articles.
+                </p>
+                <div className="flex items-center justify-between text-[11px] font-bold text-amber-600 dark:text-amber-400 pt-2 border-t border-slate-100 dark:border-[#1f2c42]">
+                  <span>Verify HUID Codes</span>
+                  <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* Showcase 04: Electronics CRS */}
+          <ScrollReveal animation="slide-up" delay={450} duration={600}>
+            <div 
+              onClick={() => onNavigate('services')}
+              className="group cursor-pointer rounded-3xl bg-white dark:bg-[#111827] border border-slate-200/90 dark:border-[#1f2c42] hover:border-indigo-400 dark:hover:border-indigo-500 overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between"
+            >
+              <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-900">
+                <img 
+                  src="/images/electronics-testing.jpg" 
+                  alt="Electronics Compulsory Registration Scheme" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-indigo-950/70 backdrop-blur-md text-indigo-200 text-[10px] font-mono font-bold border border-indigo-400/30">
+                  MeitY CRS
+                </div>
+                <div className="absolute bottom-3 left-3 right-3 text-white">
+                  <div className="text-[11px] font-mono text-indigo-300 font-bold">IS 13252 SAFETY</div>
+                  <div className="text-sm font-bold leading-snug">Electronics & IT Safety</div>
+                </div>
+              </div>
+              <div className="p-5 space-y-3">
+                <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                  Mandatory safety registration for servers, laptops, telecom equipment, and smart electronic devices.
+                </p>
+                <div className="flex items-center justify-between text-[11px] font-bold text-indigo-600 dark:text-indigo-400 pt-2 border-t border-slate-100 dark:border-[#1f2c42]">
+                  <span>View CRS Protocols</span>
+                  <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+
+        </div>
+      </section>
+
       {/* 3-Step Methodology: Ask -> Verify -> Act (Staggered Slide-Up Cards) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal animation="slide-up" delay={100} duration={600}>
           <div className="text-center max-w-xl mx-auto mb-10">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 font-bold">
-              • METHODOLOGY
+            <span className="text-[10px] font-mono uppercase tracking-widest text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/80 px-3 py-1 rounded-full border border-sky-200 dark:border-sky-500/30 font-bold">
+              • {t.workflowTag || 'METHODOLOGY'}
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
-              Workflow: Ask → Verify → Act
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-2">
+              {t.workflowTitle || 'Workflow: Ask → Verify → Act'}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
-              Precision engineering standards queries converted into statutory action paths in three deterministic phases.
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">
+              {t.workflowDesc || 'Precision engineering standards queries converted into statutory action paths in three deterministic phases.'}
             </p>
           </div>
         </ScrollReveal>
@@ -280,75 +455,75 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
           
           {/* Card 01 - Slide Up Delay 100ms */}
           <ScrollReveal animation="slide-up" delay={150} duration={650}>
-            <div className="h-full p-6 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-md hover:shadow-2xl hover:border-sky-400 hover:-translate-y-2 transition-all space-y-4 relative group overflow-hidden flex flex-col justify-between">
+            <div className="h-full p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200/90 dark:border-[#1f2c42] shadow-md hover:shadow-2xl hover:border-sky-400 dark:hover:border-sky-500 hover:-translate-y-2 transition-all space-y-4 relative group overflow-hidden flex flex-col justify-between">
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-sky-400 to-blue-600 opacity-80 group-hover:opacity-100 transition-opacity" />
               
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-3xl font-black text-sky-600 font-mono tracking-tight">01</span>
-                  <div className="w-11 h-11 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
+                  <span className="text-3xl font-black text-sky-600 dark:text-sky-400 font-mono tracking-tight">01</span>
+                  <div className="w-11 h-11 rounded-2xl bg-sky-50 dark:bg-sky-950/80 text-sky-600 dark:text-sky-400 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
                     <Bot className="w-5 h-5" />
                   </div>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 group-hover:text-sky-600 transition-colors">Ask</h3>
-                <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                  Submit natural language queries regarding products, HS codes, mandatory QCO lists, chemical composition tolerances, or test schedules.
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">{t.step1Title || 'Ask'}</h3>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                  {t.step1Desc || 'Submit natural language queries regarding products, HS codes, mandatory QCO lists, chemical composition tolerances, or test schedules.'}
                 </p>
               </div>
 
-              <div className="text-[10px] font-mono text-sky-700 font-bold pt-3 border-t border-slate-100 flex items-center space-x-1.5">
+              <div className="text-[10px] font-mono text-sky-700 dark:text-sky-300 font-bold pt-3 border-t border-slate-100 dark:border-[#1f2c42] flex items-center space-x-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse"></span>
-                <span>SEMANTIC EMBEDDING RETRIEVAL</span>
+                <span>{t.step1Tag || 'SEMANTIC EMBEDDING RETRIEVAL'}</span>
               </div>
             </div>
           </ScrollReveal>
 
           {/* Card 02 - Slide Up Delay 300ms */}
           <ScrollReveal animation="slide-up" delay={300} duration={650}>
-            <div className="h-full p-6 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-md hover:shadow-2xl hover:border-emerald-400 hover:-translate-y-2 transition-all space-y-4 relative group overflow-hidden flex flex-col justify-between">
+            <div className="h-full p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200/90 dark:border-[#1f2c42] shadow-md hover:shadow-2xl hover:border-emerald-400 dark:hover:border-emerald-500 hover:-translate-y-2 transition-all space-y-4 relative group overflow-hidden flex flex-col justify-between">
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-400 to-teal-600 opacity-80 group-hover:opacity-100 transition-opacity" />
               
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-3xl font-black text-emerald-600 font-mono tracking-tight">02</span>
-                  <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
+                  <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400 font-mono tracking-tight">02</span>
+                  <div className="w-11 h-11 rounded-2xl bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
                     <FileCheck className="w-5 h-5" />
                   </div>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">Verify</h3>
-                <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                  Inspect source-cited standard extracts, relevant amendments, statutory notifications from DPIIT/MoCA, and accredited testing lab lists.
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">{t.step2Title || 'Verify'}</h3>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                  {t.step2Desc || 'Inspect source-cited standard extracts, relevant amendments, statutory notifications from DPIIT/MoCA, and accredited testing lab lists.'}
                 </p>
               </div>
 
-              <div className="text-[10px] font-mono text-emerald-700 font-bold pt-3 border-t border-slate-100 flex items-center space-x-1.5">
+              <div className="text-[10px] font-mono text-emerald-700 dark:text-emerald-300 font-bold pt-3 border-t border-slate-100 dark:border-[#1f2c42] flex items-center space-x-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>SOURCE CITATION VALIDATION</span>
+                <span>{t.step2Tag || 'SOURCE CITATION VALIDATION'}</span>
               </div>
             </div>
           </ScrollReveal>
 
           {/* Card 03 - Slide Up Delay 450ms */}
           <ScrollReveal animation="slide-up" delay={450} duration={650}>
-            <div className="h-full p-6 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-md hover:shadow-2xl hover:border-indigo-400 hover:-translate-y-2 transition-all space-y-4 relative group overflow-hidden flex flex-col justify-between">
+            <div className="h-full p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200/90 dark:border-[#1f2c42] shadow-md hover:shadow-2xl hover:border-indigo-400 dark:hover:border-indigo-500 hover:-translate-y-2 transition-all space-y-4 relative group overflow-hidden flex flex-col justify-between">
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-400 to-purple-600 opacity-80 group-hover:opacity-100 transition-opacity" />
               
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-3xl font-black text-indigo-600 font-mono tracking-tight">03</span>
-                  <div className="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
+                  <span className="text-3xl font-black text-indigo-600 dark:text-indigo-400 font-mono tracking-tight">03</span>
+                  <div className="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
                     <Award className="w-5 h-5" />
                   </div>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">Act</h3>
-                <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                  Generate Manakonline application checklists, initiate STI audits, book test slots at NABL labs, or verify 6-digit HUID authenticity tokens.
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{t.step3Title || 'Act'}</h3>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                  {t.step3Desc || 'Generate Manakonline application checklists, initiate STI audits, book test slots at NABL labs, or verify 6-digit HUID authenticity tokens.'}
                 </p>
               </div>
 
-              <div className="text-[10px] font-mono text-indigo-700 font-bold pt-3 border-t border-slate-100 flex items-center space-x-1.5">
+              <div className="text-[10px] font-mono text-indigo-700 dark:text-indigo-300 font-bold pt-3 border-t border-slate-100 dark:border-[#1f2c42] flex items-center space-x-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
-                <span>REGULATORY ACTION ENGINE</span>
+                <span>{t.step3Tag || 'REGULATORY ACTION ENGINE'}</span>
               </div>
             </div>
           </ScrollReveal>
@@ -359,30 +534,30 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
       {/* Call to Action Banner (Zoom-in Slide) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal animation="zoom-in" delay={150} duration={700}>
-          <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-sky-50 via-white to-blue-50 border-2 border-sky-200 text-center relative overflow-hidden shadow-lg">
+          <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-sky-50 via-white to-blue-50 dark:from-[#111827] dark:via-[#162032] dark:to-[#111827] border-2 border-sky-200 dark:border-[#1f2c42] text-center relative overflow-hidden shadow-lg">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white flex items-center justify-center mb-4 shadow-xl shadow-sky-600/30 animate-bounce">
               <Sparkles className="w-6 h-6" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">
-              Ready to consult the standards repository?
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mb-2">
+              {t.ctaTitle || 'Ready to consult the standards repository?'}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto mb-8 font-medium">
-              Deploy deep semantic search across the entire Indian Standards gazette with contextual regulatory guidance.
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-lg mx-auto mb-8 font-medium">
+              {t.ctaDesc || 'Deploy deep semantic search across the entire Indian Standards gazette with contextual regulatory guidance.'}
             </p>
 
             <div className="flex flex-wrap justify-center gap-4">
               <button
                 onClick={() => onNavigate('assistant')}
-                className="px-6 py-3.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center space-x-2 shadow-lg shadow-sky-600/25 transition-all hover:scale-105"
+                className="px-6 py-3.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center space-x-2 shadow-lg shadow-sky-600/25 transition-all hover:scale-105 cursor-pointer"
               >
                 <Bot className="w-4 h-4" />
-                <span>Ask the BIS Assistant</span>
+                <span>{t.ctaAskBtn || 'Ask the BIS Assistant'}</span>
               </button>
               <button
                 onClick={() => onNavigate('standards')}
-                className="px-6 py-3.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs flex items-center space-x-2 shadow-sm transition-all hover:scale-105"
+                className="px-6 py-3.5 rounded-xl bg-white dark:bg-[#111827] border border-slate-300 dark:border-[#1f2c42] hover:bg-slate-50 dark:hover:bg-[#162032] text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center space-x-2 shadow-sm transition-all hover:scale-105 cursor-pointer"
               >
-                <span>Explore All 22,000+ Standards</span>
+                <span>{t.ctaExploreBtn || 'Explore All 22,000+ Standards'}</span>
                 <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
               </button>
             </div>

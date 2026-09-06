@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { 
   Shield, 
   Sparkles, 
@@ -17,6 +18,7 @@ import {
 } from 'lucide-react';
 
 export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
+  const { t } = useLanguage();
   const [activePersona, setActivePersona] = useState('auditor');
   const [email, setEmail] = useState('v.sharma@bis.gov.in');
   const [password, setPassword] = useState('••••••••••••');
@@ -111,17 +113,26 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
           </button>
 
           <div className="relative z-10 space-y-3">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-400 text-xs font-mono font-semibold tracking-wider">
-              <Shield className="w-3.5 h-3.5" />
-              <span>BIS DIRECTIVE AUTHENTICATION GATEWAY</span>
+            <div className="flex items-center space-x-3">
+              <div className="h-10 px-2 py-1 bg-white rounded-xl border border-white/20 flex items-center justify-center shadow-md shrink-0">
+                <img 
+                  src="/images/bisync-logo.png" 
+                  alt="BISync Logo" 
+                  className="h-8 w-auto object-contain"
+                />
+              </div>
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-400 text-xs font-mono font-semibold tracking-wider">
+                <Shield className="w-3.5 h-3.5" />
+                <span>{t.authGateway || 'BIS DIRECTIVE AUTHENTICATION GATEWAY'}</span>
+              </div>
             </div>
 
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              Wanna get started with <span className="text-sky-400">BISync</span>?
+              {t.loginHeading || 'Wanna get started with BISync?'}
             </h2>
 
             <p className="text-xs text-slate-300 max-w-md leading-relaxed">
-              Log in to unlock full statutory access, unbounded AI RAG queries, dossier exports, and laboratory slot booking.
+              {t.loginDesc || 'Log in to unlock full statutory access, unbounded AI RAG queries, dossier exports, and laboratory slot booking.'}
             </p>
           </div>
         </div>
@@ -132,8 +143,8 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
           {/* Persona Selector Strip */}
           <div className="space-y-2">
             <label className="text-xs font-bold text-slate-800 flex items-center justify-between">
-              <span>SELECT STAKEHOLDER PROFILE TO LOGIN:</span>
-              <span className="text-[10px] font-mono text-sky-600 font-semibold">Pre-configured Demo Keys</span>
+              <span>{t.selectStakeholder || 'SELECT STAKEHOLDER PROFILE TO LOGIN:'}</span>
+              <span className="text-[10px] font-mono text-sky-600 font-semibold">{t.preConfiguredDemo || 'Pre-configured Demo Keys'}</span>
             </label>
 
             <div className="grid grid-cols-3 gap-2.5">
