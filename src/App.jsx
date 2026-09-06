@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { LanguageProvider } from './context/LanguageContext';
-import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
@@ -102,12 +101,12 @@ export function AppContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--background)] text-[var(--text-primary)] transition-colors duration-200 relative">
+    <div className="min-h-screen flex flex-col sketch-canvas relative selection:bg-fuchsia-500 selection:text-white">
       
       {/* Dynamic Global Top Scroll Progress Bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-transparent z-50 pointer-events-none">
         <div 
-          className="h-full bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 shadow-md shadow-sky-500/50 transition-all duration-150"
+          className="h-full bg-gradient-to-r from-fuchsia-500 via-purple-600 to-indigo-600 shadow-md shadow-fuchsia-500/50 transition-all duration-150"
           style={{ width: `${globalScrollProgress}%` }}
         />
       </div>
@@ -194,10 +193,8 @@ export function AppContent() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <LanguageProvider>
-        <AppContent />
-      </LanguageProvider>
-    </ThemeProvider>
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }

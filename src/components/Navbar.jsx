@@ -1,235 +1,435 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { useTheme } from '../context/ThemeContext';
-import { 
-  Shield, 
-  Sparkles, 
-  Search, 
-  Layers, 
-  MapPin, 
-  Globe, 
-  ChevronDown, 
-  CheckCircle, 
-  Database, 
-  User, 
-  LogIn,
+import {
+  ChevronDown,
+  CheckCircle2,
+  Globe,
+  User,
   LogOut,
-  Zap,
-  Lock,
-  Sun,
-  Moon
+  Menu,
+  X,
+  Download,
 } from 'lucide-react';
 
-export const Navbar = ({ activeTab, setActiveTab, currentUser, onOpenLogin, onLogout }) => {
-  const { lang, setLang, t, availableLanguages } = useLanguage();
-  const { theme, toggleTheme, isDark } = useTheme();
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+export function Navbar({
+  activeTab: activeTabProp,
+  setActiveTab: setActiveTabProp,
+  currentUser: currentUserProp,
+  onOpenLogin: onOpenLoginProp,
+  onLogout: onLogoutProp,
+}) {
+  const [internalTab, setInternalTab] = useState('home');
+  const [demoUser, setDemoUser] = useState(null);
 
-  const navLinks = [
-    { id: 'home', label: t.home, icon: Layers },
-    { id: 'assistant', label: t.aiAssistant, icon: Sparkles, badge: 'RAG' },
-    { id: 'standards', label: t.standards, icon: Search },
-    { id: 'services', label: t.services, icon: Shield },
-    { id: 'labs', label: t.labs, icon: MapPin }
-  ];
+  const activeTab = activeTabProp ?? internalTab;
+  const setActiveTab = setActiveTabProp ?? setInternalTab;
+  const currentUser = currentUserProp ?? demoUser;
+  const onOpenLogin =
+    onOpenLoginProp ??
+    (() =>
+      setDemoUser({
+        name: 'Dr. V. Sharma',
+        role: 'Regulatory Affairs • Lead Auditor',
+        email: 'v.sharma@bis.gov.in',
+      }));
+  const onLogout = onLogoutProp ?? (() => setDemoUser(null));
 
-  const languageLabels = {
-    EN: 'English (EN)',
-    HI: 'हिंदी (HI)',
-    TA: 'தமிழ் (TA)',
-    TE: 'తెలుగు (TE)',
-    MR: 'मराठी (MR)',
-    BN: 'বাংলা (BN)'
+  let langCtx = null;
+  try {
+    langCtx = useLanguage();
+  } catch {
+    // Standalone fallback
+  }
+
+  const [internalLang, setInternalLang] = useState('EN');
+  const lang = langCtx?.lang ?? internalLang;
+  const setLang = langCtx?.setLang ?? setInternalLang;
+  const t = langCtx?.t || ((k) => k);
+  const languageLabels = langCtx?.languageLabels || {
+    EN: 'English',
+    HI: 'हिंदी',
+    TA: 'தமிழ்',
+    TE: 'తెలుగు',
+    MR: 'मराठी',
+    BN: 'বাংলা',
   };
 
-  const isDemo = !currentUser || currentUser.isDemo;
+  const [langOpen, setLangOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [standardsDropdown, setStandardsDropdown] = useState(false);
+  const [servicesDropdown, setServicesDropdown] = useState(false);
+
+  const langRef = useRef(null);
+  const profileRef = useRef(null);
+  const standardsRef = useRef(null);
+  const servicesRef = useRef(null);
+
+  useEffect(() => {
+    function handleClick(e) {
+      if (langRef.current && !langRef.current.contains(e.target)) setLangOpen(false);
+      if (profileRef.current && !profileRef.current.contains(e.target)) setProfileOpen(false);
+      if (standardsRef.current && !standardsRef.current.contains(e.target)) setStandardsDropdown(false);
+      if (servicesRef.current && !servicesRef.current.contains(e.target)) setServicesDropdown(false);
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  const isDemo = !currentUser || Boolean(currentUser.isDemo);
+
+  const linkClass = (isActive) =>
+    `inline-flex items-center gap-1 text-[15px] font-medium tracking-tight transition-colors ${
+      isActive ? 'text-zinc-950' : 'text-zinc-800 hover:text-zinc-950'
+    }`;
+
+  function selectTab(id) {
+    setActiveTab(id);
+    setMobileOpen(false);
+    setStandardsDropdown(false);
+    setServicesDropdown(false);
+  }
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors duration-200">
-      {/* Top Gov.in Strip */}
-      <div className="bg-slate-900 text-slate-300 text-[11px] py-1 px-4 sm:px-8 flex justify-between items-center border-b border-slate-800">
-        <div className="flex items-center space-x-3">
-          <span className="inline-flex items-center text-sky-400 font-medium tracking-wide">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
-            GOVERNMENT OF INDIA • MINISTRY OF CONSUMER AFFAIRS
-          </span>
-          <span className="hidden md:inline text-slate-500">|</span>
-          <span className="hidden md:inline text-slate-400">SIH 2026 Innovation Framework</span>
-        </div>
-        
-        <div className="flex items-center space-x-4">
-          {isDemo && (
-            <div className="hidden sm:flex items-center space-x-1.5 px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-mono font-semibold">
-              <Zap className="w-3 h-3 text-amber-400" />
-              <span>LIMITED DEMO ACCESS</span>
-            </div>
-          )}
-          <span className="flex items-center space-x-1.5 text-slate-300 font-mono text-[10px]">
-            <Database className="w-3 h-3 text-sky-400" />
-            <span>22,482 Active IS</span>
-          </span>
-          <div className="flex items-center space-x-1 text-emerald-400 text-[10px] font-medium bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            <span>Gazette Live</span>
-          </div>
-        </div>
-      </div>
+    <header className="sticky top-0 z-40 bg-transparent">
+      <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
+        <div className="flex items-center justify-between h-[72px] sm:h-[80px]">
 
-      {/* Main Navbar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          
-          {/* Logo & Brand */}
-          <div 
-            onClick={() => setActiveTab('home')}
-            className="flex items-center space-x-2.5 cursor-pointer group shrink-0"
-          >
-            <div className="flex items-center bg-white rounded-xl p-1 shadow-sm border border-slate-200/80 group-hover:scale-105 transition-transform">
-              <img 
-                src="/images/bisync-logo.png" 
-                alt="BISync - Standards, Sync'd, Simplified" 
-                className="h-10 sm:h-11 w-auto object-contain"
-              />
-            </div>
-            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-sky-100 dark:bg-sky-950/80 text-sky-800 dark:text-sky-300 rounded border border-sky-200 dark:border-sky-800 tracking-wider font-mono">
-              GOV.IN
-            </span>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-1 bg-slate-100 dark:bg-[#162032] p-1 rounded-xl border border-slate-200 dark:border-[#1f2c42]">
-            {navLinks.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`relative flex items-center space-x-2 px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
-                    isActive
-                      ? 'bg-white dark:bg-[#0e1626] text-sky-700 dark:text-sky-400 shadow-sm border border-slate-200/60 dark:border-sky-500/30'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-[#1f2c42]'
-                  }`}
-                >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-sky-600 dark:text-sky-400' : 'text-slate-500 dark:text-slate-400'}`} />
-                  <span>{item.label}</span>
-                  {item.badge && (
-                    <span className="ml-1 px-1.5 py-0.2 text-[9px] font-bold bg-sky-500 text-white rounded">
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Right Action Cluster */}
-          <div className="flex items-center space-x-2.5">
-            {/* Language Selector */}
-            <div className="relative group">
-              <div className="flex items-center space-x-1.5 px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer transition-colors">
-                <Globe className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
-                <span className="font-semibold">{lang}</span>
-                <ChevronDown className="w-3 h-3 text-slate-400 group-hover:rotate-180 transition-transform" />
-              </div>
-              <div className="absolute right-0 mt-1 w-44 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-800 py-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
-                <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 mb-1">
-                  Select Language
-                </div>
-                {availableLanguages.map((code) => (
-                  <button
-                    key={code}
-                    onClick={() => setLang(code)}
-                    className={`w-full text-left px-3 py-1.5 text-xs flex items-center justify-between hover:bg-sky-50 dark:hover:bg-sky-950/50 hover:text-sky-700 dark:hover:text-sky-300 transition-colors ${
-                      lang === code ? 'font-bold text-sky-700 dark:text-sky-400 bg-sky-50/50 dark:bg-sky-950/30' : 'text-slate-700 dark:text-slate-300'
-                    }`}
-                  >
-                    <span>{languageLabels[code]}</span>
-                    {lang === code && <CheckCircle className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Working Dark Mode Toggle Button (Positioned between Language and Sign Out / Login Button) */}
+          <div className="flex items-center gap-10 lg:gap-14 min-w-0">
             <button
-              onClick={toggleTheme}
-              aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-              className="relative p-2 rounded-xl border transition-all duration-300 flex items-center justify-center bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-amber-300 dark:border-slate-700 shadow-xs group cursor-pointer"
+              type="button"
+              onClick={() => selectTab('home')}
+              className="flex items-center gap-2.5 cursor-pointer group select-none shrink-0"
+              aria-label="BISync home"
             >
-              {isDark ? (
-                <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-90 transition-transform duration-500" />
-              ) : (
-                <Moon className="w-4 h-4 text-slate-600 group-hover:-rotate-12 transition-transform duration-300" />
-              )}
+              <svg
+                className="w-7 h-7 text-zinc-900 group-hover:scale-105 transition-transform duration-200"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <polygon points="6 3 18 3 22 9 12 22 2 9 6 3" fill="currentColor" fillOpacity="0.08" />
+                <line x1="12" y1="22" x2="12" y2="9" />
+                <line x1="2" y1="9" x2="22" y2="9" />
+                <line x1="6" y1="3" x2="10" y2="9" />
+                <line x1="18" y1="3" x2="14" y2="9" />
+              </svg>
+              <span className="text-[17px] font-semibold tracking-tight text-zinc-900">
+                BIS<span className="font-medium text-zinc-500">ync</span>
+              </span>
             </button>
 
-            {/* If Demo / Not Authenticated: Display prominent LOGIN button */}
-            {isDemo ? (
+            <nav className="hidden md:flex items-center gap-7 lg:gap-9">
+              <div className="relative" ref={standardsRef}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStandardsDropdown((prev) => !prev);
+                    setServicesDropdown(false);
+                  }}
+                  className={linkClass(activeTab === 'standards')}
+                >
+                  <span>{t('standards')}</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 text-zinc-500 transition-transform ${standardsDropdown ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {standardsDropdown && (
+                  <div className="absolute left-0 mt-3 w-60 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-black/[0.08] p-2 z-50 animate-fade-in">
+                    <button
+                      type="button"
+                      onClick={() => selectTab('standards')}
+                      className="w-full text-left px-3 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100/80 hover:text-zinc-950 rounded-xl transition-colors"
+                    >
+                      <div className="font-semibold text-zinc-900">{t('indianStandardsSearch')}</div>
+                      <div className="text-xs text-zinc-500 mt-0.5">{t('searchSpecifications')}</div>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => selectTab('standards')}
+                      className="w-full text-left px-3 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100/80 hover:text-zinc-950 rounded-xl transition-colors"
+                    >
+                      <div className="font-semibold text-zinc-900">{t('mandatoryQcoOrders')}</div>
+                      <div className="text-xs text-zinc-500 mt-0.5">{t('compulsoryCertificationLists')}</div>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="relative" ref={servicesRef}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setServicesDropdown((prev) => !prev);
+                    setStandardsDropdown(false);
+                  }}
+                  className={linkClass(activeTab === 'services')}
+                >
+                  <span>{t('services')}</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 text-zinc-500 transition-transform ${servicesDropdown ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {servicesDropdown && (
+                  <div className="absolute left-0 mt-3 w-60 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-black/[0.08] p-2 z-50 animate-fade-in">
+                    <button
+                      type="button"
+                      onClick={() => selectTab('services')}
+                      className="w-full text-left px-3 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100/80 hover:text-zinc-950 rounded-xl transition-colors"
+                    >
+                      <div className="font-semibold text-zinc-900">{t('isiMarkCrs')}</div>
+                      <div className="text-xs text-zinc-500 mt-0.5">{t('productCertificationSchemes')}</div>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => selectTab('services')}
+                      className="w-full text-left px-3 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100/80 hover:text-zinc-950 rounded-xl transition-colors"
+                    >
+                      <div className="font-semibold text-zinc-900">{t('goldHallmarkingHuid')}</div>
+                      <div className="text-xs text-zinc-500 mt-0.5">{t('purityVerification')}</div>
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <button
-                onClick={onOpenLogin}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 hover:from-sky-700 hover:to-indigo-800 text-white text-xs font-bold flex items-center space-x-2 shadow-md shadow-sky-600/25 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                type="button"
+                onClick={() => selectTab('assistant')}
+                className={linkClass(activeTab === 'assistant')}
               >
-                <LogIn className="w-3.5 h-3.5 text-sky-200" />
-                <span>Login</span>
+                {t('aiAssistant')}
               </button>
+
+              <button
+                type="button"
+                onClick={() => selectTab('labs')}
+                className={linkClass(activeTab === 'labs')}
+              >
+                {t('labs')}
+              </button>
+            </nav>
+          </div>
+
+          <div className="flex items-center gap-1 sm:gap-3 shrink-0">
+            <div className="relative hidden sm:block" ref={langRef}>
+              <button
+                type="button"
+                onClick={() => setLangOpen((o) => !o)}
+                className="flex items-center gap-1 px-2 py-1.5 text-sm font-medium text-zinc-700 hover:text-zinc-950 transition-colors"
+                aria-label="Select language"
+              >
+                <Globe className="w-4 h-4 text-zinc-500" />
+                <span>{languageLabels[lang] || lang}</span>
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 mt-3 w-40 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-black/[0.08] py-1.5 z-50 animate-fade-in">
+                  <div className="px-3 py-1 text-[10px] font-semibold text-zinc-400 border-b border-zinc-100 mb-1">
+                    {t('selectLanguage')}
+                  </div>
+                  {Object.keys(languageLabels).map((code) => (
+                    <button
+                      type="button"
+                      key={code}
+                      onClick={() => {
+                        setLang(code);
+                        setLangOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-1.5 text-xs flex items-center justify-between hover:bg-zinc-100 transition-colors ${
+                        lang === code ? 'font-bold text-zinc-950 bg-zinc-100/60' : 'text-zinc-700'
+                      }`}
+                    >
+                      <span>{languageLabels[code]}</span>
+                      {lang === code && <CheckCircle2 className="w-3.5 h-3.5 text-fuchsia-600" />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {isDemo ? (
+              <div className="flex items-center gap-1 sm:gap-2">
+                <button
+                  type="button"
+                  onClick={onOpenLogin}
+                  className="hidden sm:inline-flex text-[15px] font-medium text-zinc-800 hover:text-zinc-950 px-3 py-2 transition-colors"
+                >
+                  {t('signIn')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => selectTab('assistant')}
+                  className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-zinc-900 hover:bg-black text-white text-[13px] sm:text-sm font-semibold flex items-center gap-2 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+                >
+                  <span>{t('getStarted')}</span>
+                  <Download className="w-3.5 h-3.5" strokeWidth={2.4} />
+                </button>
+              </div>
             ) : (
-              /* If Authenticated: Display active user profile badge with dropdown & Sign Out */
-              <div className="relative">
-                <div 
-                  onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                  className="flex items-center space-x-2 pl-2 border-l border-slate-200 dark:border-slate-700 cursor-pointer hover:opacity-90 transition-opacity"
+              <div className="relative" ref={profileRef}>
+                <button
+                  type="button"
+                  onClick={() => setProfileOpen((o) => !o)}
+                  className="flex items-center gap-2"
                 >
                   <div className="text-right hidden sm:block">
-                    <div className="text-xs font-bold text-slate-900 dark:text-white leading-tight">{currentUser.name}</div>
-                    <div className="text-[10px] text-sky-700 dark:text-sky-400 font-medium truncate max-w-[130px]">{currentUser.role}</div>
+                    <div className="text-sm font-semibold text-zinc-900 leading-tight">
+                      {currentUser.name}
+                    </div>
+                    <div className="text-[11px] text-zinc-500 font-medium truncate max-w-[140px]">
+                      {currentUser.role}
+                    </div>
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-700 to-indigo-800 text-white flex items-center justify-center font-bold text-xs shadow-sm border border-white dark:border-slate-800">
+                  <div className="w-8 h-8 rounded-full bg-zinc-900 text-white flex items-center justify-center font-bold text-xs shadow-sm">
                     {currentUser.name ? currentUser.name.slice(0, 2).toUpperCase() : 'U'}
                   </div>
-                </div>
+                </button>
 
-                {/* Profile dropdown menu with Sign Out */}
-                {profileDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-2 z-50 animate-slide-up">
-                    <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800">
-                      <div className="text-xs font-bold text-slate-900 dark:text-white">{currentUser.name}</div>
-                      <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{currentUser.email || currentUser.role}</div>
-                      <span className="inline-block mt-1 text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
-                        FULL STATUTORY ACCESS
+                {profileOpen && (
+                  <div className="absolute right-0 mt-3 w-52 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-black/[0.08] p-2 z-50 animate-fade-in">
+                    <div className="px-3 py-2 border-b border-zinc-100">
+                      <div className="text-xs font-bold text-zinc-900">{currentUser.name}</div>
+                      <div className="text-[10px] text-zinc-500 truncate">
+                        {currentUser.email || currentUser.role}
+                      </div>
+                      <span className="inline-block mt-1 text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        {t('fullStatutoryAccess')}
                       </span>
                     </div>
-
                     <button
+                      type="button"
                       onClick={() => {
-                        setProfileDropdownOpen(false);
+                        setProfileOpen(false);
                         onOpenLogin();
                       }}
-                      className="w-full text-left px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-sky-950/50 hover:text-sky-700 dark:hover:text-sky-400 rounded-lg transition-colors flex items-center space-x-2 mt-1"
+                      className="w-full text-left px-3 py-2 text-xs text-zinc-700 hover:bg-zinc-100 rounded-xl transition-colors flex items-center gap-2 mt-1"
                     >
                       <User className="w-3.5 h-3.5" />
-                      <span>Switch Profile</span>
+                      {t('switchProfile')}
                     </button>
-
                     <button
+                      type="button"
                       onClick={() => {
-                        setProfileDropdownOpen(false);
-                        if (onLogout) onLogout();
+                        setProfileOpen(false);
+                        onLogout();
                       }}
-                      className="w-full text-left px-3 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-lg transition-colors flex items-center space-x-2 font-medium"
+                      className="w-full text-left px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 rounded-xl transition-colors flex items-center gap-2 font-medium"
                     >
                       <LogOut className="w-3.5 h-3.5" />
-                      <span>Sign Out (Enter Demo)</span>
+                      {t('logOut')}
                     </button>
                   </div>
                 )}
               </div>
             )}
 
+            <button
+              type="button"
+              onClick={() => setMobileOpen((o) => !o)}
+              className="md:hidden p-2 rounded-full text-zinc-800 hover:bg-black/[0.05] transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
+
+        {mobileOpen && (
+          <nav className="md:hidden pb-5 flex flex-col gap-1 border-t border-zinc-200/70 pt-3 mt-1 animate-fade-in">
+            <button
+              type="button"
+              onClick={() => selectTab('home')}
+              className={`px-3 py-2.5 rounded-xl text-[15px] font-medium text-left ${
+                activeTab === 'home' ? 'bg-zinc-900 text-white' : 'text-zinc-800 hover:bg-zinc-100'
+              }`}
+            >
+              {t('home')}
+            </button>
+            <button
+              type="button"
+              onClick={() => selectTab('standards')}
+              className={`px-3 py-2.5 rounded-xl text-[15px] font-medium text-left ${
+                activeTab === 'standards' ? 'bg-zinc-900 text-white' : 'text-zinc-800 hover:bg-zinc-100'
+              }`}
+            >
+              {t('standards')}
+            </button>
+            <button
+              type="button"
+              onClick={() => selectTab('services')}
+              className={`px-3 py-2.5 rounded-xl text-[15px] font-medium text-left ${
+                activeTab === 'services' ? 'bg-zinc-900 text-white' : 'text-zinc-800 hover:bg-zinc-100'
+              }`}
+            >
+              {t('services')}
+            </button>
+            <button
+              type="button"
+              onClick={() => selectTab('assistant')}
+              className={`px-3 py-2.5 rounded-xl text-[15px] font-medium text-left ${
+                activeTab === 'assistant' ? 'bg-zinc-900 text-white' : 'text-zinc-800 hover:bg-zinc-100'
+              }`}
+            >
+              {t('aiAssistant')}
+            </button>
+            <button
+              type="button"
+              onClick={() => selectTab('labs')}
+              className={`px-3 py-2.5 rounded-xl text-[15px] font-medium text-left ${
+                activeTab === 'labs' ? 'bg-zinc-900 text-white' : 'text-zinc-800 hover:bg-zinc-100'
+              }`}
+            >
+              {t('labs')}
+            </button>
+
+            <div className="pt-3 mt-2 border-t border-zinc-200/70 flex items-center justify-between px-1">
+              <div className="flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-zinc-500" />
+                <select
+                  value={lang}
+                  onChange={(e) => setLang(e.target.value)}
+                  className="bg-transparent text-sm font-medium text-zinc-800 rounded-lg p-1"
+                >
+                  {Object.keys(languageLabels).map((code) => (
+                    <option key={code} value={code}>
+                      {languageLabels[code]} ({code})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {isDemo ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    onOpenLogin();
+                  }}
+                  className="text-sm font-medium text-zinc-800"
+                >
+                  {t('signIn')}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    onLogout();
+                  }}
+                  className="text-sm font-medium text-rose-600"
+                >
+                  {t('logOut')}
+                </button>
+              )}
+            </div>
+          </nav>
+        )}
       </div>
     </header>
   );
-};
+}
+
+export default Navbar;

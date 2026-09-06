@@ -20,11 +20,27 @@ export default {
           card: '#ffffff',
           darkBg: '#090d16',
           darkCard: '#111827'
+        },
+        sketch: {
+          bg: '#faf8fd',
+          surface: '#ffffff',
+          dark: '#18181b',
+          fuchsia: '#d946ef',
+          purple: '#a855f7',
+          border: 'rgba(0, 0, 0, 0.06)',
+          textMuted: '#64748b'
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        serif: ['Newsreader', 'Georgia', 'serif'],
+        editorial: ['Newsreader', 'Georgia', 'serif'],
+        sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+      },
+      boxShadow: {
+        'sketch-glow': '0 0 0 1.5px rgba(236, 72, 153, 0.45), 0 0 24px -2px rgba(217, 70, 239, 0.35)',
+        'sketch-card': '0 20px 45px -12px rgba(120, 80, 180, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03)',
+        'sketch-float': '0 30px 60px -15px rgba(70, 40, 120, 0.12), 0 12px 24px -10px rgba(0, 0, 0, 0.05)'
       },
       animation: {
         'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

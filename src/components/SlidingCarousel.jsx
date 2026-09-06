@@ -1,20 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   ChevronLeft, 
   ChevronRight, 
   ArrowRight, 
-  Sparkles, 
   BookOpen, 
   Award, 
   FlaskConical, 
   Gem, 
   ShieldAlert, 
-  CheckCircle2,
-  Database,
-  CheckCircle,
-  TrendingUp,
-  Radio,
-  Zap
+  Zap,
+  Radio
 } from 'lucide-react';
 
 const iconMap = {
@@ -27,47 +22,39 @@ const iconMap = {
 
 const domainThemes = {
   blue: {
-    gradient: 'from-sky-500/10 via-blue-500/5 to-transparent',
-    glow: 'group-hover:shadow-sky-500/20',
-    borderHover: 'group-hover:border-sky-400',
-    iconBg: 'bg-gradient-to-tr from-sky-600 to-blue-600 text-white shadow-md shadow-sky-500/30',
-    badge: 'bg-sky-950/80 text-sky-300 border-sky-500/40',
-    chip: 'bg-sky-950/60 text-sky-300 border border-sky-500/30',
-    accentText: 'text-sky-400',
-    pillDot: 'bg-sky-400',
-    topBar: 'from-sky-400 via-blue-500 to-indigo-600'
+    gradient: 'from-fuchsia-500/10 via-purple-500/5 to-transparent',
+    iconBg: 'bg-zinc-900 text-white shadow-sm',
+    badge: 'bg-zinc-100 text-zinc-700 border-zinc-200/80',
+    chip: 'bg-zinc-100 text-zinc-700',
+    accentText: 'text-zinc-900',
+    pillDot: 'bg-fuchsia-500',
+    topBar: 'from-fuchsia-500 via-purple-500 to-indigo-500'
   },
   emerald: {
     gradient: 'from-emerald-500/10 via-teal-500/5 to-transparent',
-    glow: 'group-hover:shadow-emerald-500/20',
-    borderHover: 'group-hover:border-emerald-400',
-    iconBg: 'bg-gradient-to-tr from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-500/30',
-    badge: 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40',
-    chip: 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/30',
-    accentText: 'text-emerald-400',
-    pillDot: 'bg-emerald-400',
+    iconBg: 'bg-zinc-900 text-white shadow-sm',
+    badge: 'bg-zinc-100 text-zinc-700 border-zinc-200/80',
+    chip: 'bg-zinc-100 text-zinc-700',
+    accentText: 'text-zinc-900',
+    pillDot: 'bg-emerald-500',
     topBar: 'from-emerald-400 via-teal-500 to-cyan-600'
   },
   amber: {
     gradient: 'from-amber-500/10 via-orange-500/5 to-transparent',
-    glow: 'group-hover:shadow-amber-500/20',
-    borderHover: 'group-hover:border-amber-400',
-    iconBg: 'bg-gradient-to-tr from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/30',
-    badge: 'bg-amber-950/80 text-amber-300 border-amber-500/40',
-    chip: 'bg-amber-950/60 text-amber-300 border border-amber-500/30',
-    accentText: 'text-amber-400',
-    pillDot: 'bg-amber-400',
+    iconBg: 'bg-zinc-900 text-white shadow-sm',
+    badge: 'bg-zinc-100 text-zinc-700 border-zinc-200/80',
+    chip: 'bg-zinc-100 text-zinc-700',
+    accentText: 'text-zinc-900',
+    pillDot: 'bg-amber-500',
     topBar: 'from-amber-400 via-orange-500 to-rose-500'
   },
   indigo: {
     gradient: 'from-indigo-500/10 via-purple-500/5 to-transparent',
-    glow: 'group-hover:shadow-indigo-500/20',
-    borderHover: 'group-hover:border-indigo-400',
-    iconBg: 'bg-gradient-to-tr from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/30',
-    badge: 'bg-indigo-950/80 text-indigo-300 border-indigo-500/40',
-    chip: 'bg-indigo-950/60 text-indigo-300 border border-indigo-500/30',
-    accentText: 'text-indigo-400',
-    pillDot: 'bg-indigo-400',
+    iconBg: 'bg-zinc-900 text-white shadow-sm',
+    badge: 'bg-zinc-100 text-zinc-700 border-zinc-200/80',
+    chip: 'bg-zinc-100 text-zinc-700',
+    accentText: 'text-zinc-900',
+    pillDot: 'bg-indigo-500',
     topBar: 'from-indigo-400 via-violet-500 to-fuchsia-600'
   }
 };
@@ -80,7 +67,6 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  // Update progress bar on scroll
   const handleScroll = () => {
     if (containerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
@@ -88,26 +74,21 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
       const progress = totalScrollable > 0 ? (scrollLeft / totalScrollable) * 100 : 0;
       setScrollProgress(progress);
 
-      // Find closest active index
-      const cardWidth = 360;
-      const newIndex = Math.round(scrollLeft / cardWidth);
-      if (newIndex >= 0 && newIndex < items.length) {
-        setCurrentIndex(newIndex);
-      }
+      const firstCard = containerRef.current.children[0];
+      const cardStep = firstCard ? firstCard.offsetWidth + 24 : 360;
+      const newIndex = Math.min(items.length - 1, Math.max(0, Math.round(scrollLeft / cardStep)));
+      setCurrentIndex(newIndex);
     }
   };
 
-  // Convert horizontal mouse wheel to smooth slide
   const handleWheel = (e) => {
     if (containerRef.current) {
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        // Translate vertical scroll to horizontal sliding smoothly
         containerRef.current.scrollLeft += e.deltaY * 0.85;
       }
     }
   };
 
-  // Mouse Drag to Slide
   const handleMouseDown = (e) => {
     setIsDragging(true);
     setStartX(e.pageX - containerRef.current.offsetLeft);
@@ -122,16 +103,18 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - containerRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; // Slide speed multiplier
+    const walk = (x - startX) * 1.5;
     containerRef.current.scrollLeft = scrollLeft - walk;
   };
 
   const slideTo = (index) => {
-    setCurrentIndex(index);
+    const validIdx = Math.max(0, Math.min(items.length - 1, index));
+    setCurrentIndex(validIdx);
     if (containerRef.current) {
-      const card = containerRef.current.children[index];
+      const card = containerRef.current.children[validIdx];
       if (card) {
-        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        const targetLeft = card.offsetLeft - containerRef.current.offsetLeft;
+        containerRef.current.scrollTo({ left: targetLeft, behavior: 'smooth' });
       }
     }
   };
@@ -152,11 +135,11 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
       {/* Top Controls Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-1">
         <div className="flex items-center space-x-2.5">
-          <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-slate-900 dark:bg-slate-800 text-white text-[11px] font-mono font-semibold tracking-wider shadow-sm border border-slate-700">
-            <Radio className="w-3 h-3 text-emerald-400 animate-pulse" />
-            <span>OPERATIONAL DOMAINS</span>
+          <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-zinc-900 text-white text-[11px] font-mono font-semibold tracking-wider shadow-xs">
+            <Radio className="w-3 h-3 text-fuchsia-400 animate-pulse" />
+            <span>CORE PROTOCOLS</span>
           </div>
-          <span className="text-xs text-slate-500 dark:text-slate-400 hidden sm:inline font-medium">
+          <span className="text-xs text-zinc-500 hidden sm:inline font-normal">
             Scroll or drag cards horizontally to explore
           </span>
         </div>
@@ -168,10 +151,10 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
               <button
                 key={idx}
                 onClick={() => slideTo(idx)}
-                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                className={`h-1.5 rounded-full transition-all duration-300 ${
                   currentIndex === idx 
-                    ? 'w-8 bg-sky-600 shadow-sm shadow-sky-500/50' 
-                    : 'w-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400'
+                    ? 'w-7 bg-zinc-900' 
+                    : 'w-2 bg-zinc-300 hover:bg-zinc-400'
                 }`}
                 aria-label={`Slide ${idx + 1}`}
               />
@@ -181,14 +164,14 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
           <div className="flex items-center space-x-1.5">
             <button
               onClick={prevSlide}
-              className="w-8 h-8 rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#1f2c42] text-slate-700 dark:text-slate-200 hover:bg-sky-50 dark:hover:bg-[#162032] hover:text-sky-700 dark:hover:text-sky-400 hover:border-sky-300 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+              className="w-8 h-8 rounded-full bg-white border border-black/[0.08] text-zinc-700 hover:bg-zinc-100 flex items-center justify-center shadow-2xs transition-all"
               aria-label="Previous card"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={nextSlide}
-              className="w-8 h-8 rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#1f2c42] text-slate-700 dark:text-slate-200 hover:bg-sky-50 dark:hover:bg-[#162032] hover:text-sky-700 dark:hover:text-sky-400 hover:border-sky-300 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+              className="w-8 h-8 rounded-full bg-white border border-black/[0.08] text-zinc-700 hover:bg-zinc-100 flex items-center justify-center shadow-2xs transition-all"
               aria-label="Next card"
             >
               <ChevronRight className="w-4 h-4" />
@@ -197,10 +180,8 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
         </div>
       </div>
 
-      {/* Sliding Track Viewport with Gradient Masks */}
+      {/* Sliding Track Viewport */}
       <div className="relative group/track">
-        
-        {/* Sliding Cards Container */}
         <div 
           ref={containerRef}
           onScroll={handleScroll}
@@ -225,95 +206,106 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
                   slideTo(index);
                   if (onSelectCard) onSelectCard(item);
                 }}
-                className={`flex-shrink-0 w-[300px] sm:w-[340px] md:w-[360px] snap-start rounded-3xl border transition-all duration-400 p-6 flex flex-col justify-between bg-white dark:bg-[#111827] relative group overflow-hidden cursor-pointer ${
+                className={`flex-shrink-0 w-[300px] sm:w-[340px] md:w-[360px] snap-start rounded-3xl transition-all duration-300 p-6 sm:p-7 flex flex-col justify-between sketch-card relative group overflow-hidden ${
                   isSelected 
-                    ? 'border-sky-500/80 dark:border-sky-500 ring-4 ring-sky-500/10 shadow-2xl shadow-sky-500/15 -translate-y-2' 
-                    : 'border-slate-200/90 dark:border-[#1f2c42] hover:border-slate-300 dark:hover:border-sky-500/50 hover:-translate-y-1.5 shadow-md hover:shadow-xl'
+                    ? 'border-fuchsia-500/40 shadow-sketch-card -translate-y-2' 
+                    : 'hover:-translate-y-1.5'
                 }`}
               >
-                {/* Top Glowing Gradient Accent Bar */}
-                <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${theme.topBar}`} />
-
                 {/* Subtle Ambient Background Mesh */}
                 <div className={`absolute -right-12 -top-12 w-36 h-36 rounded-full bg-gradient-to-br ${theme.gradient} blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none`} />
 
                 <div className="relative z-10 space-y-4">
-                  {/* Header: Icon with Glowing Shadow & Badge */}
+                  {/* Header: Icon & Badge */}
                   <div className="flex items-center justify-between">
-                    <div className={`w-13 h-13 p-3 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-2 ${theme.iconBg}`}>
-                      <IconComponent className="w-6 h-6" />
+                    <div className={`w-11 h-11 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${theme.iconBg}`}>
+                      <IconComponent className="w-5 h-5 text-white" />
                     </div>
 
                     <div className="flex items-center space-x-1.5">
-                      <span className={`text-[10px] font-mono uppercase tracking-wider font-bold px-2.5 py-1 rounded-full border flex items-center space-x-1 ${theme.badge}`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${theme.pillDot} animate-pulse`} />
+                      <span className={`text-[10px] font-mono uppercase tracking-wider font-semibold px-2.5 py-0.5 rounded-full border flex items-center space-x-1 ${theme.badge}`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${theme.pillDot}`} />
                         <span>{item.badge}</span>
                       </span>
                     </div>
                   </div>
 
-                  {/* Optional Image Thumbnail Preview */}
+                  {/* Photo Preview */}
                   {item.image && (
-                    <div className="relative h-28 w-full rounded-2xl overflow-hidden border border-slate-100 dark:border-[#1f2c42] shadow-inner group/img">
+                    <div className="relative w-full h-36 sm:h-40 rounded-2xl overflow-hidden border border-black/[0.06] shadow-2xs group-hover:shadow-xs transition-all">
                       <img 
                         src={item.image} 
                         alt={item.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
                     </div>
                   )}
 
-                  {/* Title & Description */}
+                  {/* Title & Description in Editorial Serif */}
                   <div>
-                    <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tight group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors mb-1.5 flex items-center justify-between">
+                    <h3 className="text-xl font-serif text-zinc-950 tracking-tight group-hover:text-fuchsia-600 transition-colors mb-2 flex items-center justify-between">
                       <span>{item.title}</span>
-                      <Zap className="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-amber-500 transition-colors opacity-0 group-hover:opacity-100" />
+                      <Zap className="w-3.5 h-3.5 text-zinc-300 group-hover:text-fuchsia-500 transition-colors opacity-0 group-hover:opacity-100" />
                     </h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3 font-normal">
+                    <p className="text-xs text-zinc-600 leading-relaxed line-clamp-3 font-normal">
                       {item.description}
                     </p>
                   </div>
 
-                  {/* Micro Specs / Highlights Strip */}
-                  <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#162032] border border-slate-200 dark:border-[#1f2c42] flex items-center justify-between text-xs">
+                  {/* Micro Specs Strip */}
+                  <div className="p-3 rounded-2xl bg-zinc-50/80 border border-black/[0.04] flex items-center justify-between text-xs">
                     <div className="flex items-center space-x-2">
-                      <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                      <span className="font-semibold text-slate-700 dark:text-slate-200 text-[11px]">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      <span className="font-medium text-zinc-700 text-[11px]">
                         {item.id === 'domain-1' ? '22,482 IS Catalog' :
                          item.id === 'domain-2' ? 'Scheme I & CRS Matrix' :
                          item.id === 'domain-3' ? '1,840 NABL Registry' : '6-Digit HUID Protocol'}
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded-md">
+                    <span className="text-[9px] font-mono text-zinc-500 font-medium px-2 py-0.5 rounded-full bg-white border border-black/[0.04]">
                       ACTIVE
                     </span>
                   </div>
                 </div>
 
                 {/* Card Action Link Footer */}
-                <div className="relative z-10 pt-4 mt-4 border-t border-slate-100 dark:border-[#1f2c42] flex items-center justify-between text-xs font-bold text-sky-600 dark:text-sky-400 group-hover:text-sky-700 dark:group-hover:text-sky-300">
+                <div className="relative z-10 pt-4 mt-4 border-t border-black/[0.05] flex items-center justify-between text-xs font-semibold text-zinc-900 group-hover:text-fuchsia-600">
                   <div className="flex items-center space-x-1.5">
                     <span className="group-hover:underline tracking-tight">{item.cta || 'Explore details'}</span>
-                    <div className="w-5 h-5 rounded-full bg-sky-50 dark:bg-sky-950/80 text-sky-600 dark:text-sky-400 flex items-center justify-center group-hover:translate-x-1 group-hover:bg-sky-600 group-hover:text-white transition-all">
-                      <ArrowRight className="w-3 h-3" />
-                    </div>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400 dark:text-slate-400 font-medium">
-                    STEP 0{index + 1}
+                  <span className="text-[10px] font-mono text-zinc-400 font-normal">
+                    0{index + 1}
                   </span>
                 </div>
               </div>
             );
           })}
+          <div className="shrink-0 w-6 sm:w-10 pointer-events-none" aria-hidden="true" />
         </div>
+
+        {/* Right Fade Indicator */}
+        {scrollProgress < 85 && (
+          <button
+            type="button"
+            onClick={nextSlide}
+            className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#faf8fd] via-[#faf8fd]/50 to-transparent pointer-events-auto hidden md:flex items-center justify-end pr-2 opacity-80 hover:opacity-100 transition-opacity z-20"
+            title="Next cards"
+            aria-label="Next cards"
+          >
+            <div className="w-8 h-8 rounded-full bg-white shadow-sm border border-black/[0.08] text-zinc-600 hover:text-zinc-900 flex items-center justify-center transition-all hover:scale-110">
+              <ChevronRight className="w-4 h-4" />
+            </div>
+          </button>
+        )}
       </div>
 
       {/* Dynamic Smooth Slide Progress Bar */}
-      <div className="w-full bg-slate-200/70 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
+      <div className="w-full bg-black/[0.05] h-1 rounded-full overflow-hidden">
         <div 
-          className="bg-gradient-to-r from-sky-500 to-indigo-600 h-full rounded-full transition-all duration-200"
+          className="bg-zinc-900 h-full rounded-full transition-all duration-200"
           style={{ width: `${Math.max(15, scrollProgress)}%` }}
         />
       </div>
@@ -321,3 +313,5 @@ export const SlidingCarousel = ({ items, onSelectCard }) => {
     </div>
   );
 };
+
+export default SlidingCarousel;

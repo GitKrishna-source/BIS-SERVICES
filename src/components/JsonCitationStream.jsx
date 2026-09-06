@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Terminal, Copy, Check, Sparkles, Code2, Database } from 'lucide-react';
+import { Terminal, Copy, Check, Database } from 'lucide-react';
 
 export const JsonCitationStream = () => {
   const [copied, setCopied] = useState(false);
@@ -43,28 +43,28 @@ export const JsonCitationStream = () => {
   };
 
   return (
-    <div className="bg-slate-950 rounded-2xl border border-slate-800 p-5 shadow-xl text-slate-200 font-mono text-xs overflow-hidden">
+    <div className="bg-zinc-950 rounded-3xl border border-white/10 p-5 sm:p-6 shadow-sketch-float text-zinc-300 font-mono text-xs overflow-hidden">
       {/* Top bar with tabs */}
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-3">
-        <div className="flex items-center space-x-2">
+      <div className="flex items-center justify-between pb-3 border-b border-white/[0.08] mb-3">
+        <div className="flex items-center space-x-2.5">
           <div className="flex space-x-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block"></span>
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block" />
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block" />
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
           </div>
-          <span className="text-[11px] text-slate-400 font-semibold pl-2 flex items-center space-x-1">
-            <Terminal className="w-3.5 h-3.5 text-sky-400" />
+          <span className="text-[11px] text-zinc-400 font-medium pl-2 flex items-center space-x-1.5">
+            <Terminal className="w-3.5 h-3.5 text-fuchsia-400" />
             <span>{current.file}</span>
           </span>
         </div>
 
         <div className="flex items-center space-x-3">
-          <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/80 border border-emerald-800/60 px-2 py-0.5 rounded">
+          <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/50 px-2.5 py-0.5 rounded-full">
             CONFIDENCE: {current.confidence}
           </span>
           <button
             onClick={handleCopy}
-            className="text-slate-400 hover:text-white transition-colors"
+            className="text-zinc-400 hover:text-white transition-colors"
             title="Copy JSON Payload"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -76,20 +76,20 @@ export const JsonCitationStream = () => {
       <div className="flex space-x-2 mb-3">
         <button
           onClick={() => setActiveSchema('IS_17803')}
-          className={`px-2.5 py-1 rounded text-[10px] font-semibold transition-all ${
+          className={`px-3 py-1 rounded-full text-[10px] font-semibold transition-all ${
             activeSchema === 'IS_17803'
-              ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40'
-              : 'text-slate-400 hover:text-slate-200 bg-slate-900 border border-slate-800'
+              ? 'bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/40'
+              : 'text-zinc-400 hover:text-zinc-200 bg-zinc-900 border border-zinc-800'
           }`}
         >
           IS 17803 (Flasks)
         </button>
         <button
           onClick={() => setActiveSchema('IS_13252')}
-          className={`px-2.5 py-1 rounded text-[10px] font-semibold transition-all ${
+          className={`px-3 py-1 rounded-full text-[10px] font-semibold transition-all ${
             activeSchema === 'IS_13252'
-              ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40'
-              : 'text-slate-400 hover:text-slate-200 bg-slate-900 border border-slate-800'
+              ? 'bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/40'
+              : 'text-zinc-400 hover:text-zinc-200 bg-zinc-900 border border-zinc-800'
           }`}
         >
           IS 13252 (IT Safety)
@@ -97,17 +97,19 @@ export const JsonCitationStream = () => {
       </div>
 
       {/* Code Area */}
-      <pre className="text-sky-300 text-[11px] leading-relaxed bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/80 overflow-x-auto">
+      <pre className="text-fuchsia-200/90 text-[11px] leading-relaxed bg-zinc-900/80 p-4 rounded-2xl border border-white/[0.06] overflow-x-auto">
         <code>{current.code}</code>
       </pre>
 
-      <div className="mt-3 flex items-center justify-between text-[10px] text-slate-400 pt-2 border-t border-slate-800/60">
-        <span className="flex items-center space-x-1">
-          <Database className="w-3 h-3 text-sky-400" />
-          <span>Real-time RAG Vector Retrieval Stream</span>
+      <div className="mt-3 flex items-center justify-between text-[10px] text-zinc-500 pt-2 border-t border-white/[0.06]">
+        <span className="flex items-center space-x-1.5">
+          <Database className="w-3 h-3 text-fuchsia-400" />
+          <span>Deterministic RAG Vector Stream</span>
         </span>
-        <span className="text-emerald-400 font-bold">● Grounded</span>
+        <span className="text-emerald-400 font-medium">● Grounded</span>
       </div>
     </div>
   );
 };
+
+export default JsonCitationStream;

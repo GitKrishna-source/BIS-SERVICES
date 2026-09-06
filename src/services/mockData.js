@@ -202,6 +202,7 @@ export const mockServices = [
     title: "Certification",
     subtitle: "Understand BIS certification requirements.",
     description: "Explore Scheme-I (ISI Mark) and CRS schemes, step-by-step application walkthroughs, required factory audit documents, and fee structures.",
+    image: "/images/certification_isi.jpg",
     stats: [
       { label: "AVG. TIMELINE", value: "30 Days" },
       { label: "VALIDITY", value: "1-2 Years" },
@@ -220,6 +221,7 @@ export const mockServices = [
     title: "Testing Laboratories",
     subtitle: "Find relevant testing facilities.",
     description: "Search certified NABL and BIS laboratories across India by product standard, test scope, proximity, and estimated turnaround times.",
+    image: "/images/testing_laboratory.jpg",
     highlightBadge: "LIVE",
     highlightTitle: "Interactive Registry",
     highlightSubtitle: "Geographic Lab Index with Pin code lookup",
@@ -236,6 +238,7 @@ export const mockServices = [
     title: "Hallmarking",
     subtitle: "Understand hallmarking requirements.",
     description: "Learn mandatory gold and silver hallmarking standards, 6-digit HUID authenticity checks, and how to register an assaying center.",
+    image: "/images/hallmarking_gold.jpg",
     highlightBadge: "VERIFIED",
     highlightTitle: "6-Digit Alphanumeric Code",
     highlightSubtitle: "Trace metal purity & jeweler registration",
@@ -252,6 +255,7 @@ export const mockServices = [
     title: "Consumer Help",
     subtitle: "Get answers to common consumer questions.",
     description: "Verify certified ISI licenses on consumer goods, report substandard or fake certification marks, and file grievances with the BIS Consumer Affairs Department.",
+    image: "/images/consumer_helpdesk.jpg",
     features: [
       { label: "License Validity Status", value: "Instant Verification" },
       { label: "Spurious Mark Escalation", value: "Priority Dispatch" }
@@ -276,7 +280,8 @@ export const mockLabs = [
     email: "cl@bis.gov.in",
     turnaroundDays: "7-12 Days",
     rating: 4.9,
-    status: "Operational"
+    status: "Operational",
+    image: "/images/central_lab_campus.jpg"
   },
   {
     id: "LAB-MH-02",
@@ -290,7 +295,8 @@ export const mockLabs = [
     email: "wrol@bis.gov.in",
     turnaroundDays: "10-14 Days",
     rating: 4.8,
-    status: "Operational"
+    status: "Operational",
+    image: "/images/testing_laboratory.jpg"
   },
   {
     id: "LAB-KA-03",
@@ -304,7 +310,8 @@ export const mockLabs = [
     email: "support@stmlabs.in",
     turnaroundDays: "8-10 Days",
     rating: 4.7,
-    status: "Operational"
+    status: "Operational",
+    image: "/images/testing_laboratory.jpg"
   },
   {
     id: "LAB-TN-04",
@@ -318,7 +325,8 @@ export const mockLabs = [
     email: "testing@cptl-south.org",
     turnaroundDays: "5-9 Days",
     rating: 4.9,
-    status: "Operational"
+    status: "Operational",
+    image: "/images/central_lab_campus.jpg"
   }
 ];
 
