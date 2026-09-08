@@ -240,6 +240,7 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
               {sampleQueries.map((query, index) => (
                 <button
                   key={index}
+                  type="button"
                   onClick={() => onStartQuery(query)}
                   className="text-[11px] px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white text-zinc-600 hover:text-zinc-950 border border-zinc-200/80 hover:border-zinc-400 transition-all shadow-2xs flex items-center gap-1.5 font-medium hover:-translate-y-0.5"
                 >

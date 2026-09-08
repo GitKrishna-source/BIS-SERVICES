@@ -19,6 +19,7 @@ export function AppContent() {
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
   const [pdfModalTitle, setPdfModalTitle] = useState('Gazette Notification S.O. 3192(E)');
   const [activeAssistantQuery, setActiveAssistantQuery] = useState('');
+  const [assistantQueryTimestamp, setAssistantQueryTimestamp] = useState(0);
   const [globalScrollProgress, setGlobalScrollProgress] = useState(0);
 
   // Authentication state: Load saved user or fallback to guest
@@ -83,17 +84,20 @@ export function AppContent() {
 
   const handleStartQuery = (queryText) => {
     setActiveAssistantQuery(queryText);
+    setAssistantQueryTimestamp(Date.now());
     setActiveTab('assistant');
   };
 
   const handleAskAboutStandard = (standard) => {
     setIsDrawerOpen(false);
     setActiveAssistantQuery(`What are the certification and testing requirements for ${standard.code} (${standard.title})?`);
+    setAssistantQueryTimestamp(Date.now());
     setActiveTab('assistant');
   };
 
   const handleAskAboutLab = (lab) => {
     setActiveAssistantQuery(`How can I submit samples of ${lab.standards[0] || 'IS 17803:2022'} to ${lab.name} in ${lab.city}?`);
+    setAssistantQueryTimestamp(Date.now());
     setActiveTab('assistant');
   };
 
@@ -148,6 +152,7 @@ export function AppContent() {
             currentUser={currentUser}
             onOpenLogin={() => setIsLoginModalOpen(true)}
             initialQuery={activeAssistantQuery}
+            queryTimestamp={assistantQueryTimestamp}
             onOpenDrawer={handleOpenStandardDrawer}
             onOpenPdf={handleOpenPdfModal}
           />

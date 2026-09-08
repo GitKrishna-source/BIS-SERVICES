@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { sampleRAGSession, mockStandards } from '../services/mockData';
 import { ragApi } from '../services/api';
@@ -24,7 +24,7 @@ import {
   LogIn
 } from 'lucide-react';
 
-export const AIAssistantPage = ({ currentUser, onOpenLogin, initialQuery = '', onOpenDrawer, onOpenPdf }) => {
+export const AIAssistantPage = ({ currentUser, onOpenLogin, initialQuery = '', queryTimestamp, onOpenDrawer, onOpenPdf }) => {
   const { t } = useLanguage();
   const [session, setSession] = useState(sampleRAGSession);
   const [inputValue, setInputValue] = useState(initialQuery || '');
@@ -33,12 +33,13 @@ export const AIAssistantPage = ({ currentUser, onOpenLogin, initialQuery = '', o
   const [strictMode, setStrictMode] = useState(true);
   const [feedback, setFeedback] = useState(null);
   const [demoQueriesLeft, setDemoQueriesLeft] = useState(3);
+  const lastExecutedQueryRef = useRef('');
 
   const isDemo = !currentUser || currentUser.isDemo;
 
-  const handleSend = async (e) => {
-    if (e) e.preventDefault();
-    if (!inputValue.trim() || isLoading) return;
+  const executeQuery = async (queryText) => {
+    const trimmed = (queryText || '').trim();
+    if (!trimmed || isLoading) return;
 
     if (isDemo && demoQueriesLeft <= 0) {
       if (onOpenLogin) onOpenLogin();
@@ -47,9 +48,10 @@ export const AIAssistantPage = ({ currentUser, onOpenLogin, initialQuery = '', o
 
     setIsLoading(true);
     try {
-      const res = await ragApi.queryAssistant({ query: inputValue });
+      const res = await ragApi.queryAssistant({ query: trimmed });
       if (res.success && res.data) {
         setSession(res.data);
+        lastExecutedQueryRef.current = trimmed;
         if (isDemo) {
           setDemoQueriesLeft(prev => Math.max(0, prev - 1));
         }
@@ -59,6 +61,19 @@ export const AIAssistantPage = ({ currentUser, onOpenLogin, initialQuery = '', o
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Automatically execute search when navigating from HomePage or prompt pills
+  useEffect(() => {
+    if (initialQuery && initialQuery.trim()) {
+      setInputValue(initialQuery.trim());
+      executeQuery(initialQuery.trim());
+    }
+  }, [initialQuery, queryTimestamp]);
+
+  const handleSend = async (e) => {
+    if (e) e.preventDefault();
+    executeQuery(inputValue);
   };
 
   const handleCopy = () => {
