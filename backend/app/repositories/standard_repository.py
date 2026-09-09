@@ -1,7 +1,8 @@
 from typing import List, Optional, Tuple, Dict, Any
 from app.repositories.standards_data import TOP_50_STANDARDS
+from app.repositories.standards_data_additional import ADDITIONAL_STANDARDS_BATCH
 
-INITIAL_STANDARDS: List[Dict[str, Any]] = TOP_50_STANDARDS
+INITIAL_STANDARDS: List[Dict[str, Any]] = TOP_50_STANDARDS + ADDITIONAL_STANDARDS_BATCH
 
 
 
@@ -85,6 +86,7 @@ class InMemoryStandardRepository:
             {"id": "consumer", "label": "Consumer Products"},
             {"id": "electrical", "label": "Electrical & Power"},
             {"id": "automotive", "label": "Automotive & Safety"},
+            {"id": "renewables", "label": "Renewables & Energy Storage"},
             {"id": "polymers", "label": "Chemicals & Polymers"},
             {"id": "food", "label": "Food & Agri"},
             {"id": "medical", "label": "Medical Devices"}

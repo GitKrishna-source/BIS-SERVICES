@@ -28,7 +28,10 @@ export const StandardsSearchPage = ({ onSelectStandard, onConsultAssistant }) =>
     { id: 'qco', label: t('mandatoryQco', 'Mandatory QCO'), isQcoFlag: true },
     { id: 'electronics', label: t('electronics', 'Electronics & IT') },
     { id: 'consumer', label: t('consumerGoods', 'Consumer Products') },
-    { id: 'food', label: t('foodAgri', 'Food & Agri') }
+    { id: 'food', label: t('foodAgri', 'Food & Agri') },
+    { id: 'electrical', label: t('electrical', 'Electrical & Power') },
+    { id: 'automotive', label: t('automotive', 'Automotive & Safety') },
+    { id: 'renewables', label: t('renewables', 'Renewables & Energy') }
   ];
 
   const fetchStandards = async () => {
