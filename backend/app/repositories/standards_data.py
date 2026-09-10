@@ -1,4 +1,6 @@
 from typing import List, Dict, Any
+from app.repositories.data.batch_1 import BATCH_1
+from app.repositories.data.batch_2 import ADDITIONAL_STANDARDS_BATCH_2
 
 TOP_50_STANDARDS: List[Dict[str, Any]] = [
     # -------------------------------------------------------------
@@ -1445,3 +1447,5 @@ TOP_50_STANDARDS: List[Dict[str, Any]] = [
         "certificationScheme": "Compulsory Registration Scheme (CRS)"
     }
 ]
+
+ALL_STANDARDS: List[Dict[str, Any]] = TOP_50_STANDARDS + BATCH_1 + ADDITIONAL_STANDARDS_BATCH_2

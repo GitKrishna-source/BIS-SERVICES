@@ -1,8 +1,7 @@
 from typing import List, Optional, Tuple, Dict, Any
-from app.repositories.standards_data import TOP_50_STANDARDS
-from app.repositories.standards_data_additional import ADDITIONAL_STANDARDS_BATCH
+from app.repositories.standards_data import ALL_STANDARDS
 
-INITIAL_STANDARDS: List[Dict[str, Any]] = TOP_50_STANDARDS + ADDITIONAL_STANDARDS_BATCH
+INITIAL_STANDARDS: List[Dict[str, Any]] = ALL_STANDARDS
 
 
 
