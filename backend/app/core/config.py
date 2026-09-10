@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     AI_API_KEY: str = ""
     GEMINI_API_KEY: str = ""
     GOOGLE_API_KEY: str = ""
-    AI_MODEL: str = "gemini-1.5-flash"
+    AI_MODEL: str = "gemini-3.6-flash"
     AI_API_BASE_URL: str = "https://api.openai.com/v1"
     AI_EMBEDDING_MODEL: str = "text-embedding-3-small"
     AI_EMBEDDING_DIMENSIONS: int = 256
@@ -52,8 +52,8 @@ class Settings(BaseSettings):
     @property
     def effective_model(self) -> str:
         model = self.AI_MODEL.strip() if self.AI_MODEL else ""
-        if not model or model.lower() in ["bis-reasoner-v2.5", "default", "gemini"]:
-            return "gemini-1.5-flash"
+        if not model or model.lower() in ["bis-reasoner-v2.5", "default", "gemini", "gemini-1.5-flash"]:
+            return "gemini-3.6-flash"
         return model
 
     model_config = SettingsConfigDict(env_file=".env", extra="allow")

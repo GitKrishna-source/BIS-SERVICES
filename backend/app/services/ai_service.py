@@ -149,14 +149,22 @@ class AIService:
         current_user: Optional[Dict[str, Any]]
     ) -> Optional[Dict[str, Any]]:
         """
-        Execute live request to Google Gemini API.
+        Execute live request to Google Gemini API with multi-model fallback.
         """
         api_key = settings.effective_api_key
         if not api_key:
             return None
 
-        model_name = settings.effective_model
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+        candidate_models = [
+            settings.effective_model,
+            "gemini-3.7-flash",
+            "gemini-3-flash-preview",
+            "gemini-3.6-flash",
+            "gemini-3.1-flash-lite-preview",
+        ]
+        # Deduplicate while preserving order
+        seen = set()
+        models_to_try = [m for m in candidate_models if m and not (m in seen or seen.add(m))]
 
         grounding_context = ""
         if matched_standard:
@@ -183,35 +191,41 @@ class AIService:
             }
         }
 
-        try:
-            async with httpx.AsyncClient(timeout=15.0) as client:
-                response = await client.post(url, json=payload)
-                if response.status_code != 200:
-                    logger.warning(f"Gemini API returned status {response.status_code}: {response.text[:200]}")
-                    return None
+        for model_name in models_to_try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+            try:
+                async with httpx.AsyncClient(timeout=12.0) as client:
+                    response = await client.post(url, json=payload)
+                    if response.status_code != 200:
+                        logger.warning(f"Gemini API model {model_name} returned status {response.status_code}")
+                        continue
 
-                result_json = response.json()
-                candidates = result_json.get("candidates", [])
-                if not candidates:
-                    return None
+                    result_json = response.json()
+                    candidates = result_json.get("candidates", [])
+                    if not candidates:
+                        continue
 
-                content_parts = candidates[0].get("content", {}).get("parts", [])
-                if not content_parts:
-                    return None
+                    content_parts = candidates[0].get("content", {}).get("parts", [])
+                    if not content_parts:
+                        continue
 
-                raw_text = content_parts[0].get("text", "").strip()
-                if raw_text.startswith("```json"):
-                    raw_text = raw_text.split("```json", 1)[1]
-                if raw_text.startswith("```"):
-                    raw_text = raw_text.split("```", 1)[1]
-                if raw_text.endswith("```"):
-                    raw_text = raw_text.rsplit("```", 1)[0]
-                raw_text = raw_text.strip()
+                    raw_text = content_parts[0].get("text", "").strip()
+                    if raw_text.startswith("```json"):
+                        raw_text = raw_text.split("```json", 1)[1]
+                    if raw_text.startswith("```"):
+                        raw_text = raw_text.split("```", 1)[1]
+                    if raw_text.endswith("```"):
+                        raw_text = raw_text.rsplit("```", 1)[0]
+                    raw_text = raw_text.strip()
 
-                return json.loads(raw_text)
-        except Exception as exc:
-            logger.error(f"Error calling or parsing Gemini response: {exc}")
-            return None
+                    parsed = json.loads(raw_text)
+                    if isinstance(parsed, dict) and "title" in parsed:
+                        return parsed
+            except Exception as exc:
+                logger.warning(f"Error calling model {model_name}: {exc}")
+                continue
+
+        return None
 
     def _find_matching_standard(self, query: str) -> Optional[Dict[str, Any]]:
         """
