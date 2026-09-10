@@ -1,6 +1,7 @@
 from typing import List, Dict, Any
 from app.repositories.data.batch_1 import BATCH_1
 from app.repositories.data.batch_2 import ADDITIONAL_STANDARDS_BATCH_2
+from app.repositories.data.batch_3 import BATCH_3
 
 TOP_50_STANDARDS: List[Dict[str, Any]] = [
     # -------------------------------------------------------------
@@ -1448,4 +1449,4 @@ TOP_50_STANDARDS: List[Dict[str, Any]] = [
     }
 ]
 
-ALL_STANDARDS: List[Dict[str, Any]] = TOP_50_STANDARDS + BATCH_1 + ADDITIONAL_STANDARDS_BATCH_2
+ALL_STANDARDS: List[Dict[str, Any]] = TOP_50_STANDARDS + BATCH_1 + ADDITIONAL_STANDARDS_BATCH_2 + BATCH_3
