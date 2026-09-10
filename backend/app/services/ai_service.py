@@ -596,14 +596,96 @@ class AIService:
             }
 
         # -------------------------------------------------------------
-        # E. What is the ISI Mark? (Product Certification)
+        # E. Pressure Cooker & Online ISI Mark Verification
+        # -------------------------------------------------------------
+        is_cooker_query = any(x in q_clean for x in ["pressure cooker", "cooker", "cookers"])
+        if is_cooker_query:
+            return {
+                "title": "Domestic Pressure Cookers — BIS Certification (IS 2347 / IS 15687) & Genuine ISI Mark Verification",
+                "summary": (
+                    "In India, domestic pressure cookers fall under the mandatory Domestic Pressure Cooker (Quality Control) Order "
+                    "notified by the Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry. "
+                    "It is strictly illegal to manufacture, import, or sell domestic pressure cookers online or offline without a valid BIS ISI certification.\n\n"
+                    "When purchasing a pressure cooker on e-commerce platforms (such as Amazon, Flipkart, or brand websites), you can confirm its "
+                    "authenticity by verifying the ISI mark and validating the 7 or 8-digit CM/L licence number on the official BIS Care App before and upon delivery."
+                ),
+                "category": "Consumer Goods & Quality Control Orders",
+                "applicableStandard": {
+                    "code": "IS 2347:2017 / IS 15687 (Part 1):2006",
+                    "title": "Domestic Pressure Cookers — Safety, Burst Resistance & Operating Specifications",
+                    "status": "MANDATORY QUALITY CONTROL ORDER (QCO)"
+                },
+                "clauses": [
+                    {
+                        "number": "Step 1: Online Listing",
+                        "title": "Listing & Technical Specification Verification",
+                        "badge": "Pre-Purchase Check",
+                        "content": "Look for explicit mentions of 'ISI Certified' or 'IS 2347' in the online product title, specifications, and image gallery. Genuine brands clearly display the ISI logo and CM/L license number in their product images."
+                    },
+                    {
+                        "number": "Step 2: Inspect Product Markings",
+                        "title": "Three Mandatory Marking Elements",
+                        "badge": "Physical Inspection",
+                        "content": "A genuine BIS-certified pressure cooker MUST have embossed or permanently marked on the body/lid: (1) The ISI monogram logo, (2) Applicable standard code 'IS 2347', and (3) A 7 or 8-digit Licence Number in the format 'CM/L-XXXXXXXX'."
+                    },
+                    {
+                        "number": "Step 3: BIS Care App Verification",
+                        "title": "Live CM/L Verification via Official BIS Portal/App",
+                        "badge": "Digital Authentication",
+                        "content": "Open the official 'BIS Care' mobile app (available on Android & iOS) or visit manakonline.in. Go to 'Verify License Details' (Verify CM/L Number) and enter the 7 or 8-digit CM/L number to verify the manufacturer name, factory address, brand, and active license validity."
+                    },
+                    {
+                        "number": "Step 4: Safety & Redressal",
+                        "title": "Reporting Counterfeits & Safety Hazards",
+                        "badge": "Statutory Enforcement",
+                        "content": "Pressure cookers with fake or missing ISI marks pose severe explosion and burn risks. You can lodge an immediate grievance directly through the 'Complaints' tab in the BIS Care App or via the National Consumer Helpline (NCH)."
+                    }
+                ],
+                "nextStep": "Download the official BIS Care Mobile App or visit manakonline.in to enter the 7 or 8-digit CM/L number found on your pressure cooker to confirm active certification status.",
+                "sources": [
+                    {
+                        "type": "MANDATORY QCO",
+                        "code": "Domestic Pressure Cooker (Quality Control) Order",
+                        "details": "Ministry of Commerce and Industry (DPIIT) & Ministry of Consumer Affairs.",
+                        "tag": "Statutory Order"
+                    },
+                    {
+                        "type": "PRIMARY STANDARD",
+                        "code": "IS 2347:2017 / IS 15687",
+                        "details": "Bureau of Indian Standards: Specification for Domestic Pressure Cookers.",
+                        "tag": "Prescribed Standard"
+                    },
+                    {
+                        "type": "VERIFICATION PORTAL",
+                        "code": "BIS Care Mobile App & e-BIS Manakonline",
+                        "details": "Official verification tool for 7/8-digit CM/L licence numbers.",
+                        "tag": "Consumer Verification"
+                    }
+                ],
+                "telemetry": {
+                    "risk": "HIGH (Without ISI)",
+                    "riskSub": "Safety Critical Appliance",
+                    "testingSpan": "Mandatory QCO Tier",
+                    "testingSpanSub": "Hydrostatic & Safety Release",
+                    "curveTitle": "Safety Valve & Burst Pressure Proof Threshold",
+                    "points": [
+                        {"hour": "Nominal Pressure", "temp": "1.0 bar (15 psi)"},
+                        {"hour": "Gasket Release", "temp": "1.8 - 2.5 bar"},
+                        {"hour": "Safety Valve Pop", "temp": "2.2 - 3.0 bar"},
+                        {"hour": "Hydrostatic Burst", "temp": "> 3x Operating"}
+                    ]
+                }
+            }
+
+        # -------------------------------------------------------------
+        # F. What is the ISI Mark? (Product Certification)
         # -------------------------------------------------------------
         is_isi_query = any(x in q_clean for x in [
             "what is isi", "what is the isi mark", "isi mark", "isi certification",
             "full form of isi", "about isi", "isi stands for", "isi mean", "what does isi",
             "difference between isi and bis", "how to get isi mark", "isi mark license"
         ])
-        if is_isi_query and not any(k in q_clean for k in ["gold", "hallmark", "helmet", "cement", "water", "steel", "toy"]):
+        if is_isi_query and not any(k in q_clean for k in ["gold", "hallmark", "helmet", "cement", "water", "steel", "toy", "cooker"]):
             return {
                 "title": "ISI Mark (Indian Standards Institute) — Statutory Product Quality Mark of India",
                 "summary": (
