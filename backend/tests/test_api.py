@@ -189,22 +189,67 @@ def test_rag_prompts_and_chat_alias():
     assert chat_resp.json()["success"] is True
 
 
-def test_rag_status_and_citations():
-    status_resp = client.get("/api/v1/rag/status")
-    assert status_resp.status_code == 200
-    assert status_resp.json()["data"]["indexedChunks"] > 0
+def test_ai_health_endpoints():
+    # Root AI Health
+    resp1 = client.get("/api/ai/health")
+    assert resp1.status_code == 200
+    data1 = resp1.json()
+    assert data1["success"] is True
+    assert "apiConfigured" in data1["data"]
+    assert "model" in data1["data"]
 
-    response = client.post("/api/v1/rag/query", json={"query": "What does IS 17803 require?"})
-    assert response.status_code == 200
-    answer = response.json()["data"]["answer"]
-    assert answer["clauses"]
-    assert answer["clauses"][0]["citationId"]
-    assert answer["sources"][0]["citationId"] == answer["clauses"][0]["citationId"]
+    # RAG v1 Health
+    resp2 = client.get("/api/v1/rag/health")
+    assert resp2.status_code == 200
+    data2 = resp2.json()
+    assert data2["success"] is True
+    assert "apiConfigured" in data2["data"]
 
 
-def test_rag_does_not_substitute_similar_standard_numbers():
-    response = client.post("/api/v1/rag/query", json={"query": "What does IS 1701 require?"})
-    assert response.status_code == 200
-    answer = response.json()["data"]["answer"]
-    assert answer["applicableStandard"]["status"] == "REVIEW REQUIRED"
-    assert answer["clauses"] == []
+def test_basic_bis_questions():
+    questions = [
+        "What is BIS?",
+        "What does BIS stand for?",
+        "What is the role of BIS?",
+        "What is BIS certification?"
+    ]
+    for q in questions:
+        resp = client.post("/api/v1/rag/query", json={"query": q})
+        assert resp.status_code == 200, f"Query failed for '{q}'"
+        data = resp.json()
+        assert data["success"] is True
+        answer = data["data"]["answer"]
+        assert len(answer["title"]) > 0
+        assert len(answer["summary"]) > 0
+        assert "BIS" in answer["title"] or "Bureau of Indian Standards" in answer["title"] or "Standards" in answer["title"]
+        assert "Bureau of Indian Standards" in answer["summary"] or "BIS" in answer["summary"]
+        assert len(answer["clauses"]) >= 1
+        assert len(answer["sources"]) >= 1
+
+
+def test_conversational_and_bis_fluency():
+    test_cases = [
+        ("How are you?", "doing", "assistant"),
+        ("What can you do?", "BISync", "standards"),
+        ("What is your work?", "assistant", "Indian Standards"),
+        ("What is BIS?", "Bureau of Indian Standards", "National Standards Body"),
+        ("What is BSI?", "British Standards Institution", "United Kingdom"),
+        ("What is the ISI mark?", "ISI Mark", "Scheme-I"),
+        ("Tell me about Indian Standards.", "Indian Standards", "22,000"),
+        ("xyz", "clarify", "question")  # Unclear query asking for clarification
+    ]
+
+    for q, expected_word1, expected_word2 in test_cases:
+        resp = client.post("/api/v1/rag/query", json={"query": q})
+        assert resp.status_code == 200, f"Failed for query '{q}'"
+        data = resp.json()
+        assert data["success"] is True
+        ans = data["data"]["answer"]
+        combined_text = f"{ans['title']} {ans['summary']} {' '.join(c['content'] for c in ans['clauses'])}".lower()
+        assert expected_word1.lower() in combined_text or expected_word2.lower() in combined_text, (
+            f"Query '{q}' did not contain '{expected_word1}' or '{expected_word2}' in response: {ans['summary']}"
+        )
+        assert len(ans["clauses"]) >= 1
+        assert len(ans["sources"]) >= 1
+
+

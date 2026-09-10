@@ -1,4 +1,4 @@
-import { mockStandards, mockServices, mockLabs, sampleRAGSession } from './mockData';
+import { mockStandards, mockServices, mockLabs, sampleRAGSession, generateDynamicMockRAGSession } from './mockData';
 
 // API Base URL - Configured for Python FastAPI backend
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
@@ -87,14 +87,10 @@ export const ragApi = {
   // Query RAG pipeline (FastAPI + Sentence-Transformers / Regulatory Engine)
   async queryAssistant({ query, category = '', location = '' }, token = null) {
     if (API_CONFIG.useMock) {
-      await new Promise(r => setTimeout(r, 450));
-      const dynamicSession = JSON.parse(JSON.stringify(sampleRAGSession));
-      if (query) {
-        dynamicSession.user.query = query;
-      }
+      await new Promise(r => setTimeout(r, 300));
       return {
         success: true,
-        data: dynamicSession
+        data: generateDynamicMockRAGSession(query)
       };
     }
 
@@ -111,8 +107,8 @@ export const ragApi = {
       if (!response.ok) throw new Error('RAG query failed');
       return await response.json();
     } catch (error) {
-      console.warn('FastAPI RAG endpoint error, using fallback RAG session', error);
-      return { success: true, data: sampleRAGSession };
+      console.warn('FastAPI RAG endpoint error, using dynamic fallback RAG session', error);
+      return { success: true, data: generateDynamicMockRAGSession(query) };
     }
   },
 

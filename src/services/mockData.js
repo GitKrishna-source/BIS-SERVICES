@@ -1559,6 +1559,480 @@ export const mockLabs = [
   }
 ];
 
+export const generateDynamicMockRAGSession = (rawQuery) => {
+  const query = (rawQuery || '').trim();
+  const qClean = query.toLowerCase().replace(/[^\w\s]/g, '');
+
+  // 1. Casual Greetings & "How are you?"
+  if (
+    qClean.includes('how are you') ||
+    qClean.includes('how r u') ||
+    qClean.includes('how do you do') ||
+    qClean.includes('how is it going') ||
+    ['hello', 'hi', 'hey', 'greetings', 'namaste'].includes(qClean)
+  ) {
+    return {
+      sessionId: `IND-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+      gazetteSync: "Live Synced",
+      latency: "142ms",
+      confidence: "99.8%",
+      user: {
+        name: "User",
+        role: "Conversational Inquiry",
+        query,
+        category: "General Assistant",
+        jurisdiction: "Republic of India",
+        tariff: "National Service"
+      },
+      answer: {
+        model: "BIS-Reasoner-v2.5 (Natural Conversational)",
+        title: "Hello! I am doing great and ready to assist you.",
+        summary: "I am doing very well, thank you for asking! I am your AI assistant specialized in the Bureau of Indian Standards (BIS), Indian Standards (IS codes), ISI certification, Hallmarking (HUID), CRS for electronics, and quality compliance. How can I help you today?",
+        applicableStandard: {
+          code: "BIS AI Assistant",
+          title: "Intelligent Regulatory & Quality Assistant for India",
+          status: "ACTIVE ASSISTANT"
+        },
+        clauses: [
+          {
+            number: "Capability 1",
+            title: "Indian Standards (IS Codes) Guidance",
+            badge: "20,000+ Standards",
+            content: "Instant identification and interpretation of Indian Standards across civil engineering, metallurgy, electronics, chemicals, and consumer products."
+          },
+          {
+            number: "Capability 2",
+            title: "Certification & Conformity Schemes",
+            badge: "ISI • CRS • Hallmarking",
+            content: "Comprehensive explanations of Scheme-I (ISI Mark), Scheme-II (CRS), Scheme-IV (Gold Hallmarking with 6-digit HUID), and FMCS for foreign manufacturers."
+          },
+          {
+            number: "Capability 3",
+            title: "Accredited Laboratory & Testing Locator",
+            badge: "NABL / BIS Labs",
+            content: "Assistance with finding accredited testing facilities, test turnaround times, and sample protocols."
+          }
+        ],
+        nextStep: "Ask me anything! For example: 'What is BIS?', 'What is the ISI mark?', 'Tell me about Indian Standards', or 'What standard applies to helmets?'",
+        sources: [
+          {
+            type: "REGULATORY PORTAL",
+            code: "Bureau of Indian Standards",
+            details: "Official Portal: manakonline.in",
+            tag: "Statutory Authority"
+          }
+        ],
+        telemetry: {
+          risk: "LOW",
+          riskSub: "Interactive Assistant",
+          testingSpan: "Instant Response",
+          testingSpanSub: "Live Query Resolution",
+          curveTitle: "Assistant Knowledge & Readiness Index",
+          points: [
+            { hour: "Readiness", temp: "100%" },
+            { hour: "Standards", temp: "20k+" },
+            { hour: "Schemes", temp: "All Active" },
+            { hour: "Latency", temp: "< 200ms" }
+          ]
+        }
+      }
+    };
+  }
+
+  // 2. Capabilities & "What can you do?" / "What is your work?"
+  if (
+    qClean.includes('what can you do') ||
+    qClean.includes('what is your work') ||
+    qClean.includes('what do you do') ||
+    qClean.includes('who are you') ||
+    qClean.includes('what are your capabilities') ||
+    qClean.includes('help me')
+  ) {
+    return {
+      sessionId: `IND-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+      gazetteSync: "Live Synced",
+      latency: "155ms",
+      confidence: "99.8%",
+      user: {
+        name: "User",
+        role: "Capabilities Overview",
+        query,
+        category: "General Assistant",
+        jurisdiction: "Republic of India",
+        tariff: "National Service"
+      },
+      answer: {
+        model: "BIS-Reasoner-v2.5 (Natural Conversational)",
+        title: "What I Can Do — Your Intelligent BIS & Quality Regulatory Assistant",
+        summary: "I am BISync AI, an intelligent conversational assistant designed to make Bureau of Indian Standards (BIS) regulations, Indian Standards (IS codes), and product certifications easy to understand for manufacturers, importers, auditors, students, and consumers. I combine conversational fluency with deep domain accuracy to answer your regulatory, technical, and general questions.",
+        applicableStandard: {
+          code: "BISync Regulatory Engine",
+          title: "Intelligent Regulatory Assistance & Standards Navigation",
+          status: "ACTIVE ASSISTANT"
+        },
+        clauses: [
+          {
+            number: "Feature 1",
+            title: "Search & Understand Indian Standards",
+            badge: "Core Feature",
+            content: "Explain specific IS codes (e.g., IS 456 for concrete, IS 1417 for gold, IS 17803 for vacuum flasks, IS 4151 for helmets), including mandatory technical clauses and test methods."
+          },
+          {
+            number: "Feature 2",
+            title: "ISI Mark, CRS & Hallmarking Guidance",
+            badge: "Licensing & Marks",
+            content: "Provide step-by-step guidance on obtaining an ISI Mark licence (Scheme-I), Compulsory Registration (CRS) for electronics, or Gold Hallmarking registration with 6-digit HUID."
+          },
+          {
+            number: "Feature 3",
+            title: "Quality Control Orders (QCO) & Compliance",
+            badge: "Mandatory Orders",
+            content: "Verify if your product category falls under a mandatory Quality Control Order, enforcement dates, and statutory legal requirements under the BIS Act, 2016."
+          },
+          {
+            number: "Feature 4",
+            title: "Accredited Laboratory Testing & Next Steps",
+            badge: "Lab Network",
+            content: "Help locate BIS-recognized and NABL-accredited testing laboratories across India, understand sample requirements, and prepare documentation for Form-I filing."
+          }
+        ],
+        nextStep: "Feel free to test me with any question, such as 'What is BIS?', 'What is the ISI mark?', 'Tell me about Indian Standards', or ask about a specific product!",
+        sources: [
+          {
+            type: "REGULATORY PORTAL",
+            code: "Manakonline & e-BIS",
+            details: "Official digital platform of the Bureau of Indian Standards.",
+            tag: "Statutory Authority"
+          }
+        ],
+        telemetry: {
+          risk: "LOW",
+          riskSub: "General Assistant",
+          testingSpan: "Instant Guidance",
+          testingSpanSub: "Real-time AI Assistance",
+          curveTitle: "Regulatory Domain Coverage",
+          points: [
+            { hour: "Standards", temp: "100%" },
+            { hour: "QCO Orders", temp: "100%" },
+            { hour: "Lab Network", temp: "100%" },
+            { hour: "Hallmark HUID", temp: "100%" }
+          ]
+        }
+      }
+    };
+  }
+
+  // 3. What is BSI? (British Standards Institution)
+  if (qClean.includes('what is bsi') || qClean.includes('bsi stands for') || qClean === 'bsi' || qClean.includes('bsi vs bis')) {
+    return {
+      sessionId: `IND-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+      gazetteSync: "Live Synced",
+      latency: "160ms",
+      confidence: "99.5%",
+      user: {
+        name: "User",
+        role: "International Standards Inquiry",
+        query,
+        category: "International Standards Bodies",
+        jurisdiction: "United Kingdom & India",
+        tariff: "International Gazette"
+      },
+      answer: {
+        model: "BIS-Reasoner-v2.5 (Natural Conversational)",
+        title: "BSI (British Standards Institution) — National Standards Body of the United Kingdom",
+        summary: "BSI stands for the British Standards Institution. Founded in 1901 as the Engineering Standards Committee and incorporated by Royal Charter, BSI is the National Standards Body of the United Kingdom. BSI produces British Standards (BS) and represents the UK in international standards organizations like ISO, IEC, and CEN.\n\nKey Distinction: BSI (British Standards Institution) is for the United Kingdom, whereas BIS (Bureau of Indian Standards) is the National Standards Body of India.",
+        applicableStandard: {
+          code: "BSI / BIS Comparative Framework",
+          title: "British Standards Institution (UK) vs. Bureau of Indian Standards (India)",
+          status: "INTERNATIONAL STANDARDS BODY"
+        },
+        clauses: [
+          {
+            number: "BSI (United Kingdom)",
+            title: "British Standards Institution (BSI)",
+            badge: "UK Standards Body",
+            content: "Formulates British Standards (BS), operates the Kitemark certification scheme, and provides management systems certification and auditing globally."
+          },
+          {
+            number: "BIS (India)",
+            title: "Bureau of Indian Standards (BIS)",
+            badge: "India Standards Body",
+            content: "Established under the BIS Act, 2016 as the National Standards Body of India. Formulates Indian Standards (IS), administers the ISI Mark, CRS, and Gold Hallmarking (HUID)."
+          },
+          {
+            number: "International Alignment",
+            title: "Global Harmonization (ISO & IEC)",
+            badge: "Global Standards",
+            content: "Both BSI and BIS are founding members of ISO (International Organization for Standardization) and actively harmonize domestic standards with international specifications."
+          }
+        ],
+        nextStep: "If you are looking for standards applicable in India, you can ask about Indian Standards (IS codes), the ISI mark, or BIS certification schemes.",
+        sources: [
+          {
+            type: "INTERNATIONAL BODY",
+            code: "BSI Group (bsigroup.com)",
+            details: "Royal Charter National Standards Body of the United Kingdom.",
+            tag: "UK Authority"
+          },
+          {
+            type: "PRIMARY LEGISLATION",
+            code: "The BIS Act, 2016",
+            details: "Statutory Act establishing the Bureau of Indian Standards as India's National Standards Body.",
+            tag: "India Authority"
+          }
+        ],
+        telemetry: {
+          risk: "LOW",
+          riskSub: "International Standards",
+          testingSpan: "Global Benchmarking",
+          testingSpanSub: "BSI (UK) & BIS (India)",
+          curveTitle: "International Standards Harmonization Index",
+          points: [
+            { hour: "BSI (UK)", temp: "1901" },
+            { hour: "ISI (India)", temp: "1947" },
+            { hour: "BIS (India)", temp: "1986" },
+            { hour: "BIS Act", temp: "2016" }
+          ]
+        }
+      }
+    };
+  }
+
+  // 4. What is BIS?
+  if (qClean.includes('what is bis') || qClean.includes('about bis') || qClean.includes('role of bis') || qClean.includes('function of bis')) {
+    return {
+      sessionId: `IND-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+      gazetteSync: "Live Synced",
+      latency: "170ms",
+      confidence: "99.8%",
+      user: {
+        name: "User",
+        role: "Regulatory Inquiry",
+        query,
+        category: "National Standards Body",
+        jurisdiction: "Republic of India",
+        tariff: "National Gazette"
+      },
+      answer: {
+        model: "BIS-Reasoner-v2.5 (Natural Conversational)",
+        title: "Bureau of Indian Standards (BIS) — National Standards Body of India",
+        summary: "The Bureau of Indian Standards (BIS) is the statutory National Standards Body of India, established under the Bureau of Indian Standards Act, 2016. Operating under the aegis of the Ministry of Consumer Affairs, Food & Public Distribution, BIS is responsible for the harmonious development of standardisation, product marking, quality certification, and laboratory testing across more than 20,000+ Indian Standards (IS).\n\nBIS protects consumer health and safety, ensures industrial quality, facilitates export competitiveness, and enforces mandatory compliance through Quality Control Orders (QCOs) issued by Central Ministries.",
+        applicableStandard: {
+          code: "The BIS Act, 2016",
+          title: "Bureau of Indian Standards Act, 2016 (Act No. 11 of 2016)",
+          status: "STATUTORY ACT OF PARLIAMENT"
+        },
+        clauses: [
+          {
+            number: "Section 9 & 10",
+            title: "Formulation of Indian Standards (IS Codes)",
+            badge: "Core Mandate",
+            content: "BIS formulates Indian Standards through 15 Division Councils and Technical Committees comprising industry experts, scientific bodies, consumers, and government officials."
+          },
+          {
+            number: "Section 13 to 17",
+            title: "Conformity Assessment & Standard Marks",
+            badge: "Licensing Authority",
+            content: "Operates major certification schemes: Scheme-I (ISI Mark for domestic & foreign manufacturers), Scheme-II (CRS for electronics & IT goods), and Scheme-IV (Gold & Silver Hallmarking with 6-digit HUID)."
+          },
+          {
+            number: "Section 18 & 29",
+            title: "Quality Control Orders & Enforcement",
+            badge: "Statutory Enforcement",
+            content: "Enforces mandatory Quality Control Orders (QCOs). Products covered under QCOs cannot be manufactured, imported, or sold without valid BIS certification. Contravening directives attracts heavy penalties and legal action."
+          }
+        ],
+        nextStep: "Explore Indian Standards on the BIS Manakonline portal (manakonline.in), verify product standards, or check mandatory QCO lists to ensure compliance before commercial manufacture or import.",
+        sources: [
+          {
+            type: "PRIMARY LEGISLATION",
+            code: "The BIS Act, 2016 (No. 11 of 2016)",
+            details: "Statutory Act of Parliament. Ministry of Consumer Affairs, Food & Public Distribution.",
+            tag: "Statutory Foundation"
+          },
+          {
+            type: "OFFICIAL PORTAL",
+            code: "e-BIS & Manakonline (manakonline.in)",
+            details: "Official digital platform for standards download, license applications, and laboratory testing.",
+            tag: "Application Portal"
+          }
+        ],
+        telemetry: {
+          risk: "LOW",
+          riskSub: "National Standards Authority",
+          testingSpan: "National Regulatory Oversight",
+          testingSpanSub: "Covering 20,000+ Indian Standards",
+          curveTitle: "National Standards Formulation & Active Portfolio",
+          points: [
+            { hour: "Civil & Infra", temp: "4,200+ IS" },
+            { hour: "Electronics", temp: "3,100+ IS" },
+            { hour: "Chemicals", temp: "5,800+ IS" },
+            { hour: "Mechanical", temp: "4,500+ IS" }
+          ]
+        }
+      }
+    };
+  }
+
+  // 5. What is the ISI Mark?
+  if (qClean.includes('what is isi') || qClean.includes('isi mark') || qClean.includes('isi certification') || qClean.includes('full form of isi')) {
+    return {
+      sessionId: `IND-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+      gazetteSync: "Live Synced",
+      latency: "165ms",
+      confidence: "99.8%",
+      user: {
+        name: "User",
+        role: "Product Certification Inquiry",
+        query,
+        category: "Product Certification & ISI Mark",
+        jurisdiction: "Republic of India",
+        tariff: "Scheme-I Portfolio"
+      },
+      answer: {
+        model: "BIS-Reasoner-v2.5 (Natural Conversational)",
+        title: "ISI Mark (Indian Standards Institute) — Statutory Product Quality Mark of India",
+        summary: "The ISI Mark is the official product certification mark in India issued by the Bureau of Indian Standards (BIS) under Scheme-I of the BIS (Conformity Assessment) Regulations, 2018. Originally introduced in 1955 by the Indian Standards Institution (the predecessor of BIS), the mark certifies that an industrial or consumer product conforms to the relevant Indian Standard (IS).\n\nThe ISI mark is mandatory for over 700+ product categories (including cement, structural steel, LPG cylinders, two-wheeler helmets, packaged drinking water, toys, and electrical cables) under statutory Quality Control Orders (QCOs), and voluntary for other products. Every genuine ISI-marked product bears the familiar ISI monogram, the applicable Indian Standard number (e.g., IS 4151), and a unique 7 or 8-digit CM/L (Certification of Manufacturer / Licence) number.",
+        applicableStandard: {
+          code: "The BIS Act, 2016 & Scheme-I",
+          title: "BIS (Conformity Assessment) Regulations, 2018 — Scheme-I (Product Certification)",
+          status: "STATUTORY MANDATE"
+        },
+        clauses: [
+          {
+            number: "Regulation 3 & 4",
+            title: "Grant of ISI Mark Licence (Scheme-I)",
+            badge: "Factory Audit & Testing",
+            content: "Requires complete in-house testing laboratory facilities, qualified quality control personnel, factory inspection by BIS officers, and independent sample testing in BIS/NABL accredited laboratories."
+          },
+          {
+            number: "Section 15 & 16",
+            title: "Use of Standard Mark & CM/L Licence Number",
+            badge: "Legal Marking",
+            content: "Manufacturers granted an ISI license must display the ISI monogram along with the applicable IS code and unique CM/L-XXXXXXXX license number traceable on the BIS Care App."
+          },
+          {
+            number: "Section 18 & 29",
+            title: "Mandatory Quality Control Orders & Penalties",
+            badge: "Statutory Enforcement",
+            content: "Products notified under mandatory QCOs cannot be manufactured, imported, distributed, or sold in India without a valid ISI mark. Violations attract fines up to Rs. 5 Lakhs (or 10x product value) and up to 2 years imprisonment."
+          }
+        ],
+        nextStep: "To apply for an ISI Mark license: identify your product's IS standard, verify required testing equipment per the Scheme of Inspection and Testing (SIT), and file Form-I on the official BIS Manakonline portal (manakonline.in).",
+        sources: [
+          {
+            type: "PRIMARY LEGISLATION",
+            code: "The Bureau of Indian Standards Act, 2016 (No. 11 of 2016)",
+            details: "Statutory law governing national standardisation and product certification in India.",
+            tag: "Statutory Foundation"
+          },
+          {
+            type: "PORTAL REFERENCE",
+            code: "e-BIS & Manakonline Portal",
+            details: "Official digital platform for application filing, factory audit scheduling, and license grant.",
+            tag: "Application Portal"
+          }
+        ],
+        telemetry: {
+          risk: "LOW",
+          riskSub: "Scheme-I Certification",
+          testingSpan: "30-45 Days",
+          testingSpanSub: "Standard factory audit & test cycle",
+          curveTitle: "ISI Certification Workflow Progression",
+          points: [
+            { hour: "Application Filing", temp: "25%" },
+            { hour: "Factory Audit", temp: "50%" },
+            { hour: "Lab Sample Test", temp: "75%" },
+            { hour: "Grant of CM/L", temp: "100%" }
+          ]
+        }
+      }
+    };
+  }
+
+  // 6. Tell me about Indian Standards
+  if (qClean.includes('tell me about indian standards') || qClean.includes('what are indian standards') || qClean.includes('about indian standards') || qClean.includes('indian standards')) {
+    return {
+      sessionId: `IND-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+      gazetteSync: "Live Synced",
+      latency: "175ms",
+      confidence: "99.8%",
+      user: {
+        name: "User",
+        role: "Standards Inquiry",
+        query,
+        category: "National Standards System",
+        jurisdiction: "Republic of India",
+        tariff: "All Sectors"
+      },
+      answer: {
+        model: "BIS-Reasoner-v2.5 (Natural Conversational)",
+        title: "Indian Standards (IS Codes) — National Quality and Technical Specifications of India",
+        summary: "Indian Standards (designated with the prefix 'IS', such as IS 456, IS 17803, or IS 1417) are official technical documents established by the Bureau of Indian Standards (BIS) that lay down precise specifications, safety parameters, performance thresholds, testing methodologies, and codes of practice for goods, materials, systems, and services.\n\nBIS has published over 22,000+ Indian Standards across 15 diverse sectors. They are formulated through specialized Technical Committees comprising industry manufacturers, scientific institutions, government regulators, and consumer representatives to reflect the latest technological advancements and climatic conditions in India, while harmonizing with international standards (ISO/IEC).",
+        applicableStandard: {
+          code: "The BIS Act, 2016",
+          title: "Statutory Framework for Formulation and Adoption of Indian Standards",
+          status: "NATIONAL STANDARDS FRAMEWORK"
+        },
+        clauses: [
+          {
+            number: "15 Division Councils",
+            title: "Sectoral Coverage of Indian Standards",
+            badge: "15 Specialized Sectors",
+            content: "Standards span Civil Engineering, Mechanical, Electronics & IT, Chemicals, Food & Agriculture, Metallurgy, Textiles, Medical Devices, Petroleum, Water Resources, and Service Sectors."
+          },
+          {
+            number: "Consensus Process",
+            title: "Democratic & Transparent Formulation",
+            badge: "Wide Consultation",
+            content: "Standards are developed through technical committees, put for wide public review for 30 to 60 days, and reviewed every 5 years for amendments or reaffirmation."
+          },
+          {
+            number: "Voluntary vs. Mandatory",
+            title: "Voluntary Adoption & Mandatory Quality Control Orders (QCOs)",
+            badge: "Legal Enforcement",
+            content: "While Indian Standards are generally voluntary, Central Ministries make them legally mandatory for critical products via Quality Control Orders (QCOs) under Section 16 of the BIS Act, 2016."
+          }
+        ],
+        nextStep: "You can search for any specific Indian Standard code (e.g., 'What is IS 456?' or 'What standard applies to helmets/steel/water?') or browse standards on manakonline.in.",
+        sources: [
+          {
+            type: "PRIMARY LEGISLATION",
+            code: "The BIS Act, 2016",
+            details: "Section 9 & 10: Formulation and publication of Indian Standards.",
+            tag: "Statutory Authority"
+          },
+          {
+            type: "STANDARDS REPOSITORY",
+            code: "BIS Standards Portal",
+            details: "Over 22,000 Indian Standards freely readable for public awareness on standardsbis.in.",
+            tag: "Public Standards Hub"
+          }
+        ],
+        telemetry: {
+          risk: "LOW",
+          riskSub: "National Standards Body",
+          testingSpan: "Comprehensive Portfolio",
+          testingSpanSub: "22,000+ Active Standards",
+          curveTitle: "Indian Standards Portfolio Across Sectors",
+          points: [
+            { hour: "Civil Engineering", temp: "22%" },
+            { hour: "Chemicals & Plastics", temp: "28%" },
+            { hour: "Metallurgy & Steel", temp: "24%" },
+            { hour: "Electronics & IT", temp: "26%" }
+          ]
+        }
+      }
+    };
+  }
+
+  // Default / specific standard fallback
+  const base = JSON.parse(JSON.stringify(sampleRAGSession));
+  base.sessionId = `IND-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+  base.user.query = query;
+  return base;
+};
+
 export const sampleRAGSession = {
   sessionId: "IND-2025-9042",
   gazetteSync: "14m ago",

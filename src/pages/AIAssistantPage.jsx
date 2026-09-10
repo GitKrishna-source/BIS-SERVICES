@@ -413,23 +413,30 @@ export const AIAssistantPage = ({ currentUser, onOpenLogin, initialQuery = '', q
            </form>
 
             <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-zinc-500 pt-1">
-              <div className="flex flex-wrap gap-2">
-                <span className="font-semibold text-zinc-400">Try:</span>
-                <button
-                  onClick={() => setInputValue("What are the sample quantity requirements for IS 17803?")}
-                  className="text-zinc-700 hover:text-zinc-950 hover:underline"
-                >
-                  "Sample quantity requirements?"
-                </button>
-                <span>•</span>
-                <button
-                  onClick={() => setInputValue("Show accredited test labs in Western Region for IS 17803")}
-                  className="text-zinc-700 hover:text-zinc-950 hover:underline"
-                >
-                  "Accredited test labs in Western Region"
-                </button>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="font-semibold text-zinc-400 mr-1">Quick Prompts:</span>
+                {[
+                  "What can you do?",
+                  "What is BIS?",
+                  "What is BSI?",
+                  "What is the ISI mark?",
+                  "Tell me about Indian Standards.",
+                  "How are you?"
+                ].map((promptText, pIdx) => (
+                  <button
+                    key={pIdx}
+                    type="button"
+                    onClick={() => {
+                      setInputValue(promptText);
+                      executeQuery(promptText);
+                    }}
+                    className="px-2.5 py-1 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-700 hover:text-zinc-950 font-medium text-[11px] border border-zinc-200 transition-colors"
+                  >
+                    "{promptText}"
+                  </button>
+                ))}
               </div>
-              <span className="font-mono text-[10px]">Deterministic RAG</span>
+              <span className="font-mono text-[10px] text-zinc-400">Conversational Regulatory AI</span>
             </div>
           </div>
 
