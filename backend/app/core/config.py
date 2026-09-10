@@ -27,6 +27,14 @@ class Settings(BaseSettings):
     # AI / LLM Configuration
     AI_API_KEY: str = ""
     AI_MODEL: str = "bis-reasoner-v2.5"
+    AI_API_BASE_URL: str = "https://api.openai.com/v1"
+    AI_EMBEDDING_MODEL: str = "text-embedding-3-small"
+    AI_EMBEDDING_DIMENSIONS: int = 256
+    RAG_STORE_PATH: str = "data/rag/index.json"
+    RAG_DOCUMENTS_DIR: str = "data/rag/documents"
+    RAG_TOP_K: int = 6
+    RAG_CHUNK_SIZE: int = 1200
+    RAG_CHUNK_OVERLAP: int = 180
 
     model_config = SettingsConfigDict(env_file=".env", extra="allow")
 

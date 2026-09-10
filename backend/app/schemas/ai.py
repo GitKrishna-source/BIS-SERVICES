@@ -28,6 +28,7 @@ class ClauseItem(BaseModel):
     title: str
     badge: str
     content: str
+    citationId: Optional[str] = None
 
 
 class SourceItem(BaseModel):
@@ -35,6 +36,11 @@ class SourceItem(BaseModel):
     code: str
     details: str
     tag: str
+    citationId: Optional[str] = None
+    sourceUrl: Optional[str] = None
+    page: Optional[int] = None
+    clause: Optional[str] = None
+    sourceName: Optional[str] = None
 
 
 class TelemetryPoint(BaseModel):

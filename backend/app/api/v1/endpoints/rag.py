@@ -1,11 +1,45 @@
 from typing import Optional, Dict, Any, List
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel, HttpUrl
 
 from app.services.ai_service import ai_service
 from app.core.dependencies import get_optional_user
 from app.schemas.ai import AIChatRequest, AISessionResponse
+from app.services.rag_service import rag_service
 
 router = APIRouter()
+
+
+class IngestURLRequest(BaseModel):
+    url: HttpUrl
+
+
+@router.get("/status")
+def rag_status():
+    return {"success": True, "data": {"indexedChunks": rag_service.chunk_count}}
+
+
+@router.post("/ingest-directory")
+def ingest_directory(current_user: Dict[str, Any] = Depends(get_optional_user)):
+    if not current_user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication is required to ingest documents.")
+    count = rag_service.ingest_directory()
+    return {"success": True, "data": {"chunksIndexed": count, "indexedChunks": rag_service.chunk_count}}
+
+
+@router.post("/ingest-url")
+def ingest_url(request: IngestURLRequest, current_user: Dict[str, Any] = Depends(get_optional_user)):
+    if not current_user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication is required to ingest documents.")
+    host = request.url.host.lower() if request.url.host else ""
+    allowed_hosts = {"bis.gov.in", "www.bis.gov.in", "egazette.nic.in", "www.egazette.nic.in"}
+    if host not in allowed_hosts and not host.endswith(".bis.gov.in"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only official BIS or Gazette domains may be ingested.")
+    try:
+        count = rag_service.ingest_url(str(request.url))
+    except Exception as exc:
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=f"Document download or parsing failed: {exc}") from exc
+    return {"success": True, "data": {"chunksIndexed": count, "indexedChunks": rag_service.chunk_count}}
 
 
 @router.post("/query", response_model=AISessionResponse)

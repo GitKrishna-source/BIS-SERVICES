@@ -4,3 +4,6 @@ dist
 .env.local
 .DS_Store
 *.log
+backend/data/rag/index.json
+backend/data/rag/documents/*
+!backend/data/rag/documents/.gitkeep

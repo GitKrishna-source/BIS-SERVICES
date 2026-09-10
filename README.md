@@ -187,12 +187,28 @@ Open your browser and navigate to **`http://localhost:5173`**.
 | `GET` | `/api/v1/labs/stats/summary` | Get aggregated metrics on accredited lab network |
 | `GET` | `/api/v1/services` | Get BIS Conformity Assessment modules |
 | `POST` | `/api/v1/services/verify-huid` | Verify 6-character gold HUID code |
-| `POST` | `/api/v1/rag/query` | Query the AI Regulatory Assistant session |
+| `POST` | `/api/v1/rag/query` | Query the grounded AI Regulatory Assistant session |
+| `GET` | `/api/v1/rag/status` | Show indexed RAG chunk count |
+| `POST` | `/api/v1/rag/ingest-directory` | Index local BIS/Gazette documents (authenticated) |
+| `POST` | `/api/v1/rag/ingest-url` | Download and index an official BIS/Gazette URL (authenticated) |
 | `POST` | `/api/v1/feedback` | Submit public consultation feedback for a standard |
 
 ---
 
 ## 🧪 Testing & Quality Assurance
+
+### RAG document ingestion
+
+Place licensed, current BIS or Gazette PDFs/text files in `backend/data/rag/documents`, then call
+`POST /api/v1/rag/ingest-directory` with a valid JWT. Alternatively, authenticated operators can
+call `POST /api/v1/rag/ingest-url` with an official `bis.gov.in` or `egazette.nic.in` URL. The
+assistant cites the indexed document chunk IDs, source URL, and detected clause. It will not claim
+that a document is current merely because it was uploaded; document revision and licensing remain
+an operator responsibility.
+
+Set `AI_API_KEY` to an OpenAI-compatible provider to enable semantic embeddings and grounded JSON
+answer synthesis. `AI_API_BASE_URL` supports compatible hosted gateways. Without a key, the service
+uses an offline hashed-vector development fallback and does not call an external LLM.
 
 Run the automated integration test suite:
 

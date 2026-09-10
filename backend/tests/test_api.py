@@ -187,3 +187,24 @@ def test_rag_prompts_and_chat_alias():
     })
     assert chat_resp.status_code == 200
     assert chat_resp.json()["success"] is True
+
+
+def test_rag_status_and_citations():
+    status_resp = client.get("/api/v1/rag/status")
+    assert status_resp.status_code == 200
+    assert status_resp.json()["data"]["indexedChunks"] > 0
+
+    response = client.post("/api/v1/rag/query", json={"query": "What does IS 17803 require?"})
+    assert response.status_code == 200
+    answer = response.json()["data"]["answer"]
+    assert answer["clauses"]
+    assert answer["clauses"][0]["citationId"]
+    assert answer["sources"][0]["citationId"] == answer["clauses"][0]["citationId"]
+
+
+def test_rag_does_not_substitute_similar_standard_numbers():
+    response = client.post("/api/v1/rag/query", json={"query": "What does IS 1701 require?"})
+    assert response.status_code == 200
+    answer = response.json()["data"]["answer"]
+    assert answer["applicableStandard"]["status"] == "REVIEW REQUIRED"
+    assert answer["clauses"] == []
