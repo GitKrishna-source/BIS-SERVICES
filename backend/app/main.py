@@ -104,6 +104,22 @@ def health_check():
     }
 
 
+@app.get("/api/ai/health", tags=["AI Health & Diagnostics"])
+@app.get("/api/v1/ai/health", tags=["AI Health & Diagnostics"])
+async def ai_health_status():
+    """
+    Safe AI and Gemini API health and diagnostic endpoint.
+    Never exposes secrets or API keys.
+    """
+    from app.services.ai_service import ai_service
+    health_data = await ai_service.check_health()
+    return {
+        "success": True,
+        "data": health_data
+    }
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app.main:app", host=settings.HOST, port=settings.PORT, reload=True)
+

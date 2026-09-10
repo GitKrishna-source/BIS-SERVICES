@@ -14,9 +14,22 @@ class IngestURLRequest(BaseModel):
     url: HttpUrl
 
 
+@router.get("/health")
+async def rag_health_check():
+    """
+    Check AI & Gemini API configuration and reachability.
+    """
+    health_status = await ai_service.check_health()
+    return {
+        "success": True,
+        "data": health_status
+    }
+
+
 @router.get("/status")
 def rag_status():
-    return {"success": True, "data": {"indexedChunks": rag_service.chunk_count}}
+    return {"success": True, "data": {"indexedChunks": rag_service.chunk_count if hasattr(rag_service, 'chunk_count') else 0}}
+
 
 
 @router.post("/ingest-directory")

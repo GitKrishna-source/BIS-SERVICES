@@ -1,4 +1,4 @@
- 🏛️ BISync — National Standardization & Conformity Digital Ecosystem
+# 🏛️ BISync — National Standardization & Conformity Digital Ecosystem
 
 > **Smart India Hackathon (SIH)** • Intelligent Indian Standards (IS) Discovery, NABL Lab Locator, HUID Hallmarking Verification & Statutory AI Regulatory Assistant (RAG Pipeline).
 
