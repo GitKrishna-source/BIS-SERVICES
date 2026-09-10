@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { useVoiceInput } from '../hooks/useVoiceInput';
 import { SlidingCarousel } from '../components/SlidingCarousel';
 import { JsonCitationStream } from '../components/JsonCitationStream';
 import { ScrollReveal } from '../components/ScrollReveal';
@@ -17,12 +18,18 @@ import {
   ArrowDown, 
   FileText,
   ChevronRight,
-  ExternalLink
+  ExternalLink,
+  Mic
 } from 'lucide-react';
 
 export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
   const { t } = useLanguage();
   const [searchInput, setSearchInput] = useState('');
+  const handleVoiceSearch = (transcript) => {
+    setSearchInput(transcript);
+    onStartQuery(transcript);
+  };
+  const voice = useVoiceInput({ onFinalTranscript: handleVoiceSearch });
 
   const sampleQueries = [
     t('sampleQuery1', "Does my stainless steel bottle require mandatory ISI mark?"),
@@ -221,6 +228,15 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
                 placeholder={t('searchPlaceholder', "Search standards, HS codes, or product certifications...")}
                 className="w-full py-3.5 px-2 text-xs sm:text-sm text-zinc-800 placeholder-zinc-400 bg-transparent focus:outline-none font-medium"
               />
+              <button
+                type="button"
+                onClick={voice.toggleListening}
+                aria-label={voice.isListening ? 'Stop voice search' : 'Start voice search'}
+                title={voice.error || (voice.isListening ? 'Listening...' : 'Search by voice')}
+                className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all shrink-0 ${voice.isListening ? 'bg-fuchsia-100 text-fuchsia-700 ring-4 ring-fuchsia-500/20' : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950'}`}
+              >
+                <Mic className={`w-4 h-4 ${voice.isListening ? 'animate-pulse' : ''}`} />
+              </button>
               <div className="pr-2 flex items-center gap-2">
                 <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono text-zinc-400 bg-zinc-100 rounded-md border border-zinc-200">
                   Ctrl K
@@ -234,6 +250,7 @@ export const HomePage = ({ onNavigate, onStartQuery, onSelectStandard }) => {
                 </button>
               </div>
             </form>
+            {(voice.interimTranscript || voice.error) && <div className="text-[10px] text-fuchsia-700 text-center font-medium mt-2">{voice.error || `Listening: ${voice.interimTranscript}`}</div>}
 
             {/* Prompt suggestion pills */}
             <div className="flex flex-wrap items-center justify-center gap-2 mt-4">

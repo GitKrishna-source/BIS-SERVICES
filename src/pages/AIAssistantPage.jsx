@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { sampleRAGSession, mockStandards } from '../services/mockData';
 import { ragApi } from '../services/api';
+import { useVoiceInput } from '../hooks/useVoiceInput';
 import { TelemetryChart } from '../components/TelemetryChart';
 import { 
   Sparkles, 
@@ -21,7 +22,8 @@ import {
   AlertCircle,
   ChevronRight,
   Zap,
-  LogIn
+  LogIn,
+  Mic
 } from 'lucide-react';
 
 export const AIAssistantPage = ({ currentUser, onOpenLogin, initialQuery = '', queryTimestamp, onOpenDrawer, onOpenPdf }) => {
@@ -34,6 +36,11 @@ export const AIAssistantPage = ({ currentUser, onOpenLogin, initialQuery = '', q
   const [feedback, setFeedback] = useState(null);
   const [demoQueriesLeft, setDemoQueriesLeft] = useState(3);
   const lastExecutedQueryRef = useRef('');
+  const handleVoiceQuery = (transcript) => {
+    setInputValue(transcript);
+    executeQuery(transcript);
+  };
+  const voice = useVoiceInput({ onFinalTranscript: handleVoiceQuery });
 
   const isDemo = !currentUser || currentUser.isDemo;
 
@@ -377,13 +384,22 @@ export const AIAssistantPage = ({ currentUser, onOpenLogin, initialQuery = '', q
                 >
                   <Paperclip className="w-4 h-4" />
                 </button>
-                <input
+                 <input
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder={t('askAssistantPlaceholder', "Ask about IS standards, mandatory QCOs, clause references, or test procedures...")}
-                  className="w-full bg-transparent text-xs text-zinc-800 placeholder-zinc-400 focus:outline-none py-1.5 font-medium"
-                />
+                   className="w-full bg-transparent text-xs text-zinc-800 placeholder-zinc-400 focus:outline-none py-1.5 font-medium"
+                 />
+                 <button
+                   type="button"
+                   onClick={voice.toggleListening}
+                   aria-label={voice.isListening ? 'Stop voice prompt' : 'Start voice prompt'}
+                   title={voice.error || (voice.isListening ? 'Listening...' : 'Ask by voice')}
+                   className={`w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0 ${voice.isListening ? 'bg-fuchsia-100 text-fuchsia-700 ring-4 ring-fuchsia-500/20' : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950'}`}
+                 >
+                   <Mic className={`w-4 h-4 ${voice.isListening ? 'animate-pulse' : ''}`} />
+                 </button>
                 <button
                   type="submit"
                   disabled={isLoading}
@@ -392,8 +408,9 @@ export const AIAssistantPage = ({ currentUser, onOpenLogin, initialQuery = '', q
                   <span>{isLoading ? '...' : t('searchButton', 'Send')}</span>
                   <Send className="w-3.5 h-3.5 text-zinc-400" />
                 </button>
-              </div>
-            </form>
+             </div>
+             {(voice.interimTranscript || voice.error) && <div className="text-[10px] text-fuchsia-700 font-medium mt-2">{voice.error || `Listening: ${voice.interimTranscript}`}</div>}
+           </form>
 
             <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-zinc-500 pt-1">
               <div className="flex flex-wrap gap-2">
