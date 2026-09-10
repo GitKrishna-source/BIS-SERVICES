@@ -16,7 +16,7 @@ if exist "%~dp0..\.venv\Scripts\python.exe" (
 )
 
 :: Small delay to let backend initialize
-timeout /t 3 /nobreak > nul
+ping -n 3 127.0.0.1 > nul
 
 :: 2. Launch Vite React Frontend in a new window
 echo [2/2] Starting React Frontend on http://localhost:5173 ...
