@@ -1,11 +1,14 @@
 from typing import List, Dict, Any, Optional
 import math
-from app.repositories.standard_repository import standard_repository
+
+from app.repositories.postgres_standard_repository import (
+    postgres_standard_repository,
+)
 from app.schemas.standard import StandardSchema, StandardSearchResponse
 
 
 class StandardService:
-    def __init__(self, repository=standard_repository):
+    def __init__(self, repository=postgres_standard_repository):
         self.repo = repository
 
     def search_standards(
@@ -17,6 +20,7 @@ class StandardService:
         limit: int = 10,
         sort_by: str = "relevance"
     ) -> StandardSearchResponse:
+
         page = max(1, page)
         limit = max(1, min(100, limit))
 
@@ -29,7 +33,11 @@ class StandardService:
             sort_by=sort_by
         )
 
-        total_pages = max(1, math.ceil(total / limit)) if total > 0 else 1
+        total_pages = (
+            max(1, math.ceil(total / limit))
+            if total > 0
+            else 1
+        )
 
         return StandardSearchResponse(
             success=True,
@@ -39,10 +47,16 @@ class StandardService:
             totalPages=total_pages
         )
 
-    def get_standard_by_id(self, standard_id: str) -> Optional[StandardSchema]:
+    def get_standard_by_id(
+        self,
+        standard_id: str
+    ) -> Optional[StandardSchema]:
+
         item = self.repo.get_by_id(standard_id)
+
         if item:
             return StandardSchema(**item)
+
         return None
 
     def get_categories(self) -> List[Dict[str, Any]]:

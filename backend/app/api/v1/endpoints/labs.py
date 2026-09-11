@@ -3,7 +3,7 @@ from fastapi import APIRouter, Query, HTTPException, status
 
 from app.services.lab_service import lab_service
 from app.schemas.lab import LabSchema, LabListResponse
-from app.repositories.lab_repository import lab_repository
+from app.repositories.postgres_lab_repository import postgres_lab_repository
 
 router = APIRouter()
 
@@ -33,7 +33,7 @@ def get_labs_summary_stats():
     """
     Get aggregate statistical metrics regarding NABL / BIS accredited laboratory infrastructure.
     """
-    all_labs = lab_repository.list_all()
+    all_labs = postgres_lab_repository.list_all()
     unique_states = {lab["state"] for lab in all_labs}
     all_standards = set()
     for lab in all_labs:

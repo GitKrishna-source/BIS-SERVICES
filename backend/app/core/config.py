@@ -9,6 +9,13 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     HOST: str = "0.0.0.0"
     PORT: int = 8000
+
+    # PostgreSQL Configuration
+    DATABASE_NAME: str = "bisync"
+    DATABASE_USER: str = "postgres"
+    DATABASE_HOST: str = "localhost"
+    DATABASE_PORT: int = 5432
+    DATABASE_PASSWORD: str = ""
     
     # CORS Configuration
     FRONTEND_URL: str = "http://localhost:5173"

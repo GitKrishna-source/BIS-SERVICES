@@ -1,208 +1,723 @@
-"""Document ingestion and retrieval for the regulatory assistant.
-
-The production path uses an OpenAI-compatible embedding endpoint. A deterministic
-hashed vector is retained only as an offline development fallback; it is not
-presented as a semantic model and is replaced automatically when AI_API_KEY is set.
-"""
-
-import hashlib
-import io
-import json
-import math
+import os
 import re
-import uuid
-from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional
+import hashlib
+from typing import Any, Dict, List, Optional
 
 import httpx
 
-try:
-    from pypdf import PdfReader
-except ImportError:  # PDF ingestion remains available after installing requirements.txt.
-    PdfReader = None
-
 from app.core.config import settings
+from app.repositories.postgres_rag_repository import (
+    postgres_rag_repository,
+)
 
+
+# ============================================================
+# HELPERS
+# ============================================================
 
 def _tokens(text: str) -> List[str]:
-    return re.findall(r"[a-z0-9]+", text.lower())
+    return re.findall(
+        r"[a-z0-9]+",
+        text.lower(),
+    )
 
 
 def _requested_standard_numbers(text: str) -> List[str]:
-    return re.findall(r"\bIS\s*(?:[A-Z]\s*)?(\d{3,5})\b", text, re.I)
+    """
+    Extract standard references such as:
+
+    IS 456
+    IS-456
+    IS 456:2000
+    IS-456-2000
+    """
+
+    matches = re.findall(
+        r"\bIS[\s-]*(\d{3,5})(?:[\s:-]*(\d{4}))?\b",
+        text,
+        re.IGNORECASE,
+    )
+
+    results = []
+
+    for number, year in matches:
+        if year:
+            results.append(
+                f"IS {number}:{year}"
+            )
+        else:
+            results.append(
+                f"IS {number}"
+            )
+
+    return results
 
 
 def _chunk_standard_numbers(text: str) -> List[str]:
-    return re.findall(r"\bIS\s*(?:[A-Z]\s*)?(\d{3,5})\b", text, re.I)
+    return _requested_standard_numbers(text)
 
 
-def _local_embedding(text: str, dimensions: int) -> List[float]:
+def _deterministic_embedding(
+    text: str,
+    dimensions: int = 256,
+) -> List[float]:
+    """
+    Local deterministic embedding fallback.
+
+    This is not a semantic embedding model.
+    It exists so the PostgreSQL + pgvector pipeline
+    works without an external embedding API.
+    """
+
     vector = [0.0] * dimensions
-    for token in _tokens(text):
-        digest = hashlib.sha256(token.encode("utf-8")).digest()
-        index = int.from_bytes(digest[:4], "big") % dimensions
-        vector[index] += 1.0 if digest[4] % 2 else -1.0
-    norm = math.sqrt(sum(value * value for value in vector)) or 1.0
-    return [value / norm for value in vector]
+
+    tokens = _tokens(text)
+
+    if not tokens:
+        return vector
+
+    for token in tokens:
+
+        digest = hashlib.sha256(
+            token.encode("utf-8")
+        ).digest()
+
+        for i in range(
+            0,
+            len(digest),
+            4,
+        ):
+
+            value = int.from_bytes(
+                digest[i:i + 4],
+                byteorder="big",
+                signed=False,
+            )
+
+            index = value % dimensions
+
+            vector[index] += 1.0
+
+    magnitude = sum(
+        value * value
+        for value in vector
+    ) ** 0.5
+
+    if magnitude == 0:
+        return vector
+
+    return [
+        value / magnitude
+        for value in vector
+    ]
 
 
-def _cosine(left: List[float], right: List[float]) -> float:
-    return sum(a * b for a, b in zip(left, right))
-
+# ============================================================
+# RAG SERVICE
+# ============================================================
 
 class RAGService:
+
     def __init__(self) -> None:
-        self.store_path = Path(settings.RAG_STORE_PATH)
-        self.documents_dir = Path(settings.RAG_DOCUMENTS_DIR)
-        self.store_path.parent.mkdir(parents=True, exist_ok=True)
-        self.documents_dir.mkdir(parents=True, exist_ok=True)
-        self._chunks: List[Dict[str, Any]] = self._load()
+        self.embedding_dimensions = 256
 
-    def _load(self) -> List[Dict[str, Any]]:
-        if not self.store_path.exists():
+    # ========================================================
+    # EMBEDDING
+    # ========================================================
+
+    def _embed(
+        self,
+        text: str,
+    ) -> List[float]:
+        """
+        Generate a 256-dimensional deterministic embedding.
+
+        The current demo uses this local fallback so that
+        RAG works without requiring an external AI provider.
+        """
+
+        return _deterministic_embedding(
+            text,
+            self.embedding_dimensions,
+        )
+
+    # ========================================================
+    # TEXT CHUNKING
+    # ========================================================
+
+    def _split_text(
+        self,
+        text: str,
+        chunk_size: int = 1200,
+        overlap: int = 150,
+    ) -> List[str]:
+
+        text = text.strip()
+
+        if not text:
             return []
-        try:
-            data = json.loads(self.store_path.read_text(encoding="utf-8"))
-            return data if isinstance(data, list) else []
-        except (OSError, json.JSONDecodeError):
-            return []
 
-    def _save(self) -> None:
-        temporary = self.store_path.with_name(f"{self.store_path.name}.{uuid.uuid4().hex}.tmp")
-        temporary.write_text(json.dumps(self._chunks, ensure_ascii=False), encoding="utf-8")
-        temporary.replace(self.store_path)
+        if len(text) <= chunk_size:
+            return [text]
 
-    @staticmethod
-    def _split_text(text: str, size: int, overlap: int) -> Iterable[str]:
-        normalized = re.sub(r"\s+", " ", text).strip()
-        if not normalized:
-            return
+        chunks = []
+
         start = 0
-        while start < len(normalized):
-            end = min(len(normalized), start + size)
-            if end < len(normalized):
-                boundary = normalized.rfind(" ", start, end)
-                if boundary > start + size // 2:
-                    end = boundary
-            yield normalized[start:end].strip()
-            if end >= len(normalized):
-                break
-            start = max(end - overlap, start + 1)
+        text_length = len(text)
 
-    @staticmethod
-    def _extract_clause(text: str) -> Optional[str]:
-        match = re.search(r"\b(?:clause|cl\.?|section)\s*([0-9]+(?:\.[0-9]+)*)", text, re.I)
-        return match.group(1) if match else None
+        while start < text_length:
 
-    def _embed(self, texts: List[str]) -> List[List[float]]:
-        if not settings.AI_API_KEY:
-            return [_local_embedding(text, settings.AI_EMBEDDING_DIMENSIONS) for text in texts]
-        try:
-            response = httpx.post(
-                f"{settings.AI_API_BASE_URL.rstrip('/')}/embeddings",
-                headers={"Authorization": f"Bearer {settings.AI_API_KEY}"},
-                json={"model": settings.AI_EMBEDDING_MODEL, "input": texts},
-                timeout=60,
+            end = min(
+                start + chunk_size,
+                text_length,
             )
-            response.raise_for_status()
-            data = sorted(response.json()["data"], key=lambda item: item.get("index", 0))
-            return [item["embedding"] for item in data]
-        except (httpx.HTTPError, KeyError, TypeError, ValueError):
-            return [_local_embedding(text, settings.AI_EMBEDDING_DIMENSIONS) for text in texts]
+
+            chunk = text[
+                start:end
+            ].strip()
+
+            if chunk:
+                chunks.append(chunk)
+
+            if end >= text_length:
+                break
+
+            start = max(
+                end - overlap,
+                start + 1,
+            )
+
+        return chunks
+
+    # ========================================================
+    # INGEST TEXT
+    # ========================================================
 
     def ingest_text(
         self,
         text: str,
-        source_name: str,
+        title: str,
         source_url: Optional[str] = None,
-        document_type: str = "BIS/Gazette",
+        document_type: Optional[str] = None,
+        version: Optional[str] = None,
+        published_date: Optional[str] = None,
     ) -> int:
-        chunks = list(self._split_text(text, settings.RAG_CHUNK_SIZE, settings.RAG_CHUNK_OVERLAP))
-        if not chunks:
-            return 0
-        embeddings = self._embed(chunks)
-        self._chunks = [chunk for chunk in self._chunks if chunk["sourceName"] != source_name]
-        for index, (chunk_text, embedding) in enumerate(zip(chunks, embeddings), start=1):
-            citation_id = f"{hashlib.sha1(f'{source_name}:{index}'.encode()).hexdigest()[:12]}"
-            self._chunks.append({
-                "id": citation_id,
-                "text": chunk_text,
-                "embedding": embedding,
-                "sourceName": source_name,
-                "sourceUrl": source_url,
-                "documentType": document_type,
-                "chunk": index,
-                "clause": self._extract_clause(chunk_text),
-            })
-        self._save()
-        return len(chunks)
 
-    def ingest_file(self, path: Path, source_url: Optional[str] = None) -> int:
-        if path.suffix.lower() == ".pdf":
-            if PdfReader is None:
-                raise RuntimeError("PDF ingestion requires pypdf; install backend/requirements.txt")
-            reader = PdfReader(str(path))
-            pages = []
-            for page_number, page in enumerate(reader.pages, start=1):
-                pages.append(f"[Page {page_number}]\n{page.extract_text() or ''}")
-            text = "\n\n".join(pages)
-        else:
-            text = path.read_text(encoding="utf-8", errors="ignore")
-        return self.ingest_text(text, path.name, source_url)
+        # Prevent duplicate documents with the same title.
+        postgres_rag_repository.delete_document_by_title(
+            title
+        )
 
-    def ingest_url(self, url: str) -> int:
-        response = httpx.get(url, timeout=90, follow_redirects=True)
-        response.raise_for_status()
-        content_type = response.headers.get("content-type", "").lower()
-        if "pdf" in content_type or url.lower().split("?", 1)[0].endswith(".pdf"):
-            if PdfReader is None:
-                raise RuntimeError("PDF ingestion requires pypdf; install backend/requirements.txt")
-            reader = PdfReader(io.BytesIO(response.content))
-            text = "\n\n".join(
-                f"[Page {page_number}]\n{page.extract_text() or ''}"
-                for page_number, page in enumerate(reader.pages, start=1)
+        document_id = (
+            postgres_rag_repository.create_document(
+                title=title,
+                source_url=source_url,
+                document_type=document_type,
+                version=version,
+                published_date=published_date,
             )
+        )
+
+        chunks = self._split_text(text)
+
+        for index, chunk in enumerate(chunks):
+
+            embedding = self._embed(chunk)
+
+            postgres_rag_repository.create_chunk(
+                document_id=document_id,
+                chunk_index=index,
+                content=chunk,
+                metadata={
+                    "source": title,
+                    "document_type": document_type,
+                },
+                embedding=embedding,
+            )
+
+        return document_id
+
+    # ========================================================
+    # INGEST FILE
+    # ========================================================
+
+    def ingest_file(
+        self,
+        file_path: str,
+        source_url: Optional[str] = None,
+        document_type: Optional[str] = None,
+        version: Optional[str] = None,
+        published_date: Optional[str] = None,
+    ) -> int:
+
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(file_path)
+
+        extension = os.path.splitext(
+            file_path
+        )[1].lower()
+
+        title = os.path.basename(
+            file_path
+        )
+
+        if extension == ".pdf":
+
+            from pypdf import PdfReader
+
+            reader = PdfReader(
+                file_path
+            )
+
+            pages = []
+
+            for page in reader.pages:
+
+                pages.append(
+                    page.extract_text()
+                    or ""
+                )
+
+            text = "\n\n".join(
+                pages
+            )
+
         else:
-            text = response.text
-        source_name = url.rstrip("/").rsplit("/", 1)[-1] or url
-        return self.ingest_text(text, source_name, url)
 
-    def ingest_directory(self) -> int:
-        total = 0
-        for path in sorted(self.documents_dir.iterdir()):
-            if path.suffix.lower() in {".pdf", ".txt", ".md"}:
-                total += self.ingest_file(path)
-        return total
+            with open(
+                file_path,
+                "r",
+                encoding="utf-8",
+                errors="ignore",
+            ) as file:
 
-    def retrieve(self, query: str, top_k: Optional[int] = None) -> List[Dict[str, Any]]:
-        if not self._chunks:
+                text = file.read()
+
+        return self.ingest_text(
+            text=text,
+            title=title,
+            source_url=source_url,
+            document_type=document_type,
+            version=version,
+            published_date=published_date,
+        )
+
+    # ========================================================
+    # INGEST URL
+    # ========================================================
+
+    def ingest_url(
+        self,
+        url: str,
+        title: Optional[str] = None,
+        document_type: Optional[str] = None,
+    ) -> int:
+
+        response = httpx.get(
+            url,
+            timeout=60,
+            follow_redirects=True,
+        )
+
+        response.raise_for_status()
+
+        text = response.text
+
+        if not title:
+            title = url
+
+        return self.ingest_text(
+            text=text,
+            title=title,
+            source_url=url,
+            document_type=document_type,
+        )
+
+    # ========================================================
+    # INGEST DIRECTORY
+    # ========================================================
+
+    def ingest_directory(
+        self,
+        directory: Optional[str] = None,
+    ) -> int:
+
+        if directory is None:
+
+            directory = getattr(
+                settings,
+                "RAG_DOCUMENTS_DIR",
+                "",
+            )
+
+        if not directory:
+            return 0
+
+        if not os.path.isdir(directory):
+            return 0
+
+        count = 0
+
+        for root, _, files in os.walk(
+            directory
+        ):
+
+            for filename in files:
+
+                if not filename.lower().endswith(
+                    (
+                        ".txt",
+                        ".md",
+                        ".pdf",
+                    )
+                ):
+                    continue
+
+                path = os.path.join(
+                    root,
+                    filename,
+                )
+
+                try:
+
+                    self.ingest_file(
+                        path,
+                        document_type="Indexed document",
+                    )
+
+                    count += 1
+
+                except Exception:
+                    continue
+
+        return count
+
+    # ========================================================
+    # RETRIEVE
+    # ========================================================
+
+    def retrieve(
+        self,
+        query: str,
+        top_k: Optional[int] = None,
+    ) -> List[Dict[str, Any]]:
+
+        query = query.strip()
+
+        if not query:
+            return []
+
+        # ----------------------------------------------------
+        # Make sure some chunks exist.
+        # ----------------------------------------------------
+
+        if self.chunk_count == 0:
             self.ingest_directory()
-        if not self._chunks:
+
+        if self.chunk_count == 0:
             return []
-        query_vector = self._embed([query])[0]
-        requested_codes = set(_requested_standard_numbers(query))
-        exact_code_chunks = [
-            chunk for chunk in self._chunks
-            if requested_codes.intersection(_chunk_standard_numbers(chunk["text"]))
+
+        # ----------------------------------------------------
+        # Query embedding
+        # ----------------------------------------------------
+
+        query_vector = self._embed(
+            query
+        )
+
+        # ----------------------------------------------------
+        # Detect explicit standard references.
+        # ----------------------------------------------------
+
+        requested_codes = (
+            _requested_standard_numbers(
+                query
+            )
+        )
+
+        result_limit = (
+            top_k
+            or getattr(
+                settings,
+                "RAG_TOP_K",
+                6,
+            )
+        )
+
+        # ----------------------------------------------------
+        # IMPORTANT:
+        #
+        # The current local deterministic embeddings are only
+        # a fallback and can rank unrelated chunks highly.
+        #
+        # We therefore retrieve a LARGE candidate pool and
+        # perform lexical reranking ourselves.
+        #
+        # There are currently only a few hundred chunks, so
+        # 500 safely covers the current demo dataset.
+        # ----------------------------------------------------
+
+        search_limit = max(
+            result_limit * 5,
+            500,
+        )
+
+        db_results = (
+            postgres_rag_repository.similarity_search(
+                query_vector,
+                limit=search_limit,
+            )
+        )
+
+        if not db_results:
+            return []
+
+        # ====================================================
+        # LEXICAL RERANKING
+        # ====================================================
+
+        stop_words = {
+            "what", "which", "where", "when", "does", "do", "is", "are",
+            "the", "a", "an", "to", "for", "of", "and", "in", "on",
+            "apply", "applies", "indian", "standard", "standards",
+            "used", "use", "using", "used", "tell", "about",
+            "please", "does", "say", "requirements", "requirement",
+            "specification", "specifications", "code", "practice",
+        }
+
+        query_terms = {
+            token
+            for token in _tokens(query)
+            if len(token) >= 3 and token not in stop_words
+        }
+
+        if query_terms:
+
+            for result in db_results:
+                content = result.get("content", "")
+                content_lower = content.lower()
+                content_terms = set(_tokens(content_lower))
+
+                # The repository filename is stored in `title`, so the
+                # actual standard/product title is taken from the start
+                # of the chunk content instead.
+                head_terms = set(_tokens(content_lower[:350]))
+
+                content_matches = len(query_terms.intersection(content_terms))
+                head_matches = len(query_terms.intersection(head_terms))
+
+                # Strong lexical evidence beats the intentionally simple
+                # local vector fallback.  A product/topic appearing in the
+                # chunk's title/header is much stronger than appearing once
+                # somewhere in a generic technical paragraph.
+                result["_lexical_score"] = (
+                    (head_matches * 4) + (content_matches * 2)
+                    + result.get("similarity", 0)
+                )
+
+            db_results.sort(
+                key=lambda result: result.get("_lexical_score", 0),
+                reverse=True,
+            )
+
+            # Filter weak matches.
+            # For broad product queries (LED lamps, helmets, cement, etc.),
+            # require the topic to appear in the chunk header/title or have
+            # multiple supporting occurrences. This prevents unrelated
+            # vector-neighbours from leaking into the final answer.
+            lexical_results = []
+
+            for result in db_results:
+                content_lower = result.get("content", "").lower()
+                content_terms = set(_tokens(content_lower))
+                head_terms = set(_tokens(content_lower[:350]))
+
+                content_matches = len(query_terms.intersection(content_terms))
+                head_matches = len(query_terms.intersection(head_terms))
+
+                if head_matches >= 1 or content_matches >= max(2, len(query_terms)):
+                    lexical_results.append(result)
+
+            # If exact lexical evidence exists, use it exclusively.
+            if lexical_results:
+                db_results = lexical_results
+
+        # ====================================================
+        # LIMIT FINAL RESULTS
+        # ====================================================
+
+        db_results = db_results[
+            :(
+                top_k
+                or getattr(
+                    settings,
+                    "RAG_TOP_K",
+                    6,
+                )
+            )
         ]
-        # Never answer an exact standard-number question with a merely similar code
-        # such as IS 17017 when the requested IS 1701 is not indexed.
-        candidates = exact_code_chunks if requested_codes and exact_code_chunks else (
-            [] if requested_codes else self._chunks
+
+        # ====================================================
+        # EXACT STANDARD SAFEGUARD
+        # ====================================================
+
+        if requested_codes:
+
+            matching_results = []
+
+            for result in db_results:
+
+                content = result.get(
+                    "content",
+                    "",
+                )
+
+                normalized_content = (
+                    content
+                    .lower()
+                    .replace("-", " ")
+                    .replace(":", " ")
+                )
+
+                matched = False
+
+                for requested in requested_codes:
+
+                    normalized_requested = (
+                        requested
+                        .lower()
+                        .replace("-", " ")
+                        .replace(":", " ")
+                    )
+
+                    requested_parts = (
+                        normalized_requested.split()
+                    )
+
+                    if all(
+                        part in normalized_content
+                        for part in requested_parts
+                    ):
+                        matched = True
+                        break
+
+                if matched:
+                    matching_results.append(
+                        result
+                    )
+
+            if matching_results:
+
+                db_results = (
+                    matching_results
+                )
+
+            else:
+
+                # The user explicitly requested a standard,
+                # but we found no evidence for that standard.
+                return []
+
+        # ====================================================
+        # CONVERT DATABASE RESULTS TO API FORMAT
+        # ====================================================
+
+        results = []
+
+        for result in db_results:
+
+            results.append(
+                {
+                    "id": str(
+                        result["id"]
+                    ),
+
+                    "sourceName": (
+                        result.get(
+                            "title"
+                        )
+                        or "Indexed BIS document"
+                    ),
+
+                    "sourceUrl": result.get(
+                        "source_url"
+                    ),
+
+                    "documentType": (
+                        result.get(
+                            "document_type"
+                        )
+                        or "BIS/Gazette"
+                    ),
+
+                    "version": result.get(
+                        "version"
+                    ),
+
+                    "chunkIndex": result.get(
+                        "chunk_index"
+                    ),
+
+                    "text": result.get(
+                        "content",
+                        "",
+                    ),
+
+                    "page": result.get(
+                        "page_number"
+                    ),
+
+                    "clause": result.get(
+                        "clause_number"
+                    ),
+
+                    "metadata": (
+                        result.get(
+                            "metadata"
+                        )
+                        or {}
+                    ),
+
+                    "similarity": float(
+                        result.get(
+                            "similarity",
+                            0,
+                        )
+                    ),
+                }
+            )
+
+        return results
+
+    # ========================================================
+    # DOCUMENT
+    # ========================================================
+
+    def get_document(
+        self,
+        document_id: int,
+    ) -> Optional[Dict[str, Any]]:
+
+        return (
+            postgres_rag_repository.get_document(
+                document_id
+            )
         )
-        if not candidates:
-            return []
-        ranked = sorted(
-            candidates,
-            key=lambda chunk: _cosine(query_vector, chunk["embedding"])
-            + (2.0 if requested_codes.intersection(_chunk_standard_numbers(chunk["text"])) else 0.0),
-            reverse=True,
-        )
-        return ranked[: top_k or settings.RAG_TOP_K]
+
+    # ========================================================
+    # CHUNK COUNT
+    # ========================================================
 
     @property
     def chunk_count(self) -> int:
-        return len(self._chunks)
 
+        return (
+            postgres_rag_repository.chunk_count()
+        )
+
+
+# ============================================================
+# SINGLE SERVICE INSTANCE
+# ============================================================
 
 rag_service = RAGService()
